@@ -8,6 +8,7 @@ import { pricingPackages } from "@/content/pricing";
 export function PricingPreview() {
   return (
     <section
+      id="pricing"
       className="relative py-24 sm:py-32 lg:py-40 overflow-hidden kd-pricing-section"
       aria-labelledby="pricing-heading"
     >

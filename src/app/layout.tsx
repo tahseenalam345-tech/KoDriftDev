@@ -4,6 +4,9 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { constructMetadata } from "@/lib/metadata";
+import { AnimationProvider } from "@/context/AnimationContext";
+import { ParticleStage } from "@/components/canvas/ParticleStage";
+import { Preloader } from "@/components/intro/Preloader";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -39,9 +42,15 @@ export default function RootLayout({
       className={`${manrope.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-screen flex flex-col antialiased" style={{ background: "var(--bg-base)", color: "var(--text)" }}>
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <AnimationProvider>
+          <Preloader />
+          <ParticleStage />
+          <Header />
+          <main className="flex-1 bg-transparent">{children}</main>
+          <div className="relative z-20">
+            <Footer />
+          </div>
+        </AnimationProvider>
       </body>
     </html>
   );

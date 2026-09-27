@@ -1,10 +1,9 @@
 import React from "react";
 import { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
 import { serviceCategories, services } from "@/content/services";
+import { ServiceCard } from "@/components/services/ServiceCard";
 import { constructMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = constructMetadata({
@@ -16,12 +15,12 @@ export const metadata: Metadata = constructMetadata({
 
 export default function ServicesPage() {
   return (
-    <div className="py-16 sm:py-24 space-y-20 sm:space-y-28 bg-[#F4F1EA]">
+    <div className="py-16 sm:py-24 space-y-20 sm:space-y-28 bg-transparent">
       {/* Page Hero */}
       <section>
         <Container>
           <div className="max-w-[720px] space-y-5">
-            <span className="metadata-text text-accent">
+            <span className="metadata-text text-[#006EF5]">
               What we do
             </span>
             <h1 className="hero-headline">
@@ -35,93 +34,87 @@ export default function ServicesPage() {
         </Container>
       </section>
 
-      {/* Structured Service Lists by Category: Build / AI & Automation / Grow & Support */}
-      <div className="space-y-16 sm:space-y-24">
-        {serviceCategories.map((category) => {
-          const categoryServices = services.filter(
-            (s) => s.category.toLowerCase() === category.name.toLowerCase()
-          );
+      {/* Main 2-Column Section: 60% Left Cards / 40% Right Sticky 3D Morph Stage */}
+      <Container>
+        <div className="grid grid-cols-1 lg:grid-cols-[60%_40%] gap-10 lg:gap-8 items-start">
+          {/* LEFT COLUMN: Categories & Frosted Glass Service Cards */}
+          <div className="space-y-16 sm:space-y-24">
+            {serviceCategories.map((category) => {
+              const categoryServices = services.filter(
+                (s) => s.category.toLowerCase() === category.name.toLowerCase()
+              );
 
-          return (
-            <section key={category.name}>
-              <Container className="space-y-8">
-                {/* Category Header */}
-                <div className="pb-4 border-b border-border flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
-                  <div className="space-y-1 max-w-xl">
-                    <h2 className="section-headline">
-                      {category.name}
-                    </h2>
-                    <p className="text-sm sm:text-base text-muted">
-                      {category.description}
-                    </p>
-                  </div>
-                  <span className="metadata-text text-muted shrink-0">
-                    {categoryServices.length} {categoryServices.length === 1 ? "Service" : "Services"}
-                  </span>
-                </div>
-
-                {/* Clean Row / List Layout */}
-                <div className="divide-y divide-border rounded-[6px] border border-border bg-surface shadow-2xs">
-                  {categoryServices.map((service, idx) => (
-                    <div
-                      key={service.slug}
-                      className="group p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:bg-[#F4F1EA]/60 transition-colors duration-[180ms]"
-                    >
-                      <div className="space-y-2 md:max-w-xl">
-                        <div className="flex items-center gap-3">
-                          <span className="font-mono text-xs font-bold text-accent">
-                            0{idx + 1}
-                          </span>
-                          <h3 className="text-xl sm:text-2xl font-bold text-primary font-heading group-hover:text-accent transition-colors duration-[180ms]">
-                            <Link href={`/services/${service.slug}`}>
-                              {service.name}
-                            </Link>
-                          </h3>
-                        </div>
-                        <p className="text-sm text-muted leading-relaxed">
-                          {service.shortDescription}
-                        </p>
-                      </div>
-
-                      <div className="shrink-0 flex items-center gap-4">
-                        <Link
-                          href={`/services/${service.slug}`}
-                          className="inline-flex items-center gap-1.5 text-sm font-bold text-primary group-hover:text-accent transition-colors"
-                        >
-                          <span>Explore service</span>
-                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-[3px]" />
-                        </Link>
-                      </div>
+              return (
+                <section key={category.name} className="space-y-6">
+                  {/* Category Header */}
+                  <div className="pb-4 border-b border-border flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+                    <div className="space-y-1 max-w-xl">
+                      <h2 className="section-headline text-2xl sm:text-3xl">
+                        {category.name}
+                      </h2>
+                      <p className="text-sm text-muted">
+                        {category.description}
+                      </p>
                     </div>
-                  ))}
-                </div>
-              </Container>
-            </section>
-          );
-        })}
-      </div>
+                    <span className="metadata-text text-muted shrink-0">
+                      {categoryServices.length}{" "}
+                      {categoryServices.length === 1 ? "Service" : "Services"}
+                    </span>
+                  </div>
 
-      {/* Bottom Consultation Block */}
-      <section className="pt-4">
-        <Container>
-          <div className="rounded-[6px] border border-border bg-surface p-8 sm:p-12 lg:p-16 text-center flex flex-col items-center max-w-4xl mx-auto shadow-2xs">
-            <div className="max-w-[620px] space-y-4">
-              <h2 className="section-headline">
-                Not sure which service you need?
-              </h2>
-              <p className="text-base text-muted leading-relaxed">
-                Tell us what is slowing your business down or what you want to improve.
-                We will recommend the most practical starting point.
-              </p>
-              <div className="pt-4">
-                <Button href="/contact" variant="primary" size="md" showArrow>
-                  Start a project
-                </Button>
+                  {/* Frosted Glass Cards */}
+                  <div className="space-y-5">
+                    {categoryServices.map((service) => (
+                      <ServiceCard
+                        key={service.slug}
+                        name={service.name}
+                        slug={service.slug}
+                        category={service.category}
+                        shortDescription={service.shortDescription}
+                        outcomes={service.outcomes}
+                        iconName={service.iconName}
+                        featured={service.featured}
+                      />
+                    ))}
+                  </div>
+                </section>
+              );
+            })}
+
+            {/* Bottom Consultation Block */}
+            <div className="rounded-[28px] border border-white/10 bg-slate-900/40 p-8 sm:p-12 text-center flex flex-col items-center shadow-xl backdrop-blur-2xl">
+              <div className="max-w-[560px] space-y-4">
+                <h2 className="text-2xl sm:text-3xl font-bold font-['Manrope'] text-white">
+                  Not sure which service you need?
+                </h2>
+                <p className="text-sm text-slate-300 leading-relaxed">
+                  Tell us what is slowing your business down or what you want to improve.
+                  We will recommend the most practical starting point.
+                </p>
+                <div className="pt-4">
+                  <Button href="/contact" variant="primary" size="md" showArrow>
+                    Start a project
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
-        </Container>
-      </section>
+
+          {/* RIGHT COLUMN: Ambient 3D Morph Area */}
+          <div className="hidden lg:flex sticky top-36 flex-col items-center justify-center min-h-[500px] pointer-events-none select-none">
+            {/* Ambient Background Glow behind 3D Morph */}
+            <div
+              className="absolute w-[440px] h-[440px] rounded-full pointer-events-none"
+              style={{
+                background:
+                  "radial-gradient(circle at center, rgba(44, 129, 250, 0.22) 0%, rgba(0, 110, 245, 0.12) 42%, rgba(0, 63, 197, 0.04) 75%, transparent 100%)",
+                filter: "blur(60px)",
+              }}
+              aria-hidden="true"
+            />
+          </div>
+        </div>
+      </Container>
     </div>
   );
 }

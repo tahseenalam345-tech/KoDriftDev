@@ -13,6 +13,7 @@ export function WorkPreview() {
 
   return (
     <section
+      id="work"
       className="relative py-24 sm:py-32 lg:py-40 overflow-hidden kd-work-section"
       aria-labelledby="work-heading"
     >

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -8,67 +10,42 @@ export function ServicePreview() {
   const webDev = services.find((s) => s.slug === "web-development")!;
   const softwareDev = services.find((s) => s.slug === "software-development")!;
   const appDev = services.find((s) => s.slug === "app-development")!;
-  const aiAutomation = services.find((s) => s.slug === "ai-automation")!;
   const aiPhoto = services.find((s) => s.slug === "ai-product-photography")!;
+  const aiAutomation = services.find((s) => s.slug === "ai-automation")!;
 
-  const small = [appDev, aiPhoto, aiAutomation];
+  const smallServices = [
+    { ...appDev, num: "03", shape: "phone" },
+    { ...aiPhoto, num: "04", shape: "aperture" },
+    { ...aiAutomation, num: "05", shape: "torus" },
+  ];
+
+  const handleMorph = (shape: string) => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("kd-morph-shape", { detail: shape })
+      );
+    }
+  };
 
   return (
     <section
-      className="relative py-24 sm:py-32 lg:py-40 overflow-hidden kd-services-section"
+      id="services"
+      className="relative py-24 sm:py-32 lg:py-40 overflow-hidden bg-transparent"
       aria-labelledby="services-heading"
     >
-      {/* CSS-based background managed via inline style */}
-      <style>{`
-        .kd-services-section {
-          background: var(--bg-soft);
-          border-top: 1px solid var(--line);
-        }
-        .kd-service-card-large {
-          background: var(--surface);
-          border: 1px solid var(--line);
-          border-radius: 16px;
-          box-shadow: var(--shadow-soft), var(--shadow-inset);
-          transition: transform 250ms cubic-bezier(0.22,1,0.36,1), box-shadow 250ms cubic-bezier(0.22,1,0.36,1);
-        }
-        .kd-service-card-large:hover {
-          transform: rotate(0deg) translateY(-4px) !important;
-          box-shadow: var(--shadow-float), var(--shadow-inset);
-        }
-        .kd-service-card-large-teal { transform: rotate(-1deg); }
-        .kd-service-card-large-coral { transform: rotate(1deg); }
-        .kd-service-card-small {
-          background: rgba(255,255,255,0.46);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          border: 1px solid rgba(255,255,255,0.72);
-          border-radius: 16px;
-          box-shadow: var(--shadow-glass);
-          transition: transform 250ms cubic-bezier(0.22,1,0.36,1);
-        }
-        .kd-service-card-small:hover {
-          transform: rotate(0deg) translateY(-3px) !important;
-        }
-        .kd-service-card-small-a { transform: rotate(-1.5deg); }
-        .kd-service-card-small-b { transform: rotate(1.5deg); }
-        .kd-service-card-small-c { transform: rotate(-1deg); }
-        .kd-arrow-right { transition: transform 180ms ease; }
-        .kd-service-card-large:hover .kd-arrow-right,
-        .kd-service-card-small:hover .kd-arrow-right { transform: translateX(4px); }
-      `}</style>
-
-      {/* Ambient glow */}
+      {/* Ambient background glow */}
       <div
-        className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[780px] h-[340px] rounded-full"
+        className="pointer-events-none absolute top-12 left-1/2 -translate-x-1/2 w-[720px] h-[340px] rounded-full"
         style={{
-          background: "radial-gradient(ellipse at center, rgba(44, 129, 250, 0.28) 0%, rgba(0, 110, 245, 0.16) 45%, rgba(0, 63, 197, 0.06) 75%, transparent 100%)",
-          filter: "blur(100px)",
+          background:
+            "radial-gradient(ellipse at center, rgba(44, 129, 250, 0.20) 0%, rgba(0, 110, 245, 0.10) 45%, transparent 75%)",
+          filter: "blur(90px)",
         }}
         aria-hidden="true"
       />
 
-      <Container className="relative z-10 space-y-14">
-        {/* Section heading */}
+      <Container className="relative z-20 space-y-12 sm:space-y-14">
+        {/* Section Heading */}
         <div className="max-w-2xl space-y-4">
           <span className="metadata-text" style={{ color: "var(--brand-blue)" }}>
             What we build
@@ -88,97 +65,129 @@ export function ServicePreview() {
           </p>
         </div>
 
-        {/* Large two-panel row: Web + Software */}
+        {/* Row 1: Two Large Featured Cards (Web & Software) */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <ServiceLargeCard
-            num="01"
-            name={webDev.name}
-            desc={webDev.shortDescription}
-            slug={webDev.slug}
-            rotateClass="kd-service-card-large-teal"
-            numColor="var(--teal)"
-          />
-          <ServiceLargeCard
-            num="02"
-            name={softwareDev.name}
-            desc={softwareDev.shortDescription}
-            slug={softwareDev.slug}
-            rotateClass="kd-service-card-large-coral"
-            numColor="var(--brand-blue)"
-          />
+          {/* Card 01: Web Development */}
+          <Link
+            href={`/services/${webDev.slug}`}
+            onMouseEnter={() => handleMorph("cube")}
+            className="group relative block p-7 sm:p-9 rounded-2xl md:rounded-3xl border border-white/10 bg-white/[0.04] dark:bg-slate-950/30 backdrop-blur-xl shadow-[0_20px_50px_-10px_rgba(0,110,245,0.12)] hover:shadow-[0_30px_70px_-10px_rgba(0,110,245,0.25)] hover:border-[#2C81FA]/50 hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
+            style={{
+              boxShadow:
+                "0 20px 50px -10px rgba(0, 110, 245, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.15)",
+            }}
+          >
+            <div className="flex items-baseline justify-between mb-5">
+              <span
+                className="font-mono text-3xl font-bold tracking-tight"
+                style={{ color: "var(--teal)" }}
+              >
+                01
+              </span>
+              <span className="metadata-text" style={{ color: "var(--text-muted)" }}>
+                Core Service
+              </span>
+            </div>
+            <div className="h-px w-full mb-5 bg-white/10" aria-hidden="true" />
+            <h3 className="sub-headline mb-3 text-slate-900 dark:text-white group-hover:text-[#2C81FA] transition-colors">
+              {webDev.name}
+            </h3>
+            <p className="text-sm sm:text-base leading-relaxed text-slate-600 dark:text-slate-300 mb-6">
+              {webDev.shortDescription}
+            </p>
+            <div className="flex items-center gap-1.5 text-sm font-semibold text-[#006EF5] group-hover:text-[#2C81FA] transition-colors">
+              <span>Explore service</span>
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </div>
+          </Link>
+
+          {/* Card 02: Software Development */}
+          <Link
+            href={`/services/${softwareDev.slug}`}
+            onMouseEnter={() => handleMorph("cube")}
+            className="group relative block p-7 sm:p-9 rounded-2xl md:rounded-3xl border border-white/10 bg-white/[0.04] dark:bg-slate-950/30 backdrop-blur-xl shadow-[0_20px_50px_-10px_rgba(0,110,245,0.12)] hover:shadow-[0_30px_70px_-10px_rgba(0,110,245,0.25)] hover:border-[#2C81FA]/50 hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
+            style={{
+              boxShadow:
+                "0 20px 50px -10px rgba(0, 110, 245, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.15)",
+            }}
+          >
+            <div className="flex items-baseline justify-between mb-5">
+              <span
+                className="font-mono text-3xl font-bold tracking-tight"
+                style={{ color: "var(--brand-blue)" }}
+              >
+                02
+              </span>
+              <span className="metadata-text" style={{ color: "var(--text-muted)" }}>
+                Core Service
+              </span>
+            </div>
+            <div className="h-px w-full mb-5 bg-white/10" aria-hidden="true" />
+            <h3 className="sub-headline mb-3 text-slate-900 dark:text-white group-hover:text-[#2C81FA] transition-colors">
+              {softwareDev.name}
+            </h3>
+            <p className="text-sm sm:text-base leading-relaxed text-slate-600 dark:text-slate-300 mb-6">
+              {softwareDev.shortDescription}
+            </p>
+            <div className="flex items-center gap-1.5 text-sm font-semibold text-[#006EF5] group-hover:text-[#2C81FA] transition-colors">
+              <span>Explore service</span>
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </div>
+          </Link>
         </div>
 
-        {/* Smaller three-card row */}
+        {/* Row 2: Three Compact Cards (App, Photo, AI) */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          {small.map((svc, i) => {
-            const rotateClasses = ["kd-service-card-small-a", "kd-service-card-small-b", "kd-service-card-small-c"];
-            return (
-              <ServiceSmallCard
-                key={svc.slug}
-                num={`0${i + 3}`}
-                name={svc.name}
-                desc={svc.shortDescription}
-                slug={svc.slug}
-                rotateClass={rotateClasses[i]}
-              />
-            );
-          })}
+          {smallServices.map((svc) => (
+            <Link
+              key={svc.slug}
+              href={`/services/${svc.slug}`}
+              onMouseEnter={() => handleMorph(svc.shape)}
+              className="group relative block p-6 sm:p-7 rounded-2xl md:rounded-3xl border border-white/10 bg-white/[0.04] dark:bg-slate-950/30 backdrop-blur-xl shadow-[0_20px_50px_-10px_rgba(0,110,245,0.12)] hover:shadow-[0_30px_70px_-10px_rgba(0,110,245,0.25)] hover:border-[#2C81FA]/50 hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
+              style={{
+                boxShadow:
+                  "0 20px 50px -10px rgba(0, 110, 245, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.15)",
+              }}
+            >
+              <div className="flex items-baseline justify-between mb-4">
+                <span
+                  className="font-mono text-xl font-bold tracking-tight"
+                  style={{
+                    color: svc.num === "04" ? "var(--brand-blue)" : "var(--teal)",
+                  }}
+                >
+                  {svc.num}
+                </span>
+                <span className="metadata-text" style={{ color: "var(--text-muted)" }}>
+                  Service
+                </span>
+              </div>
+              <div className="h-px w-full mb-4 bg-white/10" aria-hidden="true" />
+              <h3 className="font-heading font-bold text-lg mb-2 leading-tight text-slate-900 dark:text-white group-hover:text-[#2C81FA] transition-colors">
+                {svc.name}
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-5 line-clamp-3">
+                {svc.shortDescription}
+              </p>
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-[#006EF5] group-hover:text-[#2C81FA] transition-colors">
+                <span>Explore service</span>
+                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+              </div>
+            </Link>
+          ))}
         </div>
 
-        {/* Bottom link */}
+        {/* Bottom Link */}
         <div className="flex items-center justify-end pt-2">
-          <Link href="/services" className="text-link-underline text-sm">
-            <span>View all services</span>
-            <ArrowRight className="h-4 w-4 ml-1.5" aria-hidden="true" />
+          <Link
+            href="/services"
+            className="group inline-flex items-center gap-1.5 text-sm font-semibold text-[#006EF5] hover:text-[#2C81FA] transition-colors"
+          >
+            <span>View all services & full breakdown</span>
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
       </Container>
     </section>
-  );
-}
-
-function ServiceLargeCard({
-  num, name, desc, slug, rotateClass, numColor,
-}: {
-  num: string; name: string; desc: string; slug: string; rotateClass: string; numColor: string;
-}) {
-  return (
-    <Link
-      href={`/services/${slug}`}
-      className={`group block p-7 sm:p-9 kd-service-card-large ${rotateClass}`}
-    >
-      <div className="flex items-baseline justify-between mb-5">
-        <span className="font-mono text-3xl font-bold" style={{ color: numColor, letterSpacing: "-0.04em" }}>{num}</span>
-        <span className="metadata-text" style={{ color: "var(--text-muted)" }}>Service</span>
-      </div>
-      <div className="h-px w-full mb-5" style={{ background: "var(--line)" }} aria-hidden="true" />
-      <h3 className="sub-headline mb-3" style={{ color: "var(--ink)" }}>{name}</h3>
-      <p className="text-sm sm:text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>{desc}</p>
-      <div className="mt-7 flex items-center gap-1.5">
-        <span className="text-sm font-bold" style={{ color: "var(--ink)" }}>See service</span>
-        <ArrowRight className="kd-arrow-right h-4 w-4" style={{ color: numColor }} aria-hidden="true" />
-      </div>
-    </Link>
-  );
-}
-
-function ServiceSmallCard({
-  num, name, desc, slug, rotateClass,
-}: {
-  num: string; name: string; desc: string; slug: string; rotateClass: string;
-}) {
-  return (
-    <Link href={`/services/${slug}`} className={`group block p-6 kd-service-card-small ${rotateClass}`}>
-      <div className="flex items-baseline justify-between mb-4">
-        <span className="font-mono text-xl font-bold" style={{ color: "var(--teal)", letterSpacing: "-0.03em" }}>{num}</span>
-      </div>
-      <div className="h-px w-full mb-4" style={{ background: "var(--line)" }} aria-hidden="true" />
-      <h3 className="font-heading font-bold text-lg mb-2 leading-tight" style={{ color: "var(--ink)", letterSpacing: "-0.025em" }}>{name}</h3>
-      <p className="text-xs sm:text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{desc}</p>
-      <div className="mt-5 flex items-center gap-1">
-        <span className="text-xs font-bold" style={{ color: "var(--ink)" }}>See service</span>
-        <ArrowRight className="kd-arrow-right h-3.5 w-3.5" style={{ color: "var(--teal)" }} aria-hidden="true" />
-      </div>
-    </Link>
   );
 }
