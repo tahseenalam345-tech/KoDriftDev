@@ -1,0 +1,1 @@
+Add before/after product-photo pairs here in any common image format. KoDriftDev’s asset integration workflow will optimize, rename, convert, and connect files to src/content/aiProductPhotography.ts. Use clearly descriptive filenames where possible, but manual preparation is not required.

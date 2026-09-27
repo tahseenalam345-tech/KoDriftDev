@@ -1,0 +1,530 @@
+@import "tailwindcss";
+
+/* ============================================================
+   KoDriftDev — "Floating Product Lab" Design System v2
+   Blue/cyan brand accent, claymorphism + neo-brutalism buttons
+   ============================================================ */
+
+:root {
+  /* ── Page atmosphere (clean modern silver from benchmark reference) ── */
+  --bg-base: #ECEEF2;
+  --bg-soft: #F4F6F9;
+  --surface: #FFFFFF;
+  --surface-raised: #FEFEFE;
+
+  /* ── Ink / text ── */
+  --ink: #0F172A;
+  --ink-strong: #020617;
+  --text: #1E293B;
+  --text-muted: #64748B;
+  --line: rgba(15, 23, 42, 0.11);
+  --line-strong: rgba(15, 23, 42, 0.22);
+
+  /* ── Glass recipes ── */
+  --glass: rgba(255, 255, 255, 0.55);
+  --glass-strong: rgba(255, 255, 255, 0.76);
+  --glass-dark: rgba(0, 28, 91, 0.85);
+
+  /* ── Brand: Blue (exact crystal logo palette from user prompt) ── */
+  --brand-blue: #006EF5;             /* Brighter blue areas */
+  --brand-blue-inner: #003FC5;       /* Main inner blue */
+  --brand-blue-bright: #006EF5;      /* Brighter blue areas */
+  --brand-blue-highlight: #2C81FA;   /* Highlight/cyan reflection */
+  --brand-blue-dark: #001C5B;        /* Dark glass areas */
+  --brand-blue-deep: #003FC5;        /* Main inner blue */
+  --brand-blue-light: #79BAFF;
+  --brand-blue-glow: rgba(0, 110, 245, 0.32);
+
+  /* ── Brand: Coral (decorative, minimal) ── */
+  --brand-coral: #DE6A50;
+  --brand-coral-dark: #BE4E35;
+
+  /* ── Legacy teal (section accents, AI section) ── */
+  --teal: #42BFA8;
+  --teal-bright: #76E1CD;
+  --teal-dim: #2A7F6F;
+
+  /* ── Ambient palette ── */
+  --lavender-light: #C9BCFF;
+  --blue-light: #2C81FA;
+
+  /* ── Shadows ── */
+  --shadow-soft: 0 14px 40px rgba(16, 40, 39, 0.09);
+  --shadow-float: 0 22px 60px rgba(16, 40, 39, 0.15);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  --shadow-glass: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 14px 36px rgba(16, 40, 39, 0.10);
+
+  /* ── Clay + Neo-brutalism button shadows ── */
+  --btn-primary-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 3px 0 var(--ink-strong),
+    0 10px 20px rgba(7, 24, 23, 0.20);
+  --btn-primary-shadow-hover:
+    inset 0 1px 0 rgba(255, 255, 255, 0.20),
+    0 4px 0 var(--ink-strong),
+    0 14px 26px rgba(20, 103, 219, 0.22);
+  --btn-primary-shadow-active:
+    inset 0 2px 5px rgba(0, 0, 0, 0.20),
+    0 1px 0 var(--ink-strong);
+
+  --btn-secondary-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 3px 0 rgba(16, 40, 39, 0.36),
+    0 9px 18px rgba(16, 40, 39, 0.10);
+  --btn-secondary-shadow-hover:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 4px 0 rgba(16, 40, 39, 0.36),
+    0 12px 22px rgba(16, 40, 39, 0.12);
+  --btn-secondary-shadow-active:
+    inset 0 2px 5px rgba(16, 40, 39, 0.12),
+    0 1px 0 rgba(16, 40, 39, 0.28);
+
+  /* ── Legacy compatibility aliases ── */
+  --background: var(--bg-base);
+  --primary: var(--ink);
+  --primary-dark: var(--ink-strong);
+  --accent: var(--brand-blue);
+  --accent-hover: var(--brand-blue-deep);
+  --highlight: var(--brand-blue);
+  --coral: var(--brand-coral);
+  --coral-hover: var(--brand-coral-dark);
+  --muted: var(--text-muted);
+  --border: var(--line);
+}
+
+/* ── Tailwind v4 theme tokens ── */
+@theme {
+  --color-background: var(--bg-base);
+  --color-surface: var(--surface);
+  --color-primary: var(--ink);
+  --color-primary-dark: var(--ink-strong);
+  --color-accent: var(--brand-blue);
+  --color-accent-hover: var(--brand-blue-deep);
+  --color-teal: var(--teal);
+  --color-teal-bright: var(--teal-bright);
+  --color-highlight: var(--brand-blue);
+  --color-text: var(--text);
+  --color-muted: var(--text-muted);
+  --color-border: var(--line);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-light: var(--brand-blue-light);
+
+  --font-heading: var(--font-manrope), sans-serif;
+  --font-body: var(--font-dm-sans), sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}
+
+/* ── Base reset ── */
+body {
+  background-color: var(--bg-base);
+  color: var(--text);
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  letter-spacing: -0.012em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading), sans-serif;
+}
+
+/* ============================================================
+   TYPOGRAPHY SCALE (refined — ~15% smaller than v1)
+   ============================================================ */
+
+/* Hero H1 — max 2 lines at 1280px */
+.hero-headline {
+  font-family: var(--font-heading), sans-serif;
+  font-size: clamp(3rem, 5.4vw, 5.8rem);
+  line-height: 0.94;
+  letter-spacing: -0.065em;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+/* Mobile hero H1 override */
+@media (max-width: 640px) {
+  .hero-headline {
+    font-size: clamp(3rem, 14vw, 4.2rem);
+    line-height: 0.96;
+  }
+}
+
+/* Page H1 */
+.page-headline {
+  font-family: var(--font-heading), sans-serif;
+  font-size: clamp(2.6rem, 4.4vw, 4.8rem);
+  line-height: 0.97;
+  letter-spacing: -0.055em;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+/* Section H2 */
+.section-headline {
+  font-family: var(--font-heading), sans-serif;
+  font-size: clamp(1.85rem, 3.2vw, 3.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+/* Sub-headline H3 */
+.sub-headline {
+  font-family: var(--font-heading), sans-serif;
+  font-size: clamp(1.2rem, 1.9vw, 1.65rem);
+  line-height: 1.12;
+  letter-spacing: -0.028em;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Metadata / tech labels — JetBrains Mono */
+.metadata-text {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   BACKGROUND & TEXTURE SYSTEM
+   ============================================================ */
+
+.pattern-dot-grid {
+  background-image: radial-gradient(rgba(100, 116, 139, 0.32) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.pattern-dot-grid-light {
+  background-image: radial-gradient(rgba(249, 249, 247, 0.75) 0.85px, transparent 0.85px);
+  background-size: 20px 20px;
+  opacity: 0.07;
+}
+
+/* ============================================================
+   GLASS SYSTEM
+   ============================================================ */
+
+.glass-surface {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(16px) saturate(125%);
+  -webkit-backdrop-filter: blur(16px) saturate(125%);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: var(--shadow-glass);
+}
+
+.glass-surface-strong {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px) saturate(130%);
+  -webkit-backdrop-filter: blur(20px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  box-shadow: var(--shadow-glass);
+}
+
+.glass-dark {
+  background: rgba(0, 28, 91, 0.85);
+  backdrop-filter: blur(18px) saturate(120%);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  border: 1px solid rgba(44, 129, 250, 0.30);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 24px 60px rgba(0, 28, 91, 0.35);
+}
+
+/* ============================================================
+   AMBIENT GLOW SYSTEM (Crystal Blue Palette)
+   Main inner blue: #003FC5
+   Brighter blue areas: #006EF5
+   Highlight/cyan reflection: #2C81FA
+   Dark glass areas: #001C5B
+   ============================================================ */
+
+.glow-blue {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, #2C81FA 0%, #006EF5 45%, #003FC5 75%, #001C5B 92%, transparent 100%);
+  filter: blur(95px);
+  opacity: 0.42;
+  pointer-events: none;
+}
+
+.glow-crystal-wash {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(44, 129, 250, 0.50) 0%, rgba(0, 110, 245, 0.38) 35%, rgba(0, 63, 197, 0.22) 62%, rgba(0, 28, 91, 0.10) 80%, transparent 100%);
+  filter: blur(85px);
+  pointer-events: none;
+}
+
+.glow-crystal-deep {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 110, 245, 0.32) 0%, rgba(0, 63, 197, 0.24) 45%, rgba(0, 28, 91, 0.14) 80%, transparent 100%);
+  filter: blur(115px);
+  pointer-events: none;
+}
+
+.glow-lavender {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(44, 129, 250, 0.42) 0%, rgba(0, 110, 245, 0.28) 48%, rgba(0, 63, 197, 0.15) 75%, transparent 100%);
+  filter: blur(100px);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.glow-teal {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--teal-bright);
+  filter: blur(80px);
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+/* ============================================================
+   INTERACTIVE LINK
+   ============================================================ */
+
+.text-link-underline {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  color: var(--ink);
+  transition: color 180ms ease;
+}
+
+.text-link-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background-color: var(--brand-blue);
+  transition: width 180ms ease;
+}
+
+.text-link-underline:hover {
+  color: var(--brand-blue-deep);
+}
+
+.text-link-underline:hover::after {
+  width: 100%;
+}
+
+/* ============================================================
+   CARD / SURFACE UTILITY
+   ============================================================ */
+
+.surface-raised {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-soft), var(--shadow-inset);
+}
+
+.card-base {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(16, 40, 39, 0.07);
+}
+
+/* ============================================================
+   CLAYMORPHISM + NEO-BRUTALISM BUTTON SYSTEM
+   ============================================================ */
+
+/* --- Primary button --- */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 14px;
+  font-family: var(--font-body), sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  background: var(--ink);
+  border: 1px solid var(--ink-strong);
+  box-shadow: var(--btn-primary-shadow);
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background 170ms ease,
+    border-color 170ms ease,
+    transform 170ms ease,
+    box-shadow 170ms ease;
+  outline: none;
+  user-select: none;
+}
+
+.btn-primary:hover {
+  background: var(--brand-blue-deep);
+  border-color: var(--brand-blue-deep);
+  transform: translateY(-1px);
+  box-shadow: var(--btn-primary-shadow-hover);
+}
+
+.btn-primary:active {
+  transform: translateY(2px);
+  box-shadow: var(--btn-primary-shadow-active);
+}
+
+.btn-primary:focus-visible {
+  outline: 2px solid var(--brand-blue);
+  outline-offset: 3px;
+}
+
+/* --- Secondary button --- */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 14px;
+  font-family: var(--font-body), sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(16, 40, 39, 0.25);
+  box-shadow: var(--btn-secondary-shadow);
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background 170ms ease,
+    border-color 170ms ease,
+    transform 170ms ease,
+    box-shadow 170ms ease;
+  outline: none;
+  user-select: none;
+}
+
+.btn-secondary:hover {
+  background: #ffffff;
+  border-color: var(--brand-blue);
+  transform: translateY(-1px);
+  box-shadow: var(--btn-secondary-shadow-hover);
+}
+
+.btn-secondary:active {
+  transform: translateY(2px);
+  box-shadow: var(--btn-secondary-shadow-active);
+}
+
+.btn-secondary:focus-visible {
+  outline: 2px solid var(--brand-blue);
+  outline-offset: 3px;
+}
+
+/* --- Small button modifier --- */
+.btn-sm {
+  min-height: 40px;
+  padding: 0 16px;
+  font-size: 13.5px;
+  border-radius: 11px;
+}
+
+/* --- Rounded Glossy Pill CTA (matches VistaRapid benchmark) --- */
+.btn-pill-dark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  height: 42px;
+  padding: 0 24px;
+  font-family: var(--font-body), sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  background: linear-gradient(180deg, #2D3231 0%, #111514 100%);
+  border: 1px solid #080C0B;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.35),
+    0 4px 14px rgba(7, 24, 23, 0.30);
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+  user-select: none;
+  outline: none;
+}
+
+.btn-pill-dark:hover {
+  background: linear-gradient(180deg, #3A403F 0%, #161A19 100%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.45),
+    0 6px 18px rgba(7, 24, 23, 0.38);
+  transform: translateY(-1px);
+}
+
+.btn-pill-dark:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.35),
+    0 2px 6px rgba(7, 24, 23, 0.20);
+}
+
+.btn-pill-dark:focus-visible {
+  outline: 2px solid var(--brand-blue);
+  outline-offset: 3px;
+}
+
+/* --- Arrow inside button --- */
+.btn-arrow {
+  transition: transform 180ms ease;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.btn-primary:hover .btn-arrow,
+.btn-secondary:hover .btn-arrow {
+  transform: translateX(3px);
+}
+
+/* ============================================================
+   REVEAL ANIMATION
+   ============================================================ */
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-up {
+  animation: fade-up 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
