@@ -41,7 +41,7 @@ export function HeroShowcaseStack() {
 
   return (
     <div
-      className="relative flex items-center justify-center w-full max-w-[560px] h-[370px] sm:h-[420px] md:h-[450px] select-none"
+      className="relative flex items-center justify-center w-full max-w-[560px] h-[225px] sm:h-[400px] md:h-[450px] select-none"
       style={{ perspective: "1200px" }}
     >
       {/* Ambient crystal blue radiance behind images */}

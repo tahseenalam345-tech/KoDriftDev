@@ -35,12 +35,12 @@ interface AnimationContextType {
 }
 
 const AnimationContext = createContext<AnimationContextType>({
-  isPreloaderActive: true,
-  hasLoaded: false,
+  isPreloaderActive: false,
+  hasLoaded: true,
   completePreloader: () => {},
-  activeShape: "preloader",
+  activeShape: "sphere",
   setActiveShape: () => {},
-  activeSection: "preloader",
+  activeSection: "hero",
   setActiveSection: () => {},
   mouse: { x: 0, y: 0, active: false },
   updateMouse: () => {},
@@ -49,10 +49,10 @@ const AnimationContext = createContext<AnimationContextType>({
 });
 
 export function AnimationProvider({ children }: { children: React.ReactNode }) {
-  const [isPreloaderActive, setIsPreloaderActive] = useState<boolean>(true);
-  const [hasLoaded, setHasLoaded] = useState<boolean>(false);
-  const [activeShape, setActiveShape] = useState<ShapeType>("preloader");
-  const [activeSection, setActiveSection] = useState<SectionType>("preloader");
+  const [isPreloaderActive, setIsPreloaderActive] = useState<boolean>(false);
+  const [hasLoaded, setHasLoaded] = useState<boolean>(true);
+  const [activeShape, setActiveShape] = useState<ShapeType>("sphere");
+  const [activeSection, setActiveSection] = useState<SectionType>("hero");
   const [canvasOpacity, setCanvasOpacity] = useState<number>(1);
   const [mouse, setMouse] = useState<{ x: number; y: number; active: boolean }>({
     x: 0,

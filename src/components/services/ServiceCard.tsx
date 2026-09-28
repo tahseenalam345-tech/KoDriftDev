@@ -32,11 +32,11 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 const shapeMap: Record<string, string> = {
-  "web-development": "cube",
+  "web-development": "code",
+  "software-development": "gear",
   "app-development": "phone",
-  "ai-automation": "torus",
-  "ai-product-photography": "aperture",
-  "software-development": "cube",
+  "ai-automation": "chip",
+  "ai-product-photography": "camera",
 };
 
 interface ServiceCardProps {

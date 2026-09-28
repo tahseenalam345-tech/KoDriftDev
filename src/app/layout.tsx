@@ -6,7 +6,6 @@ import { Footer } from "@/components/layout/Footer";
 import { constructMetadata } from "@/lib/metadata";
 import { AnimationProvider } from "@/context/AnimationContext";
 import { ParticleStage } from "@/components/canvas/ParticleStage";
-import { Preloader } from "@/components/intro/Preloader";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -43,7 +42,6 @@ export default function RootLayout({
     >
       <body className="min-h-screen flex flex-col antialiased" style={{ background: "var(--bg-base)", color: "var(--text)" }}>
         <AnimationProvider>
-          <Preloader />
           <ParticleStage />
           <Header />
           <main className="flex-1 bg-transparent">{children}</main>

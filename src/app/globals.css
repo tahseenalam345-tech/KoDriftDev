@@ -151,8 +151,9 @@ h1, h2, h3, h4, h5, h6 {
 /* Mobile hero H1 override */
 @media (max-width: 640px) {
   .hero-headline {
-    font-size: clamp(3rem, 14vw, 4.2rem);
-    line-height: 0.96;
+    font-size: clamp(3.15rem, 8.8vw, 3.8rem);
+    line-height: 0.95;
+    letter-spacing: -0.055em;
   }
 }
 
@@ -505,13 +506,11 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   letter-spacing: -0.01em;
   color: #111514;
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(16, 40, 39, 0.20);
+  background: #ffffff;
+  border: 1px solid rgba(16, 40, 39, 0.16);
   box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.85),
-    0 4px 14px rgba(7, 24, 23, 0.08);
+    inset 0 1px 1px #ffffff,
+    0 3px 12px rgba(16, 40, 39, 0.07);
   cursor: pointer;
   text-decoration: none;
   transition:
@@ -521,14 +520,16 @@ h1, h2, h3, h4, h5, h6 {
     border-color 160ms ease;
   user-select: none;
   outline: none;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn-pill-secondary:hover {
   background: #ffffff;
-  border-color: rgba(16, 40, 39, 0.45);
+  border-color: rgba(16, 40, 39, 0.36);
   box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 1),
-    0 6px 18px rgba(7, 24, 23, 0.12);
+    inset 0 1px 1px #ffffff,
+    0 6px 18px rgba(16, 40, 39, 0.13);
   transform: translateY(-1px);
 }
 
@@ -544,6 +545,216 @@ h1, h2, h3, h4, h5, h6 {
   outline-offset: 3px;
 }
 
+/* --- White Glossy Pill with Theme Blueish Border --- */
+.btn-pill-white {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 9999px;
+  height: 42px;
+  padding: 0 24px;
+  font-family: var(--font-body), sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #111514;
+  background: #ffffff;
+  border: 1.5px solid rgba(0, 110, 245, 0.40);
+  box-shadow:
+    inset 0 1px 1px #ffffff,
+    0 3px 14px rgba(0, 110, 245, 0.10);
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease;
+  user-select: none;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-pill-white:hover {
+  background: #ffffff;
+  border-color: rgba(0, 110, 245, 0.85);
+  box-shadow:
+    inset 0 1px 1px #ffffff,
+    0 6px 22px rgba(0, 110, 245, 0.22);
+  transform: translateY(-1px);
+}
+
+.btn-pill-white:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.1),
+    0 2px 6px rgba(0, 110, 245, 0.12);
+}
+
+.btn-pill-white:focus-visible {
+  outline: 2px solid var(--brand-blue);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   BUTTON SHINE / SHIMMER SWEEP EFFECT (matches .lighter-button)
+   ============================================================ */
+.lighter-button,
+.btn-pill-dark,
+.btn-pill-white,
+.btn-pill-secondary {
+  position: relative;
+  overflow: hidden;
+}
+
+.lighter-button::after,
+.btn-pill-dark::after,
+.btn-pill-white::after,
+.btn-pill-secondary::after {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: -130%;
+  width: 60%;
+  height: 220%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.04) 20%,
+    rgba(255, 255, 255, 0.70) 50%,
+    rgba(255, 255, 255, 0.04) 80%,
+    transparent 100%
+  );
+  transform: rotate(26deg);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 5;
+}
+
+/* Specular highlight beam tailored for white button */
+.btn-pill-white::after,
+.btn-pill-secondary::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.25) 15%,
+    rgba(255, 255, 255, 0.95) 45%,
+    rgba(0, 110, 245, 0.35) 55%,
+    rgba(255, 255, 255, 0.25) 85%,
+    transparent 100%
+  );
+}
+
+/* Smooth, relaxed shine sweep speed (1.45s) */
+.lighter-button:hover::after,
+.btn-pill-dark:hover::after,
+.btn-pill-white:hover::after,
+.btn-pill-secondary:hover::after {
+  animation: button-shine-sweep 1.45s cubic-bezier(0.2, 0.7, 0.25, 1) forwards;
+}
+
+@keyframes button-shine-sweep {
+  0% {
+    left: -130%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    left: 170%;
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   HEADLINE TEXT SHINE EFFECT (Build better online.)
+   ============================================================ */
+.headline-shine-word {
+  position: relative;
+  display: inline-block;
+  cursor: default;
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.headline-shine-dark {
+  background: linear-gradient(
+    115deg,
+    #111514 0%,
+    #111514 36%,
+    rgba(255, 255, 255, 0.92) 50%,
+    #111514 64%,
+    #111514 100%
+  );
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.headline-shine-blue {
+  background: linear-gradient(
+    115deg,
+    #001C5B 0%,
+    #003FC5 28%,
+    #006EF5 42%,
+    #ffffff 50%,
+    #006EF5 58%,
+    #2C81FA 72%,
+    #003FC5 100%
+  );
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 14px rgba(0, 110, 245, 0.20));
+}
+
+/* Smooth, relaxed text shine speed (1.5s) */
+.headline-shine-dark:hover,
+.hero-headline:hover .headline-shine-dark {
+  animation: headline-text-shine 1.5s cubic-bezier(0.2, 0.7, 0.25, 1) forwards;
+  filter: drop-shadow(0 2px 12px rgba(255, 255, 255, 0.40));
+}
+
+.headline-shine-blue:hover,
+.hero-headline:hover .headline-shine-blue {
+  animation: headline-text-shine 1.5s cubic-bezier(0.2, 0.7, 0.25, 1) forwards;
+  filter: drop-shadow(0 4px 22px rgba(0, 110, 245, 0.50));
+}
+
+/* Cascading stagger when hovering over headline container */
+.hero-headline:hover .headline-word-1 {
+  animation-delay: 0s;
+}
+.hero-headline:hover .headline-word-2 {
+  animation-delay: 0.20s;
+}
+.hero-headline:hover .headline-word-3 {
+  animation-delay: 0.40s;
+}
+
+/* Direct hover on an individual word responds immediately */
+.headline-shine-word:hover {
+  animation-delay: 0s !important;
+}
+
+@keyframes headline-text-shine {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -80% 0;
+  }
+}
+
 /* --- Arrow inside button --- */
 .btn-arrow {
   transition: transform 180ms ease;
@@ -555,7 +766,9 @@ h1, h2, h3, h4, h5, h6 {
 .btn-primary:hover .btn-arrow,
 .btn-secondary:hover .btn-arrow,
 .btn-pill-dark:hover .btn-arrow,
-.btn-pill-secondary:hover .btn-arrow {
+.btn-pill-secondary:hover .btn-arrow,
+.btn-pill-white:hover .btn-arrow,
+.lighter-button:hover .btn-arrow {
   transform: translateX(3px);
 }
 

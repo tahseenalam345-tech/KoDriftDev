@@ -5,46 +5,38 @@ import * as THREE from "three";
 import {
   TOTAL_POINTS,
   sampleTextCoordinates,
-  generateStreamLine,
+  generatePacman,
   generateWireframeCube,
+  generateSoftwareStack,
   generatePhoneFrame,
   generateNeuralTorus,
   generateApertureRings,
   generateVolumetricSphere,
+  generateCodeTag,
+  generateGear,
+  generateAiChip,
+  generateAiCamera,
 } from "./math/particleTargets";
 
-// Theme colors
-const COLOR_INNER = new THREE.Color("#003FC5");   // Deep inner cobalt
-const COLOR_RADIANT = new THREE.Color("#006EF5"); // Radiant core blue
-const COLOR_SPARKLE = new THREE.Color("#2C81FA"); // Electric cyan highlight
+const COLOR_DEEP = new THREE.Color("#001C82");
+const COLOR_MAIN = new THREE.Color("#0050C8");
+const COLOR_CYAN = new THREE.Color("#2C81FA");
+const COLOR_WHITE = new THREE.Color("#FFFFFF");
 
-/**
- * Circular radial glow sprite
- */
 function createParticleTexture(): THREE.Texture {
-  const canvas = document.createElement("canvas");
-  canvas.width = 64;
-  canvas.height = 64;
-  const ctx = canvas.getContext("2d");
-
-  if (ctx) {
-    const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
-    gradient.addColorStop(0.0, "rgba(255, 255, 255, 1.0)");
-    gradient.addColorStop(0.20, "rgba(200, 235, 255, 0.98)");
-    gradient.addColorStop(0.48, "rgba(44, 129, 250, 0.90)");
-    gradient.addColorStop(0.72, "rgba(0, 110, 245, 0.55)");
-    gradient.addColorStop(0.90, "rgba(0, 63, 197, 0.20)");
-    gradient.addColorStop(1.0, "rgba(0, 28, 91, 0.0)");
-
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 64, 64);
-  }
-
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.generateMipmaps = false;
-  texture.minFilter = THREE.LinearFilter;
-  texture.magFilter = THREE.LinearFilter;
-  return texture;
+  const c = document.createElement("canvas");
+  c.width = c.height = 32;
+  const ctx = c.getContext("2d")!;
+  const g = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+  g.addColorStop(0.0, "rgba(255,255,255,1.0)");
+  g.addColorStop(0.25, "rgba(44,129,250,0.95)");
+  g.addColorStop(0.65, "rgba(0,80,200,0.4)");
+  g.addColorStop(1.0, "rgba(0,0,0,0.0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 32, 32);
+  const tex = new THREE.CanvasTexture(c);
+  tex.generateMipmaps = false;
+  return tex;
 }
 
 export function ParticleBackground() {
@@ -54,82 +46,71 @@ export function ParticleBackground() {
     const container = containerRef.current;
     if (!container) return;
 
+    let mounted = true;
     const isMobile = window.innerWidth < 1024;
-    const count = isMobile ? 3000 : TOTAL_POINTS;
 
-    // 1. Scene & Perspective Camera (Front/Isometric View)
+    // FIX 1: Particles ki tadaad double kar di taake text hollow na rahay
+    const count = isMobile ? 4800 : 7500;
+
+    // 1. Scene & Camera
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      45,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      100
-    );
-    camera.position.set(0, 0, 7.5);
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 7.0);
 
-    // 2. WebGL Renderer
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: false,
-      powerPreference: "high-performance",
-    });
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false, powerPreference: "high-performance" });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 0);
+    container.innerHTML = "";
     container.appendChild(renderer.domElement);
 
-    // 3. Anchor Group (Front/Isometric view, NO 360 spinning)
+    // 2. Particle Group
     const particleGroup = new THREE.Group();
-    // Front-facing isometric orientation
-    particleGroup.rotation.set(0.08, -0.12, 0);
-
-    // Initial position starts centered/upper for the text greeting
     if (isMobile) {
-      particleGroup.position.set(0, 1.6, 0);
-      particleGroup.scale.set(0.65, 0.65, 0.65);
+      particleGroup.position.set(0, 1.2, 0);
+      particleGroup.scale.set(0, 0, 0);
     } else {
-      particleGroup.position.set(0.6, 0.1, 0);
-      particleGroup.scale.set(1.0, 1.0, 1.0);
+      particleGroup.position.set(2.2, 0, 0);
+      particleGroup.scale.set(1, 1, 1);
     }
     scene.add(particleGroup);
 
-    // 4. Shape Target Cache
+    // 3. Targets
     const targets: Record<string, Float32Array> = {
-      hero: sampleTextCoordinates("HI, WELCOME TO KODRIFTDEV", count, 0.009),
-      sphere: generateVolumetricSphere(count, 1.9),
-      stream: generateStreamLine(count, 7.5),
-      "services-cube": generateWireframeCube(count, 2.4),
-      "services-phone": generatePhoneFrame(count, 1.7, 3.2),
-      "services-torus": generateNeuralTorus(count, 1.7, 0.58),
-      "services-aperture": generateApertureRings(count),
-      services: sampleTextCoordinates("OUR SERVICES", count, 0.011),
-      work: sampleTextCoordinates("FEATURED WORK", count, 0.011),
-      pricing: sampleTextCoordinates("FLEXIBLE PLANS", count, 0.011),
-      contact: sampleTextCoordinates("LET'S TALK", count, 0.012),
+      hero: sampleTextCoordinates("HI, WELCOME TO KODRIFTDEV", count, isMobile),
+      sphere: generateVolumetricSphere(count, isMobile ? 1.1 : 1.4),
+      pacman: generatePacman(count, 0.55, isMobile ? 0.48 : 0.58),
+      // Services shapes: Code Tag </>, Gear icon, Phone frame, AI Chip, AI Camera (calibrated to fit neatly inside box)
+      "services-code": generateCodeTag(count, isMobile ? 0.65 : 0.80),
+      "services-gear": generateGear(count, isMobile ? 0.55 : 0.68, isMobile ? 0.20 : 0.25),
+      "services-phone": generatePhoneFrame(count, isMobile ? 0.50 : 0.62, isMobile ? 0.90 : 1.10),
+      "services-chip": generateAiChip(count, isMobile ? 0.62 : 0.76),
+      "services-camera": generateAiCamera(count, isMobile ? 0.72 : 0.88, isMobile ? 0.48 : 0.60),
+      // Aliases
+      "services-cube": generateCodeTag(count, isMobile ? 0.65 : 0.80),
+      "services-software": generateGear(count, isMobile ? 0.55 : 0.68),
+      "services-torus": generateAiChip(count, isMobile ? 0.62 : 0.76),
+      "services-aperture": generateAiCamera(count, isMobile ? 0.72 : 0.88),
+      "work-aurax": sampleTextCoordinates("AURA-X", count, isMobile),
+      "work-cluck": sampleTextCoordinates("CLUCK N MOO", count, isMobile),
+      "work-pharmacy": sampleTextCoordinates("PHARMACY SAAS", count, isMobile),
+      "work-prime": sampleTextCoordinates("PRIME ENERGY", count, isMobile),
+      work: sampleTextCoordinates("FEATURED WORK", count, isMobile),
+      pricing: sampleTextCoordinates("FLEXIBLE PLANS", count, isMobile),
+      contact: sampleTextCoordinates("LET'S TALK", count, isMobile),
     };
 
-    // 5. Initial Outer Space Coordinates (Particles assemble from deep space into Hero text)
-    const spaceCoords = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      const u = Math.random();
-      const v = Math.random();
-      const theta = u * 2.0 * Math.PI;
-      const phi = Math.acos(2.0 * v - 1.0);
-      const r = 14.0 * (0.6 + 0.4 * Math.cbrt(Math.random()));
-      spaceCoords[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-      spaceCoords[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-      spaceCoords[i * 3 + 2] = r * Math.cos(phi);
-    }
-
-    const currentPositions = new Float32Array(spaceCoords);
-    const sourcePositions = new Float32Array(spaceCoords);
+    // 4. Buffers
+    const currentPositions = new Float32Array(targets.hero);
+    const sourcePositions = new Float32Array(targets.hero);
     const targetPositions = new Float32Array(targets.hero);
 
-    let morphProgress = 0;
-    let morphDuration = 1.1; // Step 1: 0.0s - 1.2s assemble text
+    let morphProgress = 1.0;
+    let morphDuration = 0.65;
+    let currentTargetKey = "hero";
 
-    const setTarget = (key: string, duration = 0.85) => {
-      const tgt = targets[key] || targets.hero;
+    const setTarget = (key: string, duration = 0.65) => {
+      currentTargetKey = key;
+      const tgt = targets[key] ?? targets.sphere;
       for (let i = 0; i < count * 3; i++) {
         sourcePositions[i] = currentPositions[i];
         targetPositions[i] = tgt[i];
@@ -138,257 +119,264 @@ export function ParticleBackground() {
       morphProgress = 0;
     };
 
-    // 6. Geometry & Point Colors
+    // 5. Geometry & Colors (Eye gets white/cyan glow)
     const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute(
-      "position",
-      new THREE.BufferAttribute(currentPositions, 3)
-    );
+    geometry.setAttribute("position", new THREE.BufferAttribute(currentPositions, 3));
 
     const colors = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      const p = Math.random();
-      let c = COLOR_RADIANT;
-      if (p < 0.25) c = COLOR_INNER;
-      else if (p > 0.72) c = COLOR_SPARKLE;
-
-      colors[i * 3] = c.r;
-      colors[i * 3 + 1] = c.g;
-      colors[i * 3 + 2] = c.b;
+      if (i < 80) {
+        // Glowing Eye Highlight
+        colors[i * 3] = COLOR_WHITE.r;
+        colors[i * 3 + 1] = COLOR_WHITE.g;
+        colors[i * 3 + 2] = COLOR_WHITE.b;
+      } else {
+        const p = Math.random();
+        const c = p < 0.25 ? COLOR_DEEP : p > 0.7 ? COLOR_CYAN : COLOR_MAIN;
+        colors[i * 3] = c.r;
+        colors[i * 3 + 1] = c.g;
+        colors[i * 3 + 2] = c.b;
+      }
     }
     geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
-    // 7. Material (Point size: 0.038 desktop / 0.025 mobile)
     const material = new THREE.PointsMaterial({
-      size: isMobile ? 0.025 : 0.038,
+      // FIX 2: Particles ka size kafi barha diya taake letters solid nazar aayen
+      size: isMobile ? 0.035 : 0.045,
       sizeAttenuation: true,
       map: createParticleTexture(),
       vertexColors: true,
       transparent: true,
-      opacity: 0.0, // Hidden by default on hero load
-      blending: THREE.NormalBlending,
+      opacity: 0.98,
+      blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
 
     const points = new THREE.Points(geometry, material);
-    points.visible = false; // Hidden on initial hero view
     particleGroup.add(points);
 
-    // 8. Proximity-Only Mouse Tracking
-    const mouse3D = new THREE.Vector3(999, 999, 0);
-    let isMouseActive = false;
-    let rafMouseId: number | null = null;
-
-    const onPointerMove = (e: PointerEvent) => {
-      const ndcX = (e.clientX / window.innerWidth) * 2 - 1;
-      const ndcY = -(e.clientY / window.innerHeight) * 2 + 1;
-
-      const vec = new THREE.Vector3(ndcX, ndcY, 0.5);
-      vec.unproject(camera);
-      vec.sub(camera.position).normalize();
-      const distance = -camera.position.z / vec.z;
-      const worldPos = camera.position.clone().add(vec.multiplyScalar(distance));
-
-      if (!rafMouseId) {
-        rafMouseId = requestAnimationFrame(() => {
-          mouse3D.copy(worldPos);
-          isMouseActive = true;
-          rafMouseId = null;
-        });
-      }
-    };
-
-    const onPointerLeave = () => {
-      isMouseActive = false;
-      mouse3D.set(999, 999, 0);
-    };
-
-    window.addEventListener("pointermove", onPointerMove, { passive: true });
-    window.addEventListener("pointerleave", onPointerLeave, { passive: true });
-
-    // 9. Window Resize
-    const onResize = () => {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      const mobileNow = w < 1024;
-
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-
-      if (mobileNow) {
-        particleGroup.scale.set(0.65, 0.65, 0.65);
-        material.size = 0.025;
-      } else {
-        particleGroup.scale.set(1.0, 1.0, 1.0);
-        material.size = 0.038;
-      }
-
-      renderer.setSize(w, h);
-    };
-    window.addEventListener("resize", onResize, { passive: true });
-
-    // 10. Morph Custom Event Listener (from Service cards)
-    const handleMorphEvent = (e: Event) => {
-      const detail = (e as CustomEvent).detail;
-      if (typeof detail === "string") {
-        if (detail === "cube" || detail === "web") setTarget("services-cube");
-        else if (detail === "phone" || detail === "app" || detail === "device") setTarget("services-phone");
-        else if (detail === "torus" || detail === "ai") setTarget("services-torus");
-        else if (detail === "aperture" || detail === "photo") setTarget("services-aperture");
-        else if (targets[detail]) setTarget(detail);
-      }
-    };
-    window.addEventListener("kd-morph-shape", handleMorphEvent);
-
-    // 11. Scroll Stream & Section Observer
-    let lastScrollY = window.scrollY;
+    // 6. 360-Directional Scroll & State
+    let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
+    let pacmanDirectionAngle = 0;
+    let isScrolling = false;
     let scrollTimeout: NodeJS.Timeout | null = null;
     let currentActiveSection = "hero";
 
+    let targetGroupX = isMobile ? 0 : 2.2;
+    let currentGroupX = targetGroupX;
+    let targetGroupY = isMobile ? 1.2 : 0;
+    let currentGroupY = targetGroupY;
+    let targetScale = isMobile ? 0 : 1.0;
+    let currentScale = targetScale;
+
     const onScroll = () => {
-      const deltaY = Math.abs(window.scrollY - lastScrollY);
-      lastScrollY = window.scrollY;
+      const currentY = window.scrollY;
+      const dy = currentY - lastScrollY;
+      lastScrollY = currentY;
 
-      if (deltaY > 6) {
+      if (Math.abs(dy) > 1) {
+        isScrolling = true;
+        pacmanDirectionAngle = dy > 0 ? -Math.PI / 2 : Math.PI / 2;
+
+        if (currentActiveSection !== "hero") {
+          setTarget("pacman", 0.25);
+        }
+
         if (scrollTimeout) clearTimeout(scrollTimeout);
-        setTarget("stream", 0.35);
-
         scrollTimeout = setTimeout(() => {
+          isScrolling = false;
           checkActiveSection();
         }, 180);
       }
     };
+    window.addEventListener("scroll", onScroll, { passive: true });
 
     const checkActiveSection = () => {
-      const midScreen = window.innerHeight * 0.45;
-      let closestSection = "hero";
+      const mid = window.innerHeight * 0.45;
+      const sectionIds = ["hero", "services", "work", "pricing", "contact"];
+      let closest = "hero";
       let closestDist = Infinity;
 
-      const sections = ["hero", "services", "work", "pricing", "contact"];
-      const sectionElements = sections
-        .map((id) => ({ id, el: document.getElementById(id) }))
-        .filter((s): s is { id: string; el: HTMLElement } => s.el !== null);
-
-      if (sectionElements.length === 0) return;
-
-      sectionElements.forEach(({ id, el }) => {
+      sectionIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
         const rect = el.getBoundingClientRect();
-        const dist = Math.abs(rect.top - midScreen);
+        const dist = Math.abs(rect.top - mid);
         if (dist < closestDist) {
           closestDist = dist;
-          closestSection = id;
+          closest = id;
         }
       });
 
-      if (closestSection !== currentActiveSection) {
-        currentActiveSection = closestSection;
-        if (closestSection === "hero") {
-          // Handled by opacity fade
-        } else if (closestSection === "services") {
-          setTarget("services-cube");
-        } else if (closestSection === "work") {
-          setTarget("work");
-        } else if (closestSection === "pricing") {
-          setTarget("pricing");
-        } else if (closestSection === "contact") {
-          setTarget("contact");
-        } else {
-          setTarget("stream");
+      if (closest !== currentActiveSection) {
+        currentActiveSection = closest;
+        if (closest === "hero") {
+          targetGroupX = isMobile ? 0 : 2.2;
+          targetGroupY = isMobile ? 1.2 : 0;
+          targetScale = isMobile ? 0 : 1.0;
+          setTarget("hero", 0.7);
+        } else if (closest === "services") {
+          setTarget("services-code", 0.65);
+        } else if (closest === "work") {
+          targetGroupX = isMobile ? 0 : 2.2;
+          targetGroupY = 0;
+          targetScale = isMobile ? 0.68 : 1.0;
+          setTarget("work", 0.65);
+        } else if (closest === "pricing") {
+          targetGroupX = isMobile ? 0 : 2.2;
+          targetGroupY = 0;
+          targetScale = isMobile ? 0.68 : 1.0;
+          setTarget("pricing", 0.65);
+        } else if (closest === "contact") {
+          targetGroupX = isMobile ? 0 : 2.2;
+          targetGroupY = 0;
+          targetScale = isMobile ? 0.68 : 1.0;
+          setTarget("contact", 0.65);
         }
       }
     };
+    checkActiveSection();
 
-    window.addEventListener("scroll", onScroll, { passive: true });
+    // 7. Morph Shape Listener (stays locked in fixed red-marked anchor area for services)
+    const handleMorphEvent = (e: Event) => {
+      const detail = (e as CustomEvent).detail as string;
+      if (!detail) return;
 
-    // 12. Scripted Intro & Main Render Loop
+      const [shape] = detail.split("-anchor-");
+
+      if (shape === "code" || shape === "web" || shape === "cube") {
+        currentActiveSection = "services";
+        setTarget("services-code", 0.55);
+      } else if (shape === "gear" || shape === "software") {
+        currentActiveSection = "services";
+        setTarget("services-gear", 0.55);
+      } else if (shape === "phone" || shape === "app") {
+        currentActiveSection = "services";
+        setTarget("services-phone", 0.55);
+      } else if (shape === "chip" || shape === "ai" || shape === "torus") {
+        currentActiveSection = "services";
+        setTarget("services-chip", 0.55);
+      } else if (shape === "camera" || shape === "photo" || shape === "aperture") {
+        currentActiveSection = "services";
+        setTarget("services-camera", 0.55);
+      } else if (targets[detail]) {
+        setTarget(detail, 0.55);
+      }
+    };
+    window.addEventListener("kd-morph-shape", handleMorphEvent);
+
+    const handleProjectHover = (e: Event) => {
+      const proj = (e as CustomEvent).detail as string;
+      const map: Record<string, string> = {
+        aurax: "work-aurax",
+        cluck: "work-cluck",
+        pharmacy: "work-pharmacy",
+        prime: "work-prime",
+      };
+      setTarget(map[proj] ?? "work", 0.6);
+    };
+    window.addEventListener("kd-project-hover", handleProjectHover);
+
+    // 8. Resize
+    const onResize = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    };
+    window.addEventListener("resize", onResize, { passive: true });
+
+    // 9. Main Render Loop
     let animId: number;
     const clock = new THREE.Clock();
-    const PROXIMITY_THRESHOLD = 1.35; // ONLY react when cursor is directly over/near particles
 
-    // Intro milestones
-    let introStep = 0; // 0: 0.0-1.2s (text), 1: 1.2-2.2s (sphere), 2: 2.2-3.4s (orbit arc), 3: settled
+    const updateAnchorPosition = () => {
+      const isServiceShape = currentTargetKey.startsWith("services-");
+      if (currentActiveSection === "services" || isServiceShape) {
+        const anchorEl = document.getElementById("services-particle-anchor");
+        if (anchorEl) {
+          const rect = anchorEl.getBoundingClientRect();
+          if (rect.width > 0 && rect.height > 0) {
+            const visibleH = 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+            const visibleW = visibleH * (window.innerWidth / window.innerHeight);
+
+            const pixelCenterX = rect.left + rect.width / 2;
+            const pixelCenterY = rect.top + rect.height * 0.44;
+
+            targetGroupX = ((pixelCenterX / window.innerWidth) - 0.5) * visibleW;
+            targetGroupY = (0.5 - (pixelCenterY / window.innerHeight)) * visibleH;
+
+            const boxHeightWorld = (rect.height / window.innerHeight) * visibleH;
+            targetScale = boxHeightWorld * (isMobile ? 0.42 : 0.46);
+            return;
+          }
+        }
+        targetGroupX = isMobile ? 0 : 2.2;
+        targetGroupY = isMobile ? 1.0 : 0.6;
+        targetScale = isMobile ? 0.55 : 0.65;
+      } else if (currentActiveSection === "hero") {
+        targetGroupX = isMobile ? 0 : 2.2;
+        targetGroupY = isMobile ? 1.2 : 0;
+        targetScale = isMobile ? 0 : 1.0;
+      } else {
+        targetGroupX = isMobile ? 0 : 2.2;
+        targetGroupY = 0;
+        targetScale = isMobile ? 0.68 : 1.0;
+      }
+    };
 
     const animate = () => {
+      if (!mounted) return;
       animId = requestAnimationFrame(animate);
-
       const delta = clock.getDelta();
       const elapsed = clock.getElapsedTime();
 
-      // HERO VISIBILITY:
-      // In hero section, background particles are completely shut off so no dots appear over cards.
-      // They only activate when scrolling down to Services, Work, etc.
-      const isHero = typeof window !== "undefined" && (window.scrollY < 120 || currentActiveSection === "hero");
-      if (isHero) {
-        material.opacity = 0.0;
-        points.visible = false;
+      updateAnchorPosition();
+
+      currentGroupX += (targetGroupX - currentGroupX) * 0.08;
+      currentGroupY += (targetGroupY - currentGroupY) * 0.08;
+      currentScale += (targetScale - currentScale) * 0.08;
+
+      particleGroup.position.x = currentGroupX;
+      particleGroup.position.y = currentGroupY;
+      particleGroup.scale.set(currentScale, currentScale, currentScale);
+
+      // Pac-Man Dynamic Chomping
+      if (isScrolling) {
+        const mouthAngle = Math.abs(Math.sin(elapsed * 9)) * 0.65;
+        const pm = generatePacman(count, mouthAngle, isMobile ? 0.48 : 0.58);
+        for (let i = 0; i < count * 3; i++) targetPositions[i] = pm[i];
+
+        particleGroup.rotation.z = THREE.MathUtils.lerp(particleGroup.rotation.z, pacmanDirectionAngle, delta * 8);
       } else {
-        material.opacity = THREE.MathUtils.lerp(material.opacity, 0.95, delta * 3.5);
-        points.visible = material.opacity > 0.01;
+        particleGroup.rotation.z = THREE.MathUtils.lerp(particleGroup.rotation.z, 0, delta * 4);
       }
 
-      if (!isMobile) {
-        particleGroup.position.set(2.4, 0, 0);
-      } else {
-        particleGroup.position.set(0, 1.6, 0);
-      }
-
-      // Progress morph
-      if (morphProgress < 1) {
+      if (morphProgress < 1.0) {
         morphProgress += delta / morphDuration;
-        if (morphProgress > 1) morphProgress = 1;
+        if (morphProgress > 1.0) morphProgress = 1.0;
       }
-      const t = morphProgress < 0.5
-        ? 4 * morphProgress * morphProgress * morphProgress
-        : 1 - Math.pow(-2 * morphProgress + 2, 3) / 2;
+      const t = 1 - Math.pow(1 - Math.min(morphProgress, 1.0), 3);
 
       const pos = currentPositions;
       const src = sourcePositions;
       const tgt = targetPositions;
 
-      const gx = particleGroup.position.x;
-      const gy = particleGroup.position.y;
-
       for (let i = 0; i < count; i++) {
         const i3 = i * 3;
+        const bx = src[i3] + (tgt[i3] - src[i3]) * t;
+        const by = src[i3 + 1] + (tgt[i3 + 1] - src[i3 + 1]) * t;
+        const bz = src[i3 + 2] + (tgt[i3 + 2] - src[i3 + 2]) * t;
 
-        let bx = src[i3] + (tgt[i3] - src[i3]) * t;
-        let by = src[i3 + 1] + (tgt[i3 + 1] - src[i3 + 1]) * t;
-        let bz = src[i3 + 2] + (tgt[i3 + 2] - src[i3 + 2]) * t;
-
-        // Subtle organic breathing (NO chaotic distortion)
-        const wave = Math.sin(elapsed * 1.6 + bx * 1.2) * 0.012;
-        bx += wave;
-        by += wave * 0.5;
-
-        // PROXIMITY-ONLY CURSOR REPULSION (< 1.4 units)
-        if (isMouseActive) {
-          const worldPx = gx + bx;
-          const worldPy = gy + by;
-
-          const dx = worldPx - mouse3D.x;
-          const dy = worldPy - mouse3D.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          // Strictly ZERO force if cursor is over text/buttons on left (dist >= 1.35)
-          if (dist < PROXIMITY_THRESHOLD && dist > 0.001) {
-            const force = (1.0 - dist / PROXIMITY_THRESHOLD) * 0.70;
-            bx += (dx / dist) * force;
-            by += (dy / dist) * force;
-            bz += (Math.random() - 0.5) * force * 0.25;
-          }
-        }
-
-        pos[i3] += (bx - pos[i3]) * 0.18;
-        pos[i3 + 1] += (by - pos[i3 + 1]) * 0.18;
-        pos[i3 + 2] += (bz - pos[i3 + 2]) * 0.18;
+        pos[i3] += (bx - pos[i3]) * 0.16;
+        pos[i3 + 1] += (by - pos[i3 + 1]) * 0.16;
+        pos[i3 + 2] += (bz - pos[i3 + 2]) * 0.16;
       }
-
       geometry.attributes.position.needsUpdate = true;
 
-      // STABLE FORWARD-FACING ISOMETRIC ORIENTATION (NO 360 spinning)
-      // Only gentle idle float inertia:
-      particleGroup.rotation.y = -0.12 + Math.sin(elapsed * 0.4) * 0.05;
-      particleGroup.rotation.x = 0.08 + Math.cos(elapsed * 0.3) * 0.03;
+      particleGroup.rotation.y = Math.sin(elapsed * 0.4) * 0.08;
+      particleGroup.rotation.x = Math.cos(elapsed * 0.3) * 0.05;
 
       renderer.render(scene, camera);
     };
@@ -396,29 +384,23 @@ export function ParticleBackground() {
     animate();
 
     return () => {
+      mounted = false;
       cancelAnimationFrame(animId);
-      if (rafMouseId) cancelAnimationFrame(rafMouseId);
       if (scrollTimeout) clearTimeout(scrollTimeout);
-
-      window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerleave", onPointerLeave);
-      window.removeEventListener("resize", onResize);
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
       window.removeEventListener("kd-morph-shape", handleMorphEvent);
-
+      window.removeEventListener("kd-project-hover", handleProjectHover);
       geometry.dispose();
       material.dispose();
       renderer.dispose();
-      if (container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
-      }
     };
   }, []);
 
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[5] pointer-events-none overflow-hidden"
+      className="fixed inset-0 z-30 pointer-events-none overflow-hidden"
       style={{ width: "100vw", height: "100vh" }}
       aria-hidden="true"
     />

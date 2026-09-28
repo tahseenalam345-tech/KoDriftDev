@@ -2,17 +2,26 @@
 
 import React, { useEffect, useRef } from "react";
 
+/*
+ * High-Definition Particle Typography
+ * ─ Auto-adjusting to screen size (responsive font sizing & multi-line break on mobile)
+ * ─ Uniform Stride Sampling (100% solid, fully legible letters with no random scattering)
+ * ─ Smooth dissolve transitions between sentences
+ */
+
 interface Particle {
   x: number;
   y: number;
-  tx: number;
-  ty: number;
-  sx: number;
-  sy: number;
+  prevTx: number;
+  prevTy: number;
+  nextTx: number;
+  nextTy: number;
   vx: number;
   vy: number;
   size: number;
-  color: string;
+  r: number;
+  g: number;
+  b: number;
   phase: number;
 }
 
@@ -22,13 +31,108 @@ const SENTENCES = [
   "LET'S TALK",
 ];
 
-// Solid, high-contrast, deep electric brand blue palette
-const BRAND_COLORS = [
-  "#001C5B", // Deep solid midnight navy
-  "#002878", // Deep royal navy
-  "#003FC5", // Rich cobalt
-  "#006EF5", // Brand electric blue
+/* Rich, high-contrast sapphire and cobalt palette for crystal-clear readability */
+const PALETTE: [number, number, number][] = [
+  [0, 24, 115],  // Deep Navy
+  [0, 50, 185],  // Royal Blue
+  [0, 85, 225],  // High-Contrast Cobalt
+  [0, 110, 245], // Signature Crystal Blue
 ];
+
+async function samplePoints(
+  text: string,
+  W: number,
+  H: number,
+  count: number
+): Promise<[number, number][]> {
+  if (typeof window === "undefined") return [];
+  if (!W || !H || W <= 0 || H <= 0) return [];
+
+  try {
+    if (document.fonts?.ready) await document.fonts.ready;
+
+    // Use 2x offscreen buffer for crisp stroke geometry
+    const SCALE = 2;
+    const cw = Math.round(W * SCALE);
+    const ch = Math.round(H * SCALE);
+
+    const oc = document.createElement("canvas");
+    oc.width = cw;
+    oc.height = ch;
+    const ctx = oc.getContext("2d");
+    if (!ctx) return [];
+
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0, 0, cw, ch);
+
+    // Responsive multi-line formatting on narrow screens (e.g. mobile)
+    const isNarrow = W < 420;
+    let lines: string[] = [text];
+
+    if (isNarrow) {
+      if (text.includes("WELCOME")) {
+        lines = ["HI, WELCOME TO", "KODRIFTDEV"];
+      } else if (text.includes("PROJECT")) {
+        lines = ["HAVE A PROJECT", "IN MIND?"];
+      }
+    }
+
+    // Auto-fit font size according to container dimensions
+    let fs = lines.length > 1 ? Math.round(ch * 0.28) : Math.round(ch * 0.40);
+    fs = Math.min(fs, lines.length > 1 ? 40 : 48);
+
+    ctx.font = `900 ${fs}px 'Manrope', 'Inter', -apple-system, sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    // Auto-shrink if text width exceeds 88% of container width
+    const maxLineW = Math.max(...lines.map((l) => ctx.measureText(l).width));
+    if (maxLineW > cw * 0.88) {
+      fs = Math.floor(fs * (cw * 0.88) / maxLineW);
+      ctx.font = `900 ${fs}px 'Manrope', 'Inter', -apple-system, sans-serif`;
+    }
+
+    // Render white text
+    ctx.fillStyle = "#fff";
+    if (lines.length > 1) {
+      const lineSpacing = fs * 1.18;
+      ctx.fillText(lines[0], cw / 2, ch / 2 - lineSpacing * 0.52);
+      ctx.fillText(lines[1], cw / 2, ch / 2 + lineSpacing * 0.52);
+    } else {
+      ctx.fillText(lines[0], cw / 2, ch / 2);
+    }
+
+    const img = ctx.getImageData(0, 0, cw, ch);
+    const validPixels: [number, number][] = [];
+
+    // Scan pixels at high resolution
+    const step = 2;
+    for (let py = 0; py < ch; py += step) {
+      for (let px = 0; px < cw; px += step) {
+        if (img.data[(py * cw + px) * 4] > 110) {
+          validPixels.push([px / SCALE, py / SCALE]);
+        }
+      }
+    }
+
+    const totalValid = validPixels.length;
+    if (totalValid === 0) return [];
+
+    // UNIFORM STRIDE SAMPLING: Guarantees every letter gets equal dot coverage (Zero holes/clumps)
+    const pts: [number, number][] = [];
+    const stride = totalValid / count;
+
+    for (let i = 0; i < count; i++) {
+      const idx = Math.floor(i * stride) % totalValid;
+      pts.push(validPixels[idx]);
+    }
+
+    return pts;
+  } catch (err) {
+    console.warn("HeroParticleTypography: samplePoints handled safe fallback", err);
+    return [];
+  }
+}
 
 export function HeroParticleTypography() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -42,234 +146,225 @@ export function HeroParticleTypography() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let width = (canvas.width = container.clientWidth);
-    let height = (canvas.height = container.clientHeight);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    // Thick, solid, highly visible particle density
-    const PARTICLE_COUNT = 1600;
+    function syncSize() {
+      const clientW = container?.clientWidth || 0;
+      const clientH = container?.clientHeight || 0;
+      const W = Math.max(clientW, 1);
+      const H = Math.max(clientH, 1);
+
+      ctx!.setTransform(1, 0, 0, 1, 0, 0);
+      canvas!.width = Math.max(1, Math.round(W * dpr));
+      canvas!.height = Math.max(1, Math.round(H * dpr));
+      canvas!.style.width = W + "px";
+      canvas!.style.height = H + "px";
+      ctx!.scale(dpr, dpr);
+      return { W, H };
+    }
+
+    let { W, H } = syncSize();
+
+    // High density particle count for solid letterforms
+    const COUNT = W < 450 ? 1200 : 1600;
+    // 1.35px - 1.65px dots: Crisp, distinct, easily readable
+    const PSIZE = 1.35;
+
     const particles: Particle[] = [];
-
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const col = BRAND_COLORS[Math.floor(Math.random() * BRAND_COLORS.length)];
+    for (let i = 0; i < COUNT; i++) {
+      const [r, g, b] = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+      const px = Math.random() * W;
+      const py = Math.random() * H;
       particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        tx: width / 2,
-        ty: height / 2,
-        sx: Math.random() * width,
-        sy: Math.random() * height,
+        x: px,
+        y: py,
+        prevTx: px,
+        prevTy: py,
+        nextTx: W / 2,
+        nextTy: H / 2,
         vx: 0,
         vy: 0,
-        size: 1.25, // Thickened 1.25px particle dots for solid, bold, clearly visible letters
-        color: col,
+        size: PSIZE + Math.random() * 0.35,
+        r,
+        g,
+        b,
         phase: Math.random() * Math.PI * 2,
       });
     }
 
-    // High-resolution sampling with solid 800 extra-bold weight
-    function sampleSentencePoints(text: string, w: number, h: number): [number, number][] {
-      const offCanvas = document.createElement("canvas");
-      offCanvas.width = Math.max(w * 1.5, 800);
-      offCanvas.height = 100;
-      const offCtx = offCanvas.getContext("2d");
-      if (!offCtx) return [];
-
-      offCtx.fillStyle = "#000000";
-      offCtx.fillRect(0, 0, offCanvas.width, offCanvas.height);
-
-      // Solid 800 Extra-Bold font so letters are prominent, full-bodied, and clearly readable
-      const fontSize = w < 440 ? 17 : w < 540 ? 20 : 23;
-      offCtx.font = `800 ${fontSize}px 'Manrope', system-ui, -apple-system, sans-serif`;
-      offCtx.textAlign = "left";
-      offCtx.textBaseline = "middle";
-      offCtx.fillStyle = "#FFFFFF";
-
-      // Render with balanced spacing to prevent letter overlap
-      const letterGap = w < 440 ? 2.4 : 3.6;
-      let totalWidth = 0;
-      for (let i = 0; i < text.length; i++) {
-        totalWidth += offCtx.measureText(text[i]).width + letterGap;
-      }
-
-      let curX = (offCanvas.width - totalWidth) / 2;
-      const curY = offCanvas.height / 2;
-
-      for (let i = 0; i < text.length; i++) {
-        const char = text[i];
-        offCtx.fillText(char, curX, curY);
-        curX += offCtx.measureText(char).width + letterGap;
-      }
-
-      const imgData = offCtx.getImageData(0, 0, offCanvas.width, offCanvas.height);
-      const points: [number, number][] = [];
-      const step = 1.8; // Tight step for solid, high-density letter body
-
-      for (let y = 0; y < offCanvas.height; y += step) {
-        for (let x = 0; x < offCanvas.width; x += step) {
-          const idx = (Math.floor(y) * offCanvas.width + Math.floor(x)) * 4;
-          if (imgData.data[idx] > 130) {
-            const relX = x - offCanvas.width / 2;
-            const relY = y - offCanvas.height / 2;
-            points.push([relX, relY]);
-          }
-        }
-      }
-
-      return points;
-    }
-
-    // Precompute targets for each sentence
-    const targets: [number, number][][] = SENTENCES.map((s) =>
-      sampleSentencePoints(s, width, height)
-    );
+    const targets: ([number, number][] | null)[] = [null, null, null];
 
     let activeSentenceIdx = 0;
-    let morphProgress = 1.0;
-    const transitionDuration = 0.65;
-    const holdDuration = 3.4;
+    let crossT = 1.0;
+    const CROSS_DUR = 0.9;
+    const HOLD_DUR = 3.4;
+    let holdTimer = 0;
+    let mounted = true;
+    let canvasAlpha = 0;
 
-    function applySentenceTarget(idx: number) {
+    function morphToSentence(idx: number) {
       const pts = targets[idx];
-      const cx = width / 2;
-      const cy = height / 2;
-
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
+      if (!pts || pts.length === 0) return;
+      for (let i = 0; i < COUNT; i++) {
         const p = particles[i];
-        p.sx = p.x;
-        p.sy = p.y;
-
-        if (pts.length > 0) {
-          const pt = pts[i % pts.length];
-          p.tx = cx + pt[0];
-          p.ty = cy + pt[1];
-        } else {
-          p.tx = cx + (Math.random() - 0.5) * 60;
-          p.ty = cy + (Math.random() - 0.5) * 20;
-        }
+        p.prevTx = p.nextTx;
+        p.prevTy = p.nextTy;
+        const [cx, cy] = pts[i % pts.length];
+        p.nextTx = cx;
+        p.nextTy = cy;
       }
-      morphProgress = 0;
+      crossT = 0;
+      holdTimer = 0;
     }
 
-    applySentenceTarget(0);
+    (async () => {
+      if (W <= 10 || H <= 10) {
+        await new Promise((r) => setTimeout(r, 50));
+        if (!mounted) return;
+        ({ W, H } = syncSize());
+      }
+      for (let s = 0; s < SENTENCES.length; s++) {
+        targets[s] = await samplePoints(SENTENCES[s], W, H, COUNT);
+        if (!mounted) return;
+      }
+      if (targets[0] && targets[0].length > 0) {
+        for (let i = 0; i < COUNT; i++) {
+          const p = particles[i];
+          const pts = targets[0]!;
+          const [cx, cy] = pts[i % pts.length];
+          p.prevTx = p.x;
+          p.prevTy = p.y;
+          p.nextTx = cx;
+          p.nextTy = cy;
+        }
+        crossT = 0;
+      }
+    })();
 
-    // Mouse proximity tracking
+    // Mouse interaction
     const mouse = { x: -9999, y: -9999, active: false };
-
-    const onMouseMove = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect();
-      mouse.x = e.clientX - rect.left;
-      mouse.y = e.clientY - rect.top;
+    const onMM = (e: MouseEvent) => {
+      const r = container!.getBoundingClientRect();
+      mouse.x = e.clientX - r.left;
+      mouse.y = e.clientY - r.top;
       mouse.active = true;
     };
-
-    const onMouseLeave = () => {
+    const onML = () => {
       mouse.active = false;
-      mouse.x = -9999;
-      mouse.y = -9999;
     };
+    container.addEventListener("mousemove", onMM);
+    container.addEventListener("mouseleave", onML);
 
-    container.addEventListener("mousemove", onMouseMove);
-    container.addEventListener("mouseleave", onMouseLeave);
-
-    // ResizeObserver
-    const resizeObserver = new ResizeObserver((entries) => {
+    // Responsive ResizeObserver: Auto-adjusts immediately when screen size changes
+    const ro = new ResizeObserver(async (entries) => {
       for (const entry of entries) {
-        width = canvas.width = entry.contentRect.width;
-        height = canvas.height = entry.contentRect.height;
+        const ew = Math.round(entry.contentRect.width);
+        const eh = Math.round(entry.contentRect.height);
+        if (ew <= 0 || eh <= 0) continue;
+
+        const size = syncSize();
+        W = size.W;
+        H = size.H;
 
         for (let s = 0; s < SENTENCES.length; s++) {
-          targets[s] = sampleSentencePoints(SENTENCES[s], width, height);
+          targets[s] = await samplePoints(SENTENCES[s], W, H, COUNT);
         }
-        applySentenceTarget(activeSentenceIdx);
+        if (mounted) morphToSentence(activeSentenceIdx);
       }
     });
-    resizeObserver.observe(container);
+    ro.observe(container);
 
-    // Animation loop
     let animId: number;
-    let lastTime = performance.now();
-    let sentenceTimer = 0;
+    let lastT = performance.now();
 
     const render = (now: number) => {
       animId = requestAnimationFrame(render);
 
-      const dt = Math.min((now - lastTime) / 1000, 0.1);
-      lastTime = now;
+      const dt = Math.min((now - lastT) / 1000, 0.06);
+      lastT = now;
 
-      sentenceTimer += dt;
-      if (sentenceTimer >= transitionDuration + holdDuration) {
-        sentenceTimer = 0;
-        activeSentenceIdx = (activeSentenceIdx + 1) % SENTENCES.length;
-        applySentenceTarget(activeSentenceIdx);
+      if (crossT < 1) crossT = Math.min(1, crossT + dt / CROSS_DUR);
+
+      if (crossT >= 1) {
+        holdTimer += dt;
+        if (holdTimer >= HOLD_DUR) {
+          activeSentenceIdx = (activeSentenceIdx + 1) % SENTENCES.length;
+          morphToSentence(activeSentenceIdx);
+        }
       }
 
-      if (morphProgress < 1.0) {
-        morphProgress += dt / transitionDuration;
-        if (morphProgress > 1.0) morphProgress = 1.0;
+      if (crossT >= 1) {
+        canvasAlpha = Math.min(1, canvasAlpha + dt * 3);
+      } else if (crossT < 0.35) {
+        const p = crossT / 0.35;
+        canvasAlpha = 1 - p * 0.92;
+      } else if (crossT < 0.65) {
+        canvasAlpha = 0.08;
+      } else {
+        const p = (crossT - 0.65) / 0.35;
+        canvasAlpha = 0.08 + p * 0.92;
       }
 
-      const t = 1 - Math.pow(1 - morphProgress, 3);
+      const ease = 1 - Math.pow(1 - Math.min(crossT, 1), 4);
 
-      ctx.clearRect(0, 0, width, height);
+      ctx.clearRect(0, 0, W, H);
+      ctx.globalAlpha = Math.max(0, Math.min(1, canvasAlpha));
 
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
+      for (let i = 0; i < COUNT; i++) {
         const p = particles[i];
 
-        const targetX = p.sx + (p.tx - p.sx) * t;
-        const targetY = p.sy + (p.ty - p.sy) * t;
+        const bx = p.prevTx + (p.nextTx - p.prevTx) * ease;
+        const by =
+          p.prevTy +
+          (p.nextTy - p.prevTy) * ease +
+          Math.sin(now * 0.00065 + p.phase) * 0.25;
 
-        const microFloat = Math.sin(now * 0.002 + p.phase) * 0.15;
+        p.vx += (bx - p.x) * 0.22;
+        p.vy += (by - p.y) * 0.22;
 
-        const dx = targetX - p.x;
-        const dy = (targetY + microFloat) - p.y;
-        p.vx += dx * 0.15;
-        p.vy += dy * 0.15;
-
-        // Mouse proximity repel
         if (mouse.active) {
-          const mdx = p.x - mouse.x;
-          const mdy = p.y - mouse.y;
-          const dist = Math.sqrt(mdx * mdx + mdy * mdy);
-          const threshold = 35;
-
-          if (dist < threshold && dist > 0) {
-            const force = ((threshold - dist) / threshold) * 2.2;
-            p.vx += (mdx / dist) * force;
-            p.vy += (mdy / dist) * force;
+          const dx = p.x - mouse.x;
+          const dy = p.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 32 && dist > 0) {
+            const f = ((32 - dist) / 32) * 2.2;
+            p.vx += (dx / dist) * f;
+            p.vy += (dy / dist) * f;
           }
         }
 
-        p.vx *= 0.65;
-        p.vy *= 0.65;
-
+        p.vx *= 0.74;
+        p.vy *= 0.74;
         p.x += p.vx;
         p.y += p.vy;
 
-        // Solid, clearly visible particle rendering
-        ctx.fillStyle = p.color;
+        ctx.fillStyle = `rgb(${p.r},${p.g},${p.b})`;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, p.size, 0, 6.2832);
         ctx.fill();
       }
+
+      ctx.globalAlpha = 1;
     };
 
     animId = requestAnimationFrame(render);
 
     return () => {
+      mounted = false;
       cancelAnimationFrame(animId);
-      resizeObserver.disconnect();
-      container.removeEventListener("mousemove", onMouseMove);
-      container.removeEventListener("mouseleave", onMouseLeave);
+      ro.disconnect();
+      container.removeEventListener("mousemove", onMM);
+      container.removeEventListener("mouseleave", onML);
     };
   }, []);
 
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full overflow-hidden select-none"
+      className="relative w-full h-full select-none"
       aria-label="Particle Typography"
     >
-      <canvas ref={canvasRef} className="w-full h-full block" />
+      <canvas ref={canvasRef} className="block" style={{ display: "block" }} />
     </div>
   );
 }

@@ -91,8 +91,8 @@ export function Header() {
 
         {/* Contained Header box matching hero canvas bounds */}
         <div
-          className="relative mx-auto w-full"
-          style={{ maxWidth: "1360px", padding: "0 1.25rem", border: "none" }}
+          className="relative mx-auto w-full px-2.5 sm:px-4 md:px-5"
+          style={{ maxWidth: "1360px", border: "none" }}
         >
           <div
             className={cn(
@@ -107,26 +107,20 @@ export function Header() {
               borderRight: "none",
               borderTop: "none",
               borderBottom: isScrolled ? "1px solid var(--line)" : "none",
-              paddingInline: "clamp(1rem, 3vw, 2rem)",
+              paddingInline: "clamp(0.35rem, 2vw, 2rem)",
             }}
           >
-            <div
-              className="grid items-center h-full"
-              style={{
-                gridTemplateColumns: "1fr auto 1fr",
-                gap: "16px",
-              }}
-            >
+            <div className="flex items-center justify-between h-full w-full">
               {/* ── Left: Brand (aligned left) ── */}
-              <div className="flex items-center justify-start">
+              <div className="flex items-center justify-start shrink-0">
                 <Link
                   href="/"
-                  className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded-md group"
+                  className="flex items-center gap-2 sm:gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded-md group"
                   style={{ "--tw-ring-color": "var(--brand-blue)" } as React.CSSProperties}
                   aria-label="KoDriftDev — Homepage"
                 >
                   <div
-                    className="relative flex h-[34px] w-[34px] items-center justify-center rounded-lg overflow-hidden shrink-0 shadow-sm transition-transform duration-200 group-hover:scale-105"
+                    className="relative flex h-[32px] w-[32px] sm:h-[34px] sm:w-[34px] items-center justify-center rounded-lg overflow-hidden shrink-0 shadow-sm transition-transform duration-200 group-hover:scale-105"
                     style={{
                       background: "#04070A",
                       border: "1px solid rgba(255,255,255,0.16)",
@@ -144,8 +138,8 @@ export function Header() {
                     />
                   </div>
                   <span
-                    className="font-heading font-bold tracking-tight"
-                    style={{ fontSize: "1.15rem", color: "var(--ink)", letterSpacing: "-0.02em" }}
+                    className="font-heading font-bold tracking-tight text-[1.05rem] sm:text-[1.15rem]"
+                    style={{ color: "var(--ink)", letterSpacing: "-0.02em" }}
                   >
                     KoDrift<span style={{ color: "var(--brand-blue)" }}>Dev</span>
                   </span>
@@ -154,7 +148,7 @@ export function Header() {
 
               {/* ── Center: Floating pure white nav pill (exact VistaRapid shape) ── */}
               <nav
-                className="hidden md:flex items-center gap-0.5 rounded-full justify-self-center"
+                className="hidden md:flex items-center gap-0.5 rounded-full mx-auto"
                 style={{
                   width: "auto",
                   maxWidth: "none",
@@ -197,11 +191,11 @@ export function Header() {
                 })}
               </nav>
 
-              {/* ── Right: Rounded pill CTA matching reference ── */}
-              <div className="flex items-center justify-end gap-3">
+              {/* ── Right: Rounded pill CTA & Mobile Sidebar Trigger pushed right ── */}
+              <div className="flex items-center justify-end gap-2 sm:gap-3 ml-auto shrink-0">
                 <Link
                   href="/contact"
-                  className="btn-pill-dark hidden sm:inline-flex"
+                  className="btn-pill-dark lighter-button default inline-flex items-center text-xs sm:text-sm py-2 px-3.5 sm:py-2.5 sm:px-5 shrink-0"
                   aria-label="Start a Project"
                 >
                   Start a Project
@@ -212,7 +206,7 @@ export function Header() {
                   type="button"
                   onClick={() => setMobileMenuOpen(true)}
                   aria-label="Open navigation menu"
-                  className="md:hidden inline-flex items-center justify-center w-9 h-9 rounded-full cursor-pointer focus-visible:outline-none focus-visible:ring-2 transition-all"
+                  className="md:hidden inline-flex items-center justify-center w-9 h-9 rounded-full cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 transition-all hover:bg-black/5"
                   style={{
                     background: "#FFFFFF",
                     border: "1px solid rgba(16,40,39,0.12)",

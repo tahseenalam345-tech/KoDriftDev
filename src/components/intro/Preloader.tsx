@@ -1,143 +1,146 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
-import Image from "next/image";
-import { motion } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useAnimation } from "@/context/AnimationContext";
 
 export function Preloader() {
-  const { isPreloaderActive, completePreloader, setActiveShape } = useAnimation();
-  const [stage, setStage] = useState<number>(0);
-  const [isFinished, setIsFinished] = useState(false);
-  const [isMounted, setIsMounted] = useState(true);
-
-  const finishSequence = useCallback(() => {
-    setIsFinished(true);
-    setActiveShape("sphere");
-  }, [setActiveShape]);
+  const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [hasVideo, setHasVideo] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const { completePreloader } = useAnimation();
 
   useEffect(() => {
-    // 0.0s – 0.6s: Blackout stage. Particles assemble rapidly into core
-    setActiveShape("preloader");
+    // 1. Digital progress counter (0 -> 100 synchronized with video)
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        return prev + Math.floor(Math.random() * 12 + 6);
+      });
+    }, 110);
 
-    // 0.6s – 1.4s: The particle core stabilizes and pulses with electric blue/cyan glow
-    const timer1 = setTimeout(() => {
-      setStage(1);
-    }, 600);
+    // 2. Video Playback
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 1.0;
+    }
 
-    // 1.4s – 1.9s: Particles burst outward radially and smoothly settle into Hero sphere position
-    const timer2 = setTimeout(() => {
-      setStage(2);
-      setActiveShape("sphere");
-    }, 1400);
-
-    // 1.6s – 2.2s: The preloader overlay fades to opacity: 0 over 0.6s (total exact 2.2s)
-    const timer3 = setTimeout(() => {
-      setStage(3);
-      setIsFinished(true);
-    }, 1600);
-
-    // User skip via scroll or Escape key
-    const handleSkip = (e: Event) => {
-      if ("key" in e && (e as KeyboardEvent).key !== "Escape") return;
-      finishSequence();
-    };
-
-    window.addEventListener("wheel", handleSkip, { passive: true });
-    window.addEventListener("touchmove", handleSkip, { passive: true });
-    window.addEventListener("keydown", handleSkip, { passive: true });
+    // 3. Clean exit when video finishes or 2.8s safety fallback
+    const timer = setTimeout(() => {
+      setLoading(false);
+      completePreloader?.();
+    }, 2800);
 
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-      window.removeEventListener("wheel", handleSkip);
-      window.removeEventListener("touchmove", handleSkip);
-      window.removeEventListener("keydown", handleSkip);
+      clearInterval(interval);
+      clearTimeout(timer);
     };
-  }, [setActiveShape, finishSequence]);
-
-  if (!isPreloaderActive || !isMounted) return null;
+  }, [completePreloader]);
 
   return (
-    <motion.div
-      initial={{ opacity: 1 }}
-      animate={{ opacity: isFinished ? 0 : 1 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      onAnimationComplete={() => {
-        if (isFinished) {
-          setIsMounted(false);
-          completePreloader();
-          if (typeof window !== "undefined") {
-            sessionStorage.setItem("kd_loaded", "true");
-          }
-        }
-      }}
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center select-none"
-      style={{
-        background: "radial-gradient(circle at center, #040E24 0%, #020617 65%, #01040A 100%)",
-        pointerEvents: isFinished ? "none" : "auto",
-      }}
-      aria-label="KoDriftDev Preloader"
-    >
-          {/* Central stage composition */}
-          <div className="relative z-10 flex flex-col items-center text-center">
-            {/* Core logo mark — reveals on Stage 1 */}
+    <AnimatePresence>
+      {loading && (
+        <motion.div
+          key="kodrift-splash"
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0, scale: 1.06 }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          className="fixed inset-0 z-[99999] bg-[#020617] flex flex-col items-center justify-center pointer-events-auto select-none overflow-hidden"
+        >
+          {/* Ambient Background Glows */}
+          <div className="absolute w-[500px] h-[500px] rounded-full bg-[#0050C8]/20 blur-[140px] pointer-events-none" />
+          <div className="absolute w-[280px] h-[280px] rounded-full bg-[#2C81FA]/15 blur-[80px] pointer-events-none" />
+
+          {/* Background Cyber Grid */}
+          <div 
+            className="absolute inset-0 opacity-[0.08] pointer-events-none"
+            style={{
+              backgroundImage: "radial-gradient(#2C81FA 1px, transparent 1px)",
+              backgroundSize: "28px 28px"
+            }}
+          />
+
+          {/* Central Showcase Stage */}
+          <div className="relative flex flex-col items-center justify-center">
+            {/* Rotating 3D HUD Rings */}
             <motion.div
-              initial={{ scale: 0.6, opacity: 0 }}
-              animate={stage >= 1 ? { scale: 1, opacity: 1 } : { scale: 0.6, opacity: 0 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className="relative mb-6 flex h-[62px] w-[62px] items-center justify-center rounded-2xl overflow-hidden"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+              className="absolute w-44 h-44 rounded-full border border-dashed border-[#2C81FA]/30 pointer-events-none"
+            />
+            <motion.div
+              animate={{ rotate: -360 }}
+              transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+              className="absolute w-56 h-56 rounded-full border border-dotted border-white/10 pointer-events-none"
+            />
+
+            {/* Video Logo Player (If present) */}
+            <div 
+              className="relative w-40 h-40 flex items-center justify-center rounded-3xl overflow-hidden shadow-[0_0_60px_rgba(0,110,245,0.35)]"
               style={{
-                background: "#04070A",
-                border: "1px solid rgba(44, 129, 250, 0.50)",
-                boxShadow: "0 0 40px rgba(0, 110, 245, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.4)",
+                maskImage: "radial-gradient(circle, black 70%, transparent 100%)",
+                WebkitMaskImage: "radial-gradient(circle, black 70%, transparent 100%)",
               }}
             >
-              <Image
-                src="/images/logo/logo.png"
-                alt="KoDrift Logo"
-                width={56}
-                height={56}
-                className="object-cover"
-                priority
-              />
-            </motion.div>
+              {hasVideo ? (
+                <video
+                  ref={videoRef}
+                  src="/videos/logo-intro.webm"
+                  autoPlay
+                  muted
+                  playsInline
+                  preload="auto"
+                  onError={() => setHasVideo(false)}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                /* Fallback Glowing Logo Mark with Laser Sweep */
+                <div className="relative flex items-center justify-center w-full h-full bg-[#001C5B]/40 border border-[#2C81FA]/40 rounded-3xl backdrop-blur-md">
+                  <div className="text-3xl font-black font-['Manrope'] tracking-wider text-white">
+                    Ko<span className="text-[#2C81FA]">Drift</span>Dev
+                  </div>
+                  {/* Laser Scanline */}
+                  <motion.div
+                    animate={{ y: [-60, 60] }}
+                    transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-[#76E1CD] to-transparent shadow-[0_0_15px_#76E1CD]"
+                  />
+                </div>
+              )}
+            </div>
 
-            {/* Glowing minimalist brand title: KODRIFTDEV */}
-            <motion.div
-              initial={{ opacity: 0, y: 10, letterSpacing: "0.22em" }}
-              animate={
-                stage >= 1
-                  ? { opacity: 1, y: 0, letterSpacing: "0.32em" }
-                  : { opacity: 0, y: 10, letterSpacing: "0.22em" }
-              }
-              transition={{ duration: 0.55, ease: "easeOut" }}
-              className="font-heading font-extrabold text-[18px] sm:text-[20px] uppercase text-white tracking-[0.32em]"
-              style={{
-                textShadow: "0 0 24px rgba(44, 129, 250, 0.75), 0 0 45px rgba(0, 110, 245, 0.45)",
-              }}
-            >
-              KODRIFT<span style={{ color: "#2C81FA" }}>DEV</span>
-            </motion.div>
+            {/* Title & Digital Progress Counter */}
+            <div className="mt-8 flex flex-col items-center gap-2">
+              <motion.span
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.15 }}
+                className="text-xs font-mono uppercase tracking-[0.35em] text-slate-400"
+              >
+                INITIALIZING SYSTEM
+              </motion.span>
 
-            {/* Micro subtitle */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={stage >= 1 ? { opacity: 0.6 } : { opacity: 0 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-              className="font-mono text-[10px] tracking-widest text-[#93C5FD] uppercase mt-2.5"
-            >
-              {stage === 2 ? "SYSTEM ASSEMBLED" : "INITIALIZING CORE"}
-            </motion.p>
-          </div>
-
-          {/* Escape hint */}
-          <div className="absolute bottom-6 text-center">
-            <span className="font-mono text-[9px] tracking-widest text-white/25 uppercase">
-              Press ESC or scroll to skip
-            </span>
+              {/* Progress Percentage */}
+              <div className="flex items-center gap-2">
+                <div className="w-24 h-1 bg-white/10 rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-gradient-to-r from-[#003FC5] to-[#2C81FA]"
+                    style={{ width: `${Math.min(progress, 100)}%` }}
+                  />
+                </div>
+                <span className="font-mono text-xs font-semibold text-[#2C81FA] w-8">
+                  {Math.min(progress, 100)}%
+                </span>
+              </div>
+            </div>
           </div>
         </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
+
+export default Preloader;

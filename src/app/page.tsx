@@ -16,8 +16,78 @@ export default function HomePage() {
   return (
     <div className="flex flex-col">
       <Hero />
-      <ServicePreview />
-      <WorkPreview />
+      {/* ── Continuous Atmospheric Background: Flows from Services all the way through Selected Work ── */}
+      <div className="relative w-full overflow-hidden">
+        {/* Continuous Soft Tinted Base Canvas */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(246, 250, 255, 0.95) 0%, rgba(239, 245, 254, 0.88) 35%, rgba(235, 242, 253, 0.82) 70%, rgba(244, 248, 255, 0.95) 100%)",
+          }}
+          aria-hidden="true"
+        />
+
+        {/* High-Tech Dot Grid Texture matching Hero aesthetic */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.45]"
+          style={{
+            backgroundImage:
+              "radial-gradient(rgba(0, 110, 245, 0.16) 1.1px, transparent 1.1px)",
+            backgroundSize: "22px 22px",
+          }}
+          aria-hidden="true"
+        />
+
+        {/* Ambient Atmospheric Radiance Orbs */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+          {/* Top-left crystal blue radiance behind Services headline */}
+          <div
+            className="absolute -top-16 -left-20 w-[640px] h-[520px] rounded-full"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, rgba(44, 129, 250, 0.20) 0%, rgba(0, 110, 245, 0.10) 45%, transparent 75%)",
+              filter: "blur(110px)",
+            }}
+          />
+
+          {/* Top-right prominent glow behind Services cards & particle torus */}
+          <div
+            className="absolute top-28 -right-24 w-[760px] h-[620px] rounded-full"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, rgba(0, 110, 245, 0.22) 0%, rgba(44, 129, 250, 0.12) 40%, rgba(0, 28, 91, 0.05) 70%, transparent 100%)",
+              filter: "blur(120px)",
+            }}
+          />
+
+          {/* Mid-section bridge glow connecting Services & Selected Work */}
+          <div
+            className="absolute top-1/2 left-1/4 -translate-x-1/2 w-[700px] h-[450px] rounded-full"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, rgba(44, 129, 250, 0.14) 0%, rgba(0, 63, 197, 0.06) 50%, transparent 75%)",
+              filter: "blur(130px)",
+            }}
+          />
+
+          {/* Bottom ambient glow under Selected Work deck */}
+          <div
+            className="absolute bottom-10 right-10 w-[650px] h-[480px] rounded-full"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, rgba(0, 110, 245, 0.14) 0%, transparent 70%)",
+              filter: "blur(130px)",
+            }}
+          />
+        </div>
+
+        {/* Content Flow */}
+        <div className="relative z-10">
+          <ServicePreview />
+          <WorkPreview />
+        </div>
+      </div>
       <AiPhotoPreview />
       <ProcessPreview />
       <PricingPreview />

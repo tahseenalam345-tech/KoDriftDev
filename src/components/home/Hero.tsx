@@ -48,8 +48,8 @@ export function Hero() {
 
       {/* ── Hero canvas ── */}
       <div
-        className="relative mx-auto w-full"
-        style={{ maxWidth: "1360px", padding: "0 1.25rem" }}
+        className="relative mx-auto w-full px-2.5 sm:px-5"
+        style={{ maxWidth: "1360px" }}
       >
         <div
           className="relative mx-0 sm:mx-4 md:mx-6 lg:mx-8 rounded-none sm:rounded-2xl overflow-hidden"
@@ -59,11 +59,11 @@ export function Hero() {
             boxShadow: "0 24px 60px -12px rgba(0, 63, 197, 0.10), inset 0 1px 1px rgba(255, 255, 255, 0.95)",
             backdropFilter: "blur(8px)",
             WebkitBackdropFilter: "blur(8px)",
-            // Reduced hero canvas height & refined padding
-            paddingTop: "clamp(58px, 6.2vw, 68px)",
-            paddingBottom: "clamp(52px, 5.8vw, 64px)",
-            paddingLeft: "clamp(1.5rem, 4vw, 2.5rem)",
-            paddingRight: "clamp(1.5rem, 4vw, 2.5rem)",
+            // Reduced hero canvas height & refined padding (plenty of room above headline on mobile)
+            paddingTop: "clamp(62px, 7.5vw, 76px)",
+            paddingBottom: "clamp(24px, 3.5vw, 64px)",
+            paddingLeft: "clamp(1.1rem, 4vw, 2.5rem)",
+            paddingRight: "clamp(1.1rem, 4vw, 2.5rem)",
           }}
         >
           {/* Canvas inner dot grid (contained to center card only) */}
@@ -109,31 +109,80 @@ export function Hero() {
             aria-hidden="true"
           />
 
-          {/* ── Top Centered Pure Particle Typography (No HTML frame, pure readable particles) ── */}
-          <div className="absolute top-4 sm:top-5 left-1/2 -translate-x-1/2 z-30 w-[90%] max-w-[560px] sm:max-w-[620px] h-[48px] sm:h-[56px] flex items-center justify-center pointer-events-auto">
-            <HeroParticleTypography />
+          {/* ── Top Centered Particle Typography (compact height on mobile) ── */}
+          <div className="absolute top-2 sm:top-4 left-1/2 -translate-x-1/2 z-30 w-[94%] max-w-[560px] sm:max-w-[680px] pointer-events-auto">
+            <div
+              className="h-[44px] sm:h-[72px] w-full flex items-center justify-center relative overflow-visible"
+            >
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  bottom: 0,
+                  left: "-8%",
+                  right: "-8%",
+                  background: "radial-gradient(ellipse 80% 100% at center, rgba(244,246,251,0.97) 0%, rgba(244,246,251,0.92) 45%, rgba(244,246,251,0.50) 70%, transparent 100%)",
+                  pointerEvents: "none",
+                  zIndex: 0,
+                }}
+              />
+              <div style={{ position: "relative", zIndex: 1, width: "100%", height: "100%" }}>
+                <HeroParticleTypography />
+              </div>
+            </div>
           </div>
 
           {/* Desktop: 54% left content / 46% right project visual */}
           <div
-            className="relative z-10 grid grid-cols-1 lg:grid-cols-[54%_46%] gap-8 lg:gap-4 items-center"
-            style={{ minHeight: "clamp(480px, 54vw, 640px)" }}
+            className="relative z-10 grid grid-cols-1 lg:grid-cols-[54%_46%] gap-6 lg:gap-4 items-center"
+            style={{ minHeight: "clamp(380px, 54vw, 640px)" }}
           >
 
             {/* ── LEFT: Copy (does not exceed 50% of canvas) ── */}
-            <div className="relative z-20 flex flex-col justify-center lg:max-w-[490px]" style={{ gap: "20px" }}>
+            <div className="relative z-20 flex flex-col justify-center lg:max-w-[520px] gap-3.5 sm:gap-5">
 
-              {/* H1 — exact copy, max 2 lines at 1280px */}
+              {/* H1 — staggered forward movement for 'better' and 'online.', with 'better' in brand blue theme & hover shine effect */}
               <h1
-                className="hero-headline"
+                className="hero-headline flex flex-col items-start cursor-default"
                 style={{
-                  fontSize: "clamp(3.5rem, 5.4vw, 5.8rem)",
+                  fontSize: "clamp(3.15rem, 8.8vw, 5.6rem)",
                   lineHeight: 0.94,
-                  letterSpacing: "-0.065em",
-                  maxWidth: "7ch",
+                  letterSpacing: "-0.055em",
                 }}
               >
-                Build better online.
+                <motion.span
+                  initial={shouldReduce ? {} : { opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  className="block select-none"
+                >
+                  <span className="headline-shine-word headline-shine-dark headline-word-1">
+                    Build
+                  </span>
+                </motion.span>
+
+                <motion.span
+                  initial={shouldReduce ? {} : { opacity: 0, x: -28 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+                  className="block select-none ml-2.5 sm:ml-[clamp(1.2rem,3.4vw,3.2rem)]"
+                >
+                  <span className="headline-shine-word headline-shine-blue headline-word-2">
+                    better
+                  </span>
+                </motion.span>
+
+                <motion.span
+                  initial={shouldReduce ? {} : { opacity: 0, x: -40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.7, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
+                  className="block select-none ml-4 sm:ml-[clamp(2.4rem,6.8vw,6.4rem)]"
+                >
+                  <span className="headline-shine-word headline-shine-dark headline-word-3">
+                    online.
+                  </span>
+                </motion.span>
               </h1>
 
               {/* Phrase panel + badge matching reference screenshot */}
@@ -141,13 +190,12 @@ export function Hero() {
                 initial={shouldReduce ? {} : { opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-                className="inline-flex items-center gap-3 self-start flex-wrap"
+                className="inline-flex items-center gap-2 sm:gap-3 self-start flex-wrap"
                 style={{ transform: "rotate(-1.5deg)" }}
               >
                 <div
+                  className="px-3.5 py-1.5 sm:px-5.5 sm:py-3 rounded-xl sm:rounded-2xl"
                   style={{
-                    padding: "13px 22px",
-                    borderRadius: "18px",
                     background: "rgba(255, 255, 255, 0.82)",
                     backdropFilter: "blur(20px) saturate(130%)",
                     WebkitBackdropFilter: "blur(20px) saturate(130%)",
@@ -156,9 +204,8 @@ export function Hero() {
                   }}
                 >
                   <span
-                    className="font-heading font-extrabold"
+                    className="font-heading font-extrabold text-[13px] sm:text-base md:text-lg"
                     style={{
-                      fontSize: "clamp(1.25rem, 2.1vw, 1.9rem)",
                       letterSpacing: "-0.038em",
                       lineHeight: 1.05,
                       background: "linear-gradient(135deg, #001C5B 0%, #003FC5 45%, #006EF5 100%)",
@@ -189,8 +236,8 @@ export function Hero() {
               {/* Body — 410px to 450px max width */}
               <p
                 style={{
-                  fontSize: "clamp(15px, 1.4vw, 17px)",
-                  lineHeight: 1.6,
+                  fontSize: "clamp(14px, 1.4vw, 17px)",
+                  lineHeight: 1.55,
                   color: "var(--text-muted)",
                   maxWidth: "430px",
                 }}
@@ -198,36 +245,42 @@ export function Hero() {
                 We build useful digital products for businesses.
               </p>
 
-              {/* CTA row — glossy rounded pill buttons matching topbar */}
-              <div className="flex flex-wrap items-center gap-3 pt-1">
-                <Link href="/contact" className="btn-pill-dark group">
-                  <span>Start a project</span>
-                  <ArrowRight className="btn-arrow" aria-hidden="true" />
+              {/* CTA row — glossy rounded pill buttons matching topbar with shine effect */}
+              <div className="flex flex-row items-center justify-center sm:justify-start gap-2.5 sm:gap-3.5 pt-1 w-full">
+                <Link
+                  href="/contact"
+                  className="btn-pill-dark lighter-button default group flex-1 sm:flex-initial inline-flex items-center justify-center text-center text-xs sm:text-sm py-2.5 px-3.5 sm:py-3.5 sm:px-6 shrink-0"
+                >
+                  <span className="truncate">Start a project</span>
+                  <ArrowRight className="btn-arrow w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" aria-hidden="true" />
                 </Link>
-                <Link href="/work" className="btn-pill-dark group">
-                  <span>View our work</span>
-                  <ArrowRight className="btn-arrow" aria-hidden="true" />
+                <Link
+                  href="/work"
+                  className="btn-pill-white lighter-button default group flex-1 sm:flex-initial inline-flex items-center justify-center text-center text-xs sm:text-sm py-2.5 px-3.5 sm:py-3.5 sm:px-6 shrink-0"
+                >
+                  <span className="truncate">View our work</span>
+                  <ArrowRight className="btn-arrow w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" aria-hidden="true" />
                 </Link>
               </div>
             </div>
 
             {/* ── RIGHT: 3D Showcase with 3 layered cards and sentence particle typography ── */}
-            <div className="relative flex items-center justify-center lg:justify-end w-full min-h-[370px] sm:min-h-[430px] md:min-h-[470px] z-20">
+            <div className="relative flex items-center justify-center lg:justify-end w-full min-h-[225px] sm:min-h-[400px] md:min-h-[470px] z-20">
               <HeroShowcaseStack />
             </div>
           </div>
 
-          {/* ── KoDrift 3D embossed decorative wordmark matching reference screenshot ── */}
+          {/* ── KoDrift 3D embossed decorative wordmark (Centered on mobile right below cards, right-aligned on desktop) ── */}
           <div
-            className="pointer-events-none absolute -bottom-3 right-0 sm:right-6 select-none overflow-hidden"
+            className="pointer-events-none absolute bottom-1 sm:-bottom-3 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:right-6 select-none overflow-hidden text-center w-full sm:w-auto"
             aria-hidden="true"
           >
             <span
               className="block font-heading font-extrabold tracking-tight"
               style={{
-                fontSize: "clamp(4.5rem, 13vw, 13rem)",
+                fontSize: "clamp(2.75rem, 11vw, 13rem)",
                 letterSpacing: "-0.075em",
-                lineHeight: "0.80",
+                lineHeight: "0.85",
                 color: "rgba(255, 255, 255, 0.42)",
                 WebkitTextStroke: "1.5px rgba(255, 255, 255, 0.90)",
                 textShadow: "0 4px 24px rgba(0, 63, 197, 0.22), 0 1px 2px rgba(0, 28, 91, 0.15)",
