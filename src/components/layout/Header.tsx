@@ -74,20 +74,21 @@ export function Header() {
 
       {/* ── Main Header Wrapper (transparent floating header) ── */}
       <header
-        className="sticky top-0 z-40 w-full"
+        className="sticky top-0 z-40 w-full overflow-hidden max-w-full"
         style={{ background: "transparent", border: "none" }}
       >
         {/* Soft top-center ambient glow linking with announcement bar */}
-        <div
-          className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 rounded-full"
-          style={{
-            width: "620px",
-            height: "120px",
-            background: "radial-gradient(ellipse at center, rgba(44, 129, 250, 0.28) 0%, rgba(0, 110, 245, 0.15) 50%, transparent 80%)",
-            filter: "blur(45px)",
-          }}
-          aria-hidden="true"
-        />
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+          <div
+            className="absolute -top-10 left-1/2 -translate-x-1/2 rounded-full"
+            style={{
+              width: "620px",
+              height: "120px",
+              background: "radial-gradient(ellipse at center, rgba(44, 129, 250, 0.28) 0%, rgba(0, 110, 245, 0.15) 50%, transparent 80%)",
+              filter: "blur(45px)",
+            }}
+          />
+        </div>
 
         {/* Contained Header box matching hero canvas bounds */}
         <div

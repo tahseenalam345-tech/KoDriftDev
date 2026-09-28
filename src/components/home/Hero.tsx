@@ -13,7 +13,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative w-full overflow-hidden bg-transparent"
+      className="relative w-full max-w-full overflow-hidden overflow-x-clip bg-transparent"
       aria-label="KoDriftDev — Build better online"
     >
       {/* ── Ambient atmosphere (exact crystal blue palette from logo) ── */}

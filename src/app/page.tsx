@@ -14,10 +14,10 @@ import { MessageCircle } from "lucide-react";
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full max-w-full overflow-x-clip">
       <Hero />
       {/* ── Continuous Atmospheric Background: Flows from Services all the way through Selected Work ── */}
-      <div className="relative w-full overflow-hidden">
+      <div className="relative w-full max-w-full overflow-hidden overflow-x-clip">
         {/* Continuous Soft Tinted Base Canvas */}
         <div
           className="pointer-events-none absolute inset-0"

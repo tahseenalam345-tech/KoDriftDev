@@ -400,8 +400,8 @@ export function ParticleBackground() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-30 pointer-events-none overflow-hidden"
-      style={{ width: "100vw", height: "100vh" }}
+      className="fixed inset-0 z-30 pointer-events-none overflow-hidden max-w-full w-full h-full"
+      style={{ width: "100%", height: "100%", maxWidth: "100%" }}
       aria-hidden="true"
     />
   );

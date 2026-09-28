@@ -1,8 +1,10 @@
+"use client";
+
 import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { X, MessageCircle, Mail } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, MessageCircle, Mail, ArrowRight } from "lucide-react";
 import { siteConfig } from "@/content/site";
 
 interface NavItem {
@@ -28,8 +30,6 @@ export function MobileMenu({
   currentPath,
   primaryCta,
 }: MobileMenuProps) {
-  const shouldReduceMotion = useReducedMotion();
-
   useEffect(() => {
     if (!isOpen) return;
     const originalOverflow = document.body.style.overflow;
@@ -49,174 +49,167 @@ export function MobileMenu({
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div
-          role="dialog"
-          aria-modal="true"
-          aria-label="Navigation menu"
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -16 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -16 }}
-          transition={{ duration: 0.22, ease: "easeOut" }}
-          className="fixed inset-0 z-50 flex flex-col md:hidden"
-          style={{
-            background: "rgba(233,232,229,0.95)",
-            backdropFilter: "blur(24px)",
-            WebkitBackdropFilter: "blur(24px)",
-          }}
-        >
-          {/* Ambient glows */}
-          <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-            <div
-              className="absolute -top-20 -left-10 w-64 h-64 rounded-full"
-              style={{ background: "var(--blue-light)", filter: "blur(80px)", opacity: 0.22 }}
-            />
-            <div
-              className="absolute -bottom-20 right-0 w-64 h-64 rounded-full"
-              style={{ background: "var(--lavender-light)", filter: "blur(80px)", opacity: 0.18 }}
-            />
-          </div>
+        <>
+          {/* ── 1. Dimmed Backdrop covering the left side (click to close) ── */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+            onClick={onClose}
+            className="fixed inset-0 z-50 bg-black/45 backdrop-blur-xs md:hidden"
+            aria-hidden="true"
+          />
 
-          {/* Header */}
-          <div
-            className="relative z-10 flex h-[68px] items-center justify-between px-5 sm:px-7"
-            style={{ borderBottom: "1px solid var(--line)" }}
+          {/* ── 2. Side Drawer sliding in from right covering ~75-80% of screen ── */}
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", damping: 28, stiffness: 300 }}
+            className="fixed top-0 right-0 bottom-0 z-50 flex flex-col w-[78%] max-w-[320px] md:hidden shadow-[-16px_0_45px_rgba(0,18,60,0.18)]"
+            style={{
+              background: "rgba(246, 248, 252, 0.96)",
+              backdropFilter: "blur(24px)",
+              WebkitBackdropFilter: "blur(24px)",
+              borderLeft: "1px solid rgba(255, 255, 255, 0.85)",
+            }}
           >
-            <Link
-              href="/"
-              onClick={onClose}
-              className="flex items-center gap-2.5 font-heading text-xl font-bold tracking-tight"
-              style={{ color: "var(--ink)" }}
+            {/* Top Bar with Brand + Close Cross Button */}
+            <div
+              className="relative z-10 flex h-[62px] items-center justify-between px-4 sm:px-5 shrink-0"
+              style={{ borderBottom: "1px solid var(--line)" }}
             >
-              <div
-                className="relative flex h-[34px] w-[34px] items-center justify-center rounded-lg overflow-hidden shrink-0 shadow-sm"
+              <Link
+                href="/"
+                onClick={onClose}
+                className="flex items-center gap-2 font-heading font-bold text-base tracking-tight"
+                style={{ color: "var(--ink)" }}
+              >
+                <div
+                  className="relative flex h-[28px] w-[28px] items-center justify-center rounded-lg overflow-hidden shrink-0 shadow-sm"
+                  style={{
+                    background: "#04070A",
+                    border: "1px solid rgba(255,255,255,0.16)",
+                  }}
+                >
+                  <Image
+                    src="/images/logo/logo.png"
+                    alt="KoDriftDev Logo"
+                    width={28}
+                    height={28}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <span>
+                  KoDrift<span style={{ color: "var(--brand-blue)" }}>Dev</span>
+                </span>
+              </Link>
+
+              {/* Close (Cross) button */}
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Close navigation menu"
+                className="flex h-9 w-9 items-center justify-center rounded-full border transition-all cursor-pointer hover:bg-black/5 active:scale-95"
                 style={{
-                  background: "#04070A",
-                  border: "1px solid rgba(255,255,255,0.16)",
-                  boxShadow: "0 0 12px rgba(45,140,255,0.20)",
+                  background: "#FFFFFF",
+                  border: "1px solid rgba(16,40,39,0.14)",
+                  boxShadow: "0 2px 6px rgba(16,40,39,0.06)",
+                  color: "var(--ink)",
                 }}
               >
-                <Image
-                  src="/images/logo/logo.png"
-                  alt="KoDriftDev Logo"
-                  width={34}
-                  height={34}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-              <span>
-                KoDrift<span style={{ color: "var(--brand-blue)" }}>Dev</span>
-              </span>
-            </Link>
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label="Close navigation menu"
-              className="flex h-10 w-10 items-center justify-center rounded-full border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2"
-              style={{
-                background: "rgba(255,255,255,0.46)",
-                border: "1px solid rgba(255,255,255,0.65)",
-                color: "var(--ink)",
-              }}
-            >
-              <X className="h-5 w-5" aria-hidden="true" />
-            </button>
-          </div>
+                <X className="h-4.5 w-4.5" aria-hidden="true" />
+              </button>
+            </div>
 
-          {/* Nav + contact */}
-          <div className="relative z-10 flex flex-col flex-1 overflow-y-auto p-5 sm:p-7 gap-6">
-            <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
-              {navItems.map((item) => {
-                const isActive =
-                  currentPath === item.href ||
-                  (item.href !== "/" && currentPath.startsWith(item.href));
+            {/* Nav list */}
+            <div className="relative z-10 flex flex-col flex-1 overflow-y-auto p-4 sm:p-5 gap-5">
+              <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
+                {navItems.map((item) => {
+                  const isActive =
+                    currentPath === item.href ||
+                    (item.href !== "/" && currentPath.startsWith(item.href));
 
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={onClose}
-                    className="rounded-xl px-4 py-3.5 text-lg font-semibold transition-all duration-[150ms]"
-                    style={
-                      isActive
-                        ? {
-                            background: "rgba(255,255,255,0.55)",
-                            backdropFilter: "blur(10px)",
-                            border: "1px solid rgba(255,255,255,0.72)",
-                            color: "var(--ink)",
-                          }
-                        : {
-                            background: "transparent",
-                            border: "1px solid transparent",
-                            color: "var(--text-muted)",
-                          }
-                    }
-                    onMouseEnter={(e) => {
-                      if (!isActive) {
-                        (e.currentTarget as HTMLAnchorElement).style.color = "var(--ink)";
-                        (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.30)";
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={onClose}
+                      className="flex items-center justify-between rounded-xl px-3.5 py-2.5 text-[15px] font-semibold transition-all duration-[150ms]"
+                      style={
+                        isActive
+                          ? {
+                              background: "rgba(0, 110, 245, 0.10)",
+                              border: "1px solid rgba(0, 110, 245, 0.22)",
+                              color: "var(--brand-blue)",
+                              fontWeight: 700,
+                            }
+                          : {
+                              background: "transparent",
+                              border: "1px solid transparent",
+                              color: "var(--ink)",
+                            }
                       }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isActive) {
-                        (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-muted)";
-                        (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
-                      }
+                    >
+                      <span>{item.label}</span>
+                      {isActive && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--brand-blue)]" />
+                      )}
+                    </Link>
+                  );
+                })}
+              </nav>
+
+              {/* Bottom Actions & Contacts */}
+              <div
+                className="mt-auto pt-4 space-y-3 shrink-0"
+                style={{ borderTop: "1px solid var(--line)" }}
+              >
+                <div className="space-y-2">
+                  <a
+                    href={siteConfig.whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium transition-colors hover:bg-black/5"
+                    style={{
+                      background: "rgba(255,255,255,0.7)",
+                      border: "1px solid rgba(16,40,39,0.08)",
+                      color: "var(--ink)",
                     }}
                   >
-                    {item.label}
-                  </Link>
-                );
-              })}
-            </nav>
+                    <MessageCircle className="h-3.5 w-3.5 shrink-0 text-[#25D366]" aria-hidden="true" />
+                    <span className="truncate">WhatsApp: {siteConfig.phoneDisplay}</span>
+                  </a>
+                  <a
+                    href={`mailto:${siteConfig.email}`}
+                    className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium transition-colors hover:bg-black/5"
+                    style={{
+                      background: "rgba(255,255,255,0.7)",
+                      border: "1px solid rgba(16,40,39,0.08)",
+                      color: "var(--ink)",
+                    }}
+                  >
+                    <Mail className="h-3.5 w-3.5 shrink-0 text-[#006EF5]" aria-hidden="true" />
+                    <span className="truncate">{siteConfig.email}</span>
+                  </a>
+                </div>
 
-            {/* Bottom */}
-            <div
-              className="mt-auto pt-6 space-y-4"
-              style={{ borderTop: "1px solid var(--line)" }}
-            >
-              <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
-                {siteConfig.shortDescription}
-              </p>
-
-              <div className="space-y-2.5">
-                <a
-                  href={siteConfig.whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2.5 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-[150ms]"
-                  style={{
-                    background: "rgba(255,255,255,0.42)",
-                    border: "1px solid rgba(255,255,255,0.65)",
-                    color: "var(--ink)",
-                  }}
+                <Link
+                  href={primaryCta.href}
+                  onClick={onClose}
+                  className="btn-pill-dark lighter-button default w-full justify-center text-xs py-2.5 px-4 font-bold flex items-center gap-2"
                 >
-                  <MessageCircle className="h-4 w-4 shrink-0" style={{ color: "var(--brand-blue)" }} aria-hidden="true" />
-                  <span>WhatsApp: {siteConfig.phoneDisplay}</span>
-                </a>
-                <a
-                  href={`mailto:${siteConfig.email}`}
-                  className="flex items-center gap-2.5 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-[150ms]"
-                  style={{
-                    background: "rgba(255,255,255,0.42)",
-                    border: "1px solid rgba(255,255,255,0.65)",
-                    color: "var(--ink)",
-                  }}
-                >
-                  <Mail className="h-4 w-4 shrink-0" style={{ color: "var(--teal)" }} aria-hidden="true" />
-                  <span>{siteConfig.email}</span>
-                </a>
+                  <span>{primaryCta.label}</span>
+                  <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </Link>
               </div>
-
-              <Link
-                href={primaryCta.href}
-                onClick={onClose}
-                className="btn-primary w-full justify-center"
-              >
-                {primaryCta.label}
-              </Link>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </>
       )}
     </AnimatePresence>
   );
