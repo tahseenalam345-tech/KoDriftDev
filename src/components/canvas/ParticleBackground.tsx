@@ -237,12 +237,22 @@ export function ParticleBackground() {
     };
     checkActiveSection();
 
-    // 7. Morph Shape Listener (stays locked in fixed red-marked anchor area for services)
+    // 7. Morph Shape Listener (stays locked in card/anchor area for services)
+    let activeCardId: string | null = null;
+
     const handleMorphEvent = (e: Event) => {
-      const detail = (e as CustomEvent).detail as string;
+      const detail = (e as CustomEvent).detail;
       if (!detail) return;
 
-      const [shape] = detail.split("-anchor-");
+      let shape = "";
+      if (typeof detail === "string") {
+        shape = detail.split("-anchor-")[0];
+      } else if (typeof detail === "object") {
+        shape = (detail as { shape?: string; cardId?: string }).shape || "";
+        if ((detail as { cardId?: string }).cardId) {
+          activeCardId = (detail as { cardId?: string }).cardId!;
+        }
+      }
 
       if (shape === "code" || shape === "web" || shape === "cube") {
         currentActiveSection = "services";
@@ -259,8 +269,8 @@ export function ParticleBackground() {
       } else if (shape === "camera" || shape === "photo" || shape === "aperture") {
         currentActiveSection = "services";
         setTarget("services-camera", 0.55);
-      } else if (targets[detail]) {
-        setTarget(detail, 0.55);
+      } else if (targets[shape]) {
+        setTarget(shape, 0.55);
       }
     };
     window.addEventListener("kd-morph-shape", handleMorphEvent);
@@ -292,37 +302,51 @@ export function ParticleBackground() {
     const clock = new THREE.Clock();
 
     const updateAnchorPosition = () => {
+      if (isScrolling) return;
+
       const isServiceShape = currentTargetKey.startsWith("services-");
       if (currentActiveSection === "services" || isServiceShape) {
-        const anchorEl = document.getElementById("services-particle-anchor");
-        if (anchorEl) {
-          const rect = anchorEl.getBoundingClientRect();
+        let targetEl: HTMLElement | null = null;
+        if (isMobile) {
+          if (activeCardId) {
+            targetEl = document.getElementById(activeCardId);
+          }
+          if (!targetEl) {
+            targetEl = document.getElementById("service-card-web");
+          }
+        } else {
+          targetEl = document.getElementById("services-particle-anchor");
+        }
+
+        if (targetEl) {
+          const rect = targetEl.getBoundingClientRect();
           if (rect.width > 0 && rect.height > 0) {
             const visibleH = 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
             const visibleW = visibleH * (window.innerWidth / window.innerHeight);
 
-            const pixelCenterX = rect.left + rect.width / 2;
-            const pixelCenterY = rect.top + rect.height * 0.44;
+            // On mobile, place it behind the card, slightly to the right side so it creates the 3D shape behind the card
+            const pixelCenterX = isMobile ? rect.left + rect.width * 0.65 : rect.left + rect.width / 2;
+            const pixelCenterY = rect.top + rect.height * 0.50;
 
             targetGroupX = ((pixelCenterX / window.innerWidth) - 0.5) * visibleW;
             targetGroupY = (0.5 - (pixelCenterY / window.innerHeight)) * visibleH;
 
             const boxHeightWorld = (rect.height / window.innerHeight) * visibleH;
-            targetScale = boxHeightWorld * (isMobile ? 0.42 : 0.46);
+            targetScale = boxHeightWorld * (isMobile ? 0.38 : 0.46);
             return;
           }
         }
-        targetGroupX = isMobile ? 0 : 2.2;
-        targetGroupY = isMobile ? 1.0 : 0.6;
-        targetScale = isMobile ? 0.55 : 0.65;
+        targetGroupX = isMobile ? 0.85 : 2.2;
+        targetGroupY = isMobile ? 0 : 0.6;
+        targetScale = isMobile ? 0.48 : 0.65;
       } else if (currentActiveSection === "hero") {
         targetGroupX = isMobile ? 0 : 2.2;
         targetGroupY = isMobile ? 1.2 : 0;
         targetScale = isMobile ? 0 : 1.0;
       } else {
-        targetGroupX = isMobile ? 0 : 2.2;
+        targetGroupX = isMobile ? 0.85 : 2.2;
         targetGroupY = 0;
-        targetScale = isMobile ? 0.68 : 1.0;
+        targetScale = isMobile ? 0.52 : 1.0;
       }
     };
 
@@ -342,10 +366,14 @@ export function ParticleBackground() {
       particleGroup.position.y = currentGroupY;
       particleGroup.scale.set(currentScale, currentScale, currentScale);
 
-      // Pac-Man Dynamic Chomping
+      // Pac-Man Dynamic Chomping (smaller and shifted right on mobile)
       if (isScrolling) {
+        targetGroupX = isMobile ? 0.95 : 2.2;
+        targetGroupY = 0;
+        targetScale = isMobile ? 0.40 : 0.85;
+
         const mouthAngle = Math.abs(Math.sin(elapsed * 9)) * 0.65;
-        const pm = generatePacman(count, mouthAngle, isMobile ? 0.48 : 0.58);
+        const pm = generatePacman(count, mouthAngle, isMobile ? 0.28 : 0.58);
         for (let i = 0; i < count * 3; i++) targetPositions[i] = pm[i];
 
         particleGroup.rotation.z = THREE.MathUtils.lerp(particleGroup.rotation.z, pacmanDirectionAngle, delta * 8);
@@ -400,7 +428,7 @@ export function ParticleBackground() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-30 pointer-events-none overflow-hidden max-w-full w-full h-full"
+      className="fixed inset-0 z-10 pointer-events-none overflow-hidden max-w-full w-full h-full"
       style={{ width: "100%", height: "100%", maxWidth: "100%" }}
       aria-hidden="true"
     />

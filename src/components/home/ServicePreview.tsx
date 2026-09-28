@@ -25,12 +25,12 @@ export function ServicePreview() {
     tag: "</>",
   });
 
-  // Emit morph event for the fixed 3D particle showcase area
-  const handleMorph = (shape: string, name: string, tag: string) => {
+  // Emit morph event for 3D particles (with cardId for mobile touch positioning)
+  const handleMorph = (shape: string, name: string, tag: string, cardId?: string) => {
     setActiveService({ name, tag });
     if (typeof window !== "undefined") {
       window.dispatchEvent(
-        new CustomEvent("kd-morph-shape", { detail: shape })
+        new CustomEvent("kd-morph-shape", { detail: { shape, cardId } })
       );
     }
   };
@@ -53,7 +53,7 @@ export function ServicePreview() {
       />
 
       <Container className="relative z-20 space-y-10 sm:space-y-12">
-        {/* ── Section Heading & Fixed 3D Particle Showcase Stage (User Red Marked Area) ── */}
+        {/* ── Section Heading & Fixed 3D Particle Showcase Stage (Hidden on Mobile, Visible on Desktop) ── */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <div className="space-y-4">
             {/* "What we build" converted to a 3D Glassmorphic Pill */}
@@ -85,10 +85,10 @@ export function ServicePreview() {
             </p>
           </div>
 
-          {/* ── Fixed 3D Particle Showcase Stage (User's Exact Red Marked Area) ── */}
+          {/* ── Fixed 3D Particle Showcase Stage (Hidden on Mobile, Visible on Desktop lg:flex) ── */}
           <div
             id="services-particle-anchor"
-            className="relative h-[200px] sm:h-[265px] lg:h-[285px] w-full flex items-center justify-center rounded-2xl sm:rounded-3xl"
+            className="hidden lg:flex relative h-[200px] sm:h-[265px] lg:h-[285px] w-full items-center justify-center rounded-2xl sm:rounded-3xl"
           >
             {/* Subtle glass pod backdrop */}
             <div
@@ -122,8 +122,10 @@ export function ServicePreview() {
           
           {/* ── CARD 01: Web Development (Glacier Crystal Glass, -1.2deg Tilt) ── */}
           <Link
+            id="service-card-web"
             href={`/services/${webDev.slug}`}
-            onMouseEnter={() => handleMorph("code", "Web Development", "</>")}
+            onMouseEnter={() => handleMorph("code", "Web Development", "</>", "service-card-web")}
+            onTouchStart={() => handleMorph("code", "Web Development", "</>", "service-card-web")}
             className="group lighter-button relative block p-5 sm:p-7 lg:p-9 rounded-[22px] sm:rounded-[28px] lg:rounded-[34px] border-[1.5px] border-[rgba(0,110,245,0.22)] hover:border-[#006EF5] backdrop-blur-xl shadow-[0_18px_40px_-12px_rgba(0,110,245,0.12),inset_0_1.5px_2px_rgba(255,255,255,1)] hover:shadow-[0_28px_60px_-10px_rgba(0,110,245,0.28),inset_0_1.5px_2px_rgba(255,255,255,1)] transition-all duration-300 ease-out overflow-hidden -rotate-[1.2deg] hover:rotate-0 hover:-translate-y-2.5 hover:scale-[1.015]"
             style={{
               background:
@@ -170,8 +172,10 @@ export function ServicePreview() {
 
           {/* ── CARD 02: Software Development (Indigo Crystal Glass, +1.2deg Tilt) ── */}
           <Link
+            id="service-card-software"
             href={`/services/${softwareDev.slug}`}
-            onMouseEnter={() => handleMorph("gear", "Software Development", "Gear")}
+            onMouseEnter={() => handleMorph("gear", "Software Development", "Gear", "service-card-software")}
+            onTouchStart={() => handleMorph("gear", "Software Development", "Gear", "service-card-software")}
             className="group lighter-button relative block p-7 sm:p-9 rounded-[28px] sm:rounded-[34px] border-[1.5px] border-[rgba(99,102,241,0.22)] hover:border-[#6366F1] backdrop-blur-xl shadow-[0_18px_40px_-12px_rgba(99,102,241,0.12),inset_0_1.5px_2px_rgba(255,255,255,1)] hover:shadow-[0_28px_60px_-10px_rgba(99,102,241,0.28),inset_0_1.5px_2px_rgba(255,255,255,1)] transition-all duration-300 ease-out overflow-hidden rotate-[1.2deg] hover:rotate-0 hover:-translate-y-2.5 hover:scale-[1.015]"
             style={{
               background:
@@ -222,8 +226,10 @@ export function ServicePreview() {
           
           {/* ── CARD 03: App Development (Mint/Teal Glass, -1.0deg Tilt) ── */}
           <Link
+            id="service-card-app"
             href={`/services/${appDev.slug}`}
-            onMouseEnter={() => handleMorph("phone", "App Development", "Mobile")}
+            onMouseEnter={() => handleMorph("phone", "App Development", "Mobile", "service-card-app")}
+            onTouchStart={() => handleMorph("phone", "App Development", "Mobile", "service-card-app")}
             className="group lighter-button relative block p-6 sm:p-7 rounded-[26px] sm:rounded-[30px] border-[1.5px] border-[rgba(16,185,129,0.22)] hover:border-[#10B981] backdrop-blur-xl shadow-[0_14px_34px_-10px_rgba(16,185,129,0.12),inset_0_1.5px_2px_rgba(255,255,255,1)] hover:shadow-[0_24px_50px_-8px_rgba(16,185,129,0.24),inset_0_1.5px_2px_rgba(255,255,255,1)] transition-all duration-300 ease-out overflow-hidden -rotate-[1.0deg] hover:rotate-0 hover:-translate-y-2 hover:scale-[1.02]"
             style={{
               background:
@@ -259,8 +265,10 @@ export function ServicePreview() {
 
           {/* ── CARD 04: AI Product Photography (Prismatic Violet Glass, +0.4deg Tilt) ── */}
           <Link
+            id="service-card-photo"
             href={`/services/${aiPhoto.slug}`}
-            onMouseEnter={() => handleMorph("camera", "AI Photography", "Camera")}
+            onMouseEnter={() => handleMorph("camera", "AI Photography", "Camera", "service-card-photo")}
+            onTouchStart={() => handleMorph("camera", "AI Photography", "Camera", "service-card-photo")}
             className="group lighter-button relative block p-6 sm:p-7 rounded-[26px] sm:rounded-[30px] border-[1.5px] border-[rgba(168,85,247,0.22)] hover:border-[#A855F7] backdrop-blur-xl shadow-[0_14px_34px_-10px_rgba(168,85,247,0.12),inset_0_1.5px_2px_rgba(255,255,255,1)] hover:shadow-[0_24px_50px_-8px_rgba(168,85,247,0.24),inset_0_1.5px_2px_rgba(255,255,255,1)] transition-all duration-300 ease-out overflow-hidden rotate-[0.4deg] sm:-translate-y-1 hover:rotate-0 hover:-translate-y-2 hover:scale-[1.02]"
             style={{
               background:
@@ -296,8 +304,10 @@ export function ServicePreview() {
 
           {/* ── CARD 05: AI Automation (Sapphire/Sky Glass, +1.2deg Tilt) ── */}
           <Link
+            id="service-card-ai"
             href={`/services/${aiAutomation.slug}`}
-            onMouseEnter={() => handleMorph("chip", "AI Automation", "AI Chip")}
+            onMouseEnter={() => handleMorph("chip", "AI Automation", "AI Chip", "service-card-ai")}
+            onTouchStart={() => handleMorph("chip", "AI Automation", "AI Chip", "service-card-ai")}
             className="group lighter-button relative block p-6 sm:p-7 rounded-[26px] sm:rounded-[30px] border-[1.5px] border-[rgba(2,132,199,0.22)] hover:border-[#0284C7] backdrop-blur-xl shadow-[0_14px_34px_-10px_rgba(2,132,199,0.12),inset_0_1.5px_2px_rgba(255,255,255,1)] hover:shadow-[0_24px_50px_-8px_rgba(2,132,199,0.24),inset_0_1.5px_2px_rgba(255,255,255,1)] transition-all duration-300 ease-out overflow-hidden rotate-[1.2deg] hover:rotate-0 hover:-translate-y-2 hover:scale-[1.02]"
             style={{
               background:
