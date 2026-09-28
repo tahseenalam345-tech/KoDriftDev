@@ -193,7 +193,7 @@ export function ParticleBackground() {
 
     const checkActiveSection = () => {
       const mid = window.innerHeight * 0.45;
-      const sectionIds = ["hero", "services", "work", "pricing", "contact"];
+      const sectionIds = ["hero", "services", "work", "ai-photography", "process", "pricing", "contact"];
       let closest = "hero";
       let closestDist = Infinity;
 
@@ -216,12 +216,15 @@ export function ParticleBackground() {
           targetScale = isMobile ? 0 : 1.0;
           setTarget("hero", 0.7);
         } else if (closest === "services") {
+          targetScale = isMobile ? 0 : 1.0;
           setTarget("services-code", 0.65);
         } else if (closest === "work") {
           targetGroupX = isMobile ? 0 : 2.2;
           targetGroupY = 0;
           targetScale = isMobile ? 0.68 : 1.0;
           setTarget("work", 0.65);
+        } else if (closest === "process" || closest === "ai-photography") {
+          targetScale = 0; // Seamlessly clear particles so they never overlap cards or text
         } else if (closest === "pricing") {
           targetGroupX = isMobile ? 0 : 2.2;
           targetGroupY = 0;
@@ -428,7 +431,7 @@ export function ParticleBackground() {
   return (
     <div
       ref={containerRef}
-      className="hidden lg:block fixed inset-0 z-30 pointer-events-none overflow-hidden max-w-full w-full h-full"
+      className="hidden lg:block fixed inset-0 z-0 pointer-events-none overflow-hidden max-w-full w-full h-full"
       style={{ width: "100%", height: "100%", maxWidth: "100%" }}
       aria-hidden="true"
     />

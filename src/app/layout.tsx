@@ -55,7 +55,7 @@ export default function RootLayout({
         <AnimationProvider>
           <ParticleStage />
           <Header />
-          <main className="flex-1 bg-transparent overflow-x-clip w-full max-w-full">{children}</main>
+          <main className="relative z-10 flex-1 bg-transparent overflow-x-clip w-full max-w-full">{children}</main>
           <div className="relative z-20 overflow-x-clip w-full max-w-full">
             <Footer />
           </div>
