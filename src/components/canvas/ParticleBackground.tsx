@@ -428,7 +428,7 @@ export function ParticleBackground() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-30 pointer-events-none overflow-hidden max-w-full w-full h-full"
+      className="hidden lg:block fixed inset-0 z-30 pointer-events-none overflow-hidden max-w-full w-full h-full"
       style={{ width: "100%", height: "100%", maxWidth: "100%" }}
       aria-hidden="true"
     />

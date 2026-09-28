@@ -7,26 +7,37 @@ export function ParticleStage() {
   const [shouldRender, setShouldRender] = useState(false);
 
   useEffect(() => {
-    // Only render background WebGL particles when scrolled down to Services / other sections
-    // Keep hero completely clean without any stray particle circle
-    const checkScroll = () => {
-      if (window.scrollY > 220) {
+    // Only render background WebGL 3D particles on desktop (>= 1024px)
+    // when scrolled down to Services / other sections.
+    // On mobile, 3D particles are hidden for clean performance and readability,
+    // while Hero greeting particle typography remains active.
+    const checkState = () => {
+      const isDesktop = window.innerWidth >= 1024;
+      if (isDesktop && window.scrollY > 220) {
         setShouldRender(true);
       } else {
         setShouldRender(false);
       }
     };
 
-    checkScroll();
-    window.addEventListener("scroll", checkScroll, { passive: true });
-    return () => window.removeEventListener("scroll", checkScroll);
+    checkState();
+    window.addEventListener("scroll", checkState, { passive: true });
+    window.addEventListener("resize", checkState, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", checkState);
+      window.removeEventListener("resize", checkState);
+    };
   }, []);
 
   if (!shouldRender) {
     return null;
   }
 
-  return <ParticleBackground />;
+  return (
+    <div className="hidden lg:block">
+      <ParticleBackground />
+    </div>
+  );
 }
 
 export { ParticleBackground };
