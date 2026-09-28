@@ -5,7 +5,7 @@ import * as THREE from "three";
 import {
   TOTAL_POINTS,
   sampleTextCoordinates,
-  generatePacman,
+// generatePacman,
   generateWireframeCube,
   generateSoftwareStack,
   generatePhoneFrame,
@@ -78,7 +78,7 @@ export function ParticleBackground() {
     const targets: Record<string, Float32Array> = {
       hero: sampleTextCoordinates("HI, WELCOME TO KODRIFTDEV", count, isMobile),
       sphere: generateVolumetricSphere(count, isMobile ? 1.1 : 1.4),
-      pacman: generatePacman(count, 0.55, isMobile ? 0.48 : 0.58),
+      // pacman: generatePacman(count, 0.55, isMobile ? 0.48 : 0.58),
       // Services shapes: Code Tag </>, Gear icon, Phone frame, AI Chip, AI Camera (calibrated to fit neatly inside box)
       "services-code": generateCodeTag(count, isMobile ? 0.65 : 0.80),
       "services-gear": generateGear(count, isMobile ? 0.55 : 0.68, isMobile ? 0.20 : 0.25),
@@ -157,7 +157,7 @@ export function ParticleBackground() {
 
     // 6. 360-Directional Scroll & State
     let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
-    let pacmanDirectionAngle = 0;
+    // let pacmanDirectionAngle = 0;
     let isScrolling = false;
     let scrollTimeout: NodeJS.Timeout | null = null;
     let currentActiveSection = "hero";
@@ -176,11 +176,11 @@ export function ParticleBackground() {
 
       if (Math.abs(dy) > 1) {
         isScrolling = true;
-        pacmanDirectionAngle = dy > 0 ? -Math.PI / 2 : Math.PI / 2;
+        // pacmanDirectionAngle = dy > 0 ? -Math.PI / 2 : Math.PI / 2;
 
-        if (currentActiveSection !== "hero") {
-          setTarget("pacman", 0.25);
-        }
+        // if (currentActiveSection !== "hero") {
+        //   setTarget("pacman", 0.25);
+        // }
 
         if (scrollTimeout) clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(() => {
@@ -201,7 +201,14 @@ export function ParticleBackground() {
         const el = document.getElementById(id);
         if (!el) return;
         const rect = el.getBoundingClientRect();
-        const dist = Math.abs(rect.top - mid);
+        let dist = 0;
+        if (rect.top <= mid && rect.bottom >= mid) {
+          dist = 0;
+        } else if (rect.top > mid) {
+          dist = rect.top - mid;
+        } else {
+          dist = mid - rect.bottom;
+        }
         if (dist < closestDist) {
           closestDist = dist;
           closest = id;
@@ -216,8 +223,7 @@ export function ParticleBackground() {
           targetScale = isMobile ? 0 : 1.0;
           setTarget("hero", 0.7);
         } else if (closest === "services") {
-          targetScale = isMobile ? 0 : 1.0;
-          setTarget("services-code", 0.65);
+          targetScale = 0; // Services section has its own dedicated high-definition 3D ServiceParticleCanvas
         } else if (closest === "work") {
           targetGroupX = isMobile ? 0 : 2.2;
           targetGroupY = 0;
@@ -369,20 +375,20 @@ export function ParticleBackground() {
       particleGroup.position.y = currentGroupY;
       particleGroup.scale.set(currentScale, currentScale, currentScale);
 
-      // Pac-Man Dynamic Chomping (smaller and shifted right on mobile)
-      if (isScrolling) {
-        targetGroupX = isMobile ? 0.95 : 2.2;
-        targetGroupY = 0;
-        targetScale = isMobile ? 0.40 : 0.85;
-
-        const mouthAngle = Math.abs(Math.sin(elapsed * 9)) * 0.65;
-        const pm = generatePacman(count, mouthAngle, isMobile ? 0.28 : 0.58);
-        for (let i = 0; i < count * 3; i++) targetPositions[i] = pm[i];
-
-        particleGroup.rotation.z = THREE.MathUtils.lerp(particleGroup.rotation.z, pacmanDirectionAngle, delta * 8);
-      } else {
-        particleGroup.rotation.z = THREE.MathUtils.lerp(particleGroup.rotation.z, 0, delta * 4);
-      }
+      // Pac-Man Dynamic Chomping (commented out as requested)
+      // if (isScrolling) {
+      //   targetGroupX = isMobile ? 0.95 : 2.2;
+      //   targetGroupY = 0;
+      //   targetScale = isMobile ? 0.40 : 0.85;
+      //
+      //   const mouthAngle = Math.abs(Math.sin(elapsed * 9)) * 0.65;
+      //   const pm = generatePacman(count, mouthAngle, isMobile ? 0.28 : 0.58);
+      //   for (let i = 0; i < count * 3; i++) targetPositions[i] = pm[i];
+      //
+      //   particleGroup.rotation.z = THREE.MathUtils.lerp(particleGroup.rotation.z, pacmanDirectionAngle, delta * 8);
+      // } else {
+      //   particleGroup.rotation.z = THREE.MathUtils.lerp(particleGroup.rotation.z, 0, delta * 4);
+      // }
 
       if (morphProgress < 1.0) {
         morphProgress += delta / morphDuration;

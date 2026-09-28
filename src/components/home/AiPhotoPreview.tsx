@@ -151,43 +151,43 @@ export function AiPhotoPreview({ className }: { className?: string }) {
       className={`relative my-2 sm:my-5 lg:my-6 px-2 sm:px-4 lg:px-8 xl:px-10 ${className || ""}`}
       aria-labelledby="ai-photo-heading"
     >
-      {/* ── Sculpted Island Stage matching WorkPreview aesthetic ── */}
+      {/* ── Sculpted Island Stage: Studio Luminescence Aesthetic ── */}
       <div
-        className="relative mx-auto max-w-[1520px] rounded-[24px] sm:rounded-[36px] lg:rounded-[44px] pt-4 sm:pt-6 lg:pt-8 pb-5 sm:pb-8 lg:pb-10 px-3 sm:px-6 lg:px-9 overflow-hidden border border-[rgba(0,110,245,0.18)] shadow-[0_20px_50px_-14px_rgba(0,50,150,0.08),inset_0_2px_4px_rgba(255,255,255,1)]"
+        className="relative mx-auto max-w-[1520px] rounded-[24px] sm:rounded-[36px] lg:rounded-[44px] pt-4 sm:pt-6 lg:pt-8 pb-5 sm:pb-8 lg:pb-10 px-3 sm:px-6 lg:px-9 overflow-hidden border border-[rgba(139,92,246,0.22)] shadow-[0_20px_50px_-14px_rgba(99,102,241,0.10),inset_0_2px_4px_rgba(255,255,255,1)]"
         style={{
           background:
-            "linear-gradient(175deg, #F0F6FD 0%, #E6EFFC 45%, #F4F8FD 100%)",
+            "linear-gradient(165deg, #F8F9FE 0%, #EEF2FB 45%, #E8EDFA 100%)",
         }}
       >
-        {/* Architectural Subtle Dot Pattern */}
+        {/* Subtle Photographic Fine Grid Texture */}
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.35]"
+          className="pointer-events-none absolute inset-0 opacity-[0.40]"
           style={{
             backgroundImage:
-              "radial-gradient(rgba(0, 110, 245, 0.14) 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
+              "radial-gradient(rgba(124, 58, 237, 0.15) 1px, transparent 1px)",
+            backgroundSize: "22px 22px",
           }}
           aria-hidden="true"
         />
 
-        {/* Ambient Warm Studio Glow */}
+        {/* Ambient Studio Violet-Indigo Key Light */}
         <div
-          className="pointer-events-none absolute -top-20 -left-16 w-[420px] h-[320px] rounded-full"
+          className="pointer-events-none absolute -top-24 -left-20 w-[520px] h-[380px] rounded-full"
           style={{
             background:
-              "radial-gradient(ellipse at center, rgba(124, 58, 237, 0.10) 0%, transparent 70%)",
-            filter: "blur(90px)",
+              "radial-gradient(ellipse at center, rgba(139, 92, 246, 0.18) 0%, rgba(99, 102, 241, 0.08) 50%, transparent 75%)",
+            filter: "blur(110px)",
           }}
           aria-hidden="true"
         />
 
-        {/* Ambient Azure Radiance */}
+        {/* Warm Studio Champagne Radiance */}
         <div
-          className="pointer-events-none absolute bottom-0 right-10 w-[500px] h-[340px] rounded-full"
+          className="pointer-events-none absolute -bottom-16 right-8 w-[540px] h-[360px] rounded-full"
           style={{
             background:
-              "radial-gradient(ellipse at center, rgba(0, 110, 245, 0.12) 0%, transparent 75%)",
-            filter: "blur(100px)",
+              "radial-gradient(ellipse at center, rgba(245, 158, 11, 0.12) 0%, rgba(217, 119, 6, 0.05) 50%, transparent 75%)",
+            filter: "blur(110px)",
           }}
           aria-hidden="true"
         />
@@ -274,7 +274,7 @@ export function AiPhotoPreview({ className }: { className?: string }) {
             {/* Right: Live Transformation Details & Benefits */}
             <div className="lg:col-span-6 xl:col-span-6 space-y-3.5 sm:space-y-4">
               {/* Product Info Card */}
-              <div className="p-4 sm:p-5 rounded-[20px] bg-white/80 backdrop-blur-xl border border-[rgba(0,110,245,0.18)] shadow-[0_8px_24px_-8px_rgba(0,110,245,0.08),inset_0_1px_2px_rgba(255,255,255,0.9)] space-y-2">
+              <div className="p-3.5 sm:p-5 rounded-[18px] sm:rounded-[20px] bg-white/80 backdrop-blur-xl border border-[rgba(0,110,245,0.18)] shadow-[0_8px_24px_-8px_rgba(0,110,245,0.08),inset_0_1px_2px_rgba(255,255,255,0.9)] space-y-2">
                 <div className="flex items-center gap-2">
                   <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-[rgba(0,110,245,0.10)] text-[#006EF5] border border-[rgba(0,110,245,0.20)]">
                     {activeExample.category}
@@ -284,7 +284,7 @@ export function AiPhotoPreview({ className }: { className?: string }) {
                   </span>
                 </div>
 
-                <h3 className="text-lg sm:text-xl font-heading font-extrabold text-[#0B132B] tracking-tight">
+                <h3 className="text-base sm:text-xl font-heading font-extrabold text-[#0B132B] tracking-tight">
                   {activeExample.title}
                 </h3>
 
@@ -306,8 +306,8 @@ export function AiPhotoPreview({ className }: { className?: string }) {
               </div>
 
               {/* 3 Quick Value Highlights */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
-                <div className="p-3 rounded-xl bg-white/75 backdrop-blur-md border border-black/[0.05] shadow-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+                <div className="p-2.5 sm:p-3 rounded-xl bg-white/75 backdrop-blur-md border border-black/[0.05] shadow-xs">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-[#0B132B] mb-0.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#10B981] shrink-0" />
                     <span>No Studio Needed</span>
@@ -317,7 +317,7 @@ export function AiPhotoPreview({ className }: { className?: string }) {
                   </p>
                 </div>
 
-                <div className="p-3 rounded-xl bg-white/75 backdrop-blur-md border border-black/[0.05] shadow-xs">
+                <div className="p-2.5 sm:p-3 rounded-xl bg-white/75 backdrop-blur-md border border-black/[0.05] shadow-xs">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-[#0B132B] mb-0.5">
                     <Zap className="w-3.5 h-3.5 text-[#006EF5] shrink-0" />
                     <span>Rapid Turnaround</span>
@@ -327,7 +327,7 @@ export function AiPhotoPreview({ className }: { className?: string }) {
                   </p>
                 </div>
 
-                <div className="p-3 rounded-xl bg-white/75 backdrop-blur-md border border-black/[0.05] shadow-xs">
+                <div className="p-2.5 sm:p-3 rounded-xl bg-white/75 backdrop-blur-md border border-black/[0.05] shadow-xs">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-[#0B132B] mb-0.5">
                     <Sparkles className="w-3.5 h-3.5 text-[#7C3AED] shrink-0" />
                     <span>Exact Geometry</span>
@@ -339,10 +339,10 @@ export function AiPhotoPreview({ className }: { className?: string }) {
               </div>
 
               {/* Action Bar */}
-              <div className="pt-1 flex items-center justify-between">
+              <div className="pt-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4">
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#003FC5] to-[#006EF5] hover:from-[#0035A8] hover:to-[#005ACF] text-xs sm:text-sm font-bold text-white shadow-[0_4px_16px_rgba(0,110,245,0.28)] transition-all hover:scale-[1.02]"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2 sm:py-2.5 rounded-full bg-gradient-to-r from-[#003FC5] to-[#006EF5] hover:from-[#0035A8] hover:to-[#005ACF] text-xs sm:text-sm font-bold text-white shadow-[0_4px_16px_rgba(0,110,245,0.28)] transition-all hover:scale-[1.02]"
                 >
                   <span>Request a free sample staging</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -350,7 +350,7 @@ export function AiPhotoPreview({ className }: { className?: string }) {
 
                 <Link
                   href="/services/ai-product-photography"
-                  className="text-xs font-bold text-[#006EF5] hover:text-[#004AC7] hover:underline"
+                  className="text-xs font-bold text-[#006EF5] hover:text-[#004AC7] hover:underline text-center sm:text-left"
                 >
                   See pricing & workflow
                 </Link>

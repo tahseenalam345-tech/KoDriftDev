@@ -46,43 +46,43 @@ export function PricingPreview() {
       className="relative my-2 sm:my-5 lg:my-6 px-2 sm:px-4 lg:px-8 xl:px-10"
       aria-labelledby="pricing-heading"
     >
-      {/* ── Sculpted Island Stage with Cohesive Brand Architecture ── */}
+      {/* ── Sculpted Island Stage: Royal Sapphire Aesthetic ── */}
       <div
-        className="relative mx-auto max-w-[1520px] rounded-[24px] sm:rounded-[36px] lg:rounded-[44px] pt-4 sm:pt-6 lg:pt-8 pb-5 sm:pb-8 lg:pb-10 px-3 sm:px-6 lg:px-9 overflow-hidden border border-[rgba(0,110,245,0.18)] shadow-[0_20px_50px_-14px_rgba(0,50,150,0.08),inset_0_2px_4px_rgba(255,255,255,1)]"
+        className="relative mx-auto max-w-[1520px] rounded-[24px] sm:rounded-[36px] lg:rounded-[44px] pt-4 sm:pt-6 lg:pt-8 pb-5 sm:pb-8 lg:pb-10 px-3 sm:px-6 lg:px-9 overflow-hidden border border-[rgba(0,110,245,0.28)] shadow-[0_20px_50px_-14px_rgba(0,110,245,0.14),inset_0_2px_4px_rgba(255,255,255,1)]"
         style={{
           background:
-            "linear-gradient(175deg, #EEF4FB 0%, #E4ECF8 45%, #F0F5FC 100%)",
+            "linear-gradient(168deg, #F2F6FE 0%, #E5EDFD 45%, #EDF3FE 100%)",
         }}
       >
-        {/* Subtle Decorative Architectural Dot Pattern Overlay */}
+        {/* Subtle Sapphire Starlight Dot Pattern Overlay */}
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.35]"
+          className="pointer-events-none absolute inset-0 opacity-[0.42]"
           style={{
             backgroundImage:
-              "radial-gradient(rgba(0, 110, 245, 0.14) 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
+              "radial-gradient(rgba(0, 110, 245, 0.18) 1px, transparent 1px)",
+            backgroundSize: "22px 22px",
           }}
           aria-hidden="true"
         />
 
-        {/* Ambient Azure Radiance */}
+        {/* Ambient Royal Sapphire Glow */}
         <div
-          className="pointer-events-none absolute -top-20 -left-16 w-[450px] h-[320px] rounded-full"
+          className="pointer-events-none absolute -top-24 -left-20 w-[520px] h-[380px] rounded-full"
           style={{
             background:
-              "radial-gradient(ellipse at center, rgba(0, 110, 245, 0.14) 0%, transparent 70%)",
-            filter: "blur(90px)",
+              "radial-gradient(ellipse at center, rgba(0, 80, 220, 0.20) 0%, rgba(44, 129, 250, 0.10) 50%, transparent 75%)",
+            filter: "blur(110px)",
           }}
           aria-hidden="true"
         />
 
-        {/* Ambient Warm Indigo Glow */}
+        {/* Ambient Hyper-Azure Radiance */}
         <div
-          className="pointer-events-none absolute bottom-0 right-10 w-[480px] h-[340px] rounded-full"
+          className="pointer-events-none absolute -bottom-16 right-8 w-[540px] h-[380px] rounded-full"
           style={{
             background:
-              "radial-gradient(ellipse at center, rgba(99, 102, 241, 0.12) 0%, transparent 75%)",
-            filter: "blur(100px)",
+              "radial-gradient(ellipse at center, rgba(44, 129, 250, 0.18) 0%, rgba(0, 110, 245, 0.08) 50%, transparent 75%)",
+            filter: "blur(110px)",
           }}
           aria-hidden="true"
         />
@@ -141,7 +141,7 @@ export function PricingPreview() {
               return (
                 <div
                   key={pkg.name}
-                  className={`group relative flex flex-col justify-between rounded-[22px] sm:rounded-[26px] p-5 sm:p-6 transition-all duration-300 ease-out hover:-translate-y-1.5 ${
+                  className={`group relative flex flex-col justify-between rounded-[18px] sm:rounded-[26px] p-3.5 sm:p-6 transition-all duration-300 ease-out hover:-translate-y-1.5 ${
                     isScale
                       ? "border-[1.5px] border-[#2C81FA]/50 shadow-[0_16px_40px_-10px_rgba(0,110,245,0.30)]"
                       : isGrowth
@@ -159,20 +159,20 @@ export function PricingPreview() {
                 >
                   <div>
                     {/* Header Row: Icon, Name & Recommended Badge */}
-                    <div className="flex items-center justify-between mb-3.5">
-                      <div className="flex items-center gap-2.5">
+                    <div className="flex items-center justify-between mb-2.5 sm:mb-3.5">
+                      <div className="flex items-center gap-2 sm:gap-2.5">
                         <div
-                          className={`flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl shadow-xs transition-transform duration-300 group-hover:scale-110 ${
+                          className={`flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-xl shadow-xs transition-transform duration-300 group-hover:scale-110 ${
                             isScale
                               ? "bg-white/10 text-[#60A5FA] border border-[#2C81FA]/40"
                               : "bg-white/90 text-[#006EF5] border border-[rgba(0,110,245,0.20)]"
                           }`}
                         >
-                          <Icon className="h-4.5 w-4.5 sm:h-5 sm:w-5 stroke-[2.2]" />
+                          <Icon className="h-4 w-4 sm:h-5 sm:w-5 stroke-[2.2]" />
                         </div>
                         <div>
                           <h3
-                            className={`font-heading font-extrabold text-xl tracking-tight leading-none ${
+                            className={`font-heading font-extrabold text-lg sm:text-xl tracking-tight leading-none ${
                               isScale ? "text-white" : "text-[#0B132B]"
                             }`}
                           >
@@ -183,7 +183,7 @@ export function PricingPreview() {
 
                       {/* Pill Badge */}
                       <span
-                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${
+                        className={`px-2 py-0.5 sm:px-2.5 sm:py-0.5 rounded-full text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider ${
                           isScale
                             ? "bg-[#2C81FA]/20 text-[#60A5FA] border border-[#2C81FA]/40"
                             : isGrowth
@@ -197,7 +197,7 @@ export function PricingPreview() {
 
                     {/* Description */}
                     <p
-                      className={`text-xs sm:text-[13px] leading-relaxed mb-4 ${
+                      className={`text-xs sm:text-[13px] leading-snug sm:leading-relaxed mb-3 sm:mb-4 ${
                         isScale ? "text-white/75" : "text-[#3A4B6E]"
                       }`}
                     >
@@ -206,22 +206,22 @@ export function PricingPreview() {
 
                     {/* Includes Section */}
                     <div
-                      className={`pt-3.5 border-t ${
+                      className={`pt-2.5 sm:pt-3.5 border-t ${
                         isScale ? "border-white/10" : "border-black/[0.06]"
                       }`}
                     >
                       <span
-                        className={`block text-[10px] font-mono font-extrabold uppercase tracking-wider mb-2.5 ${
+                        className={`block text-[9px] sm:text-[10px] font-mono font-extrabold uppercase tracking-wider mb-1.5 sm:mb-2.5 ${
                           isScale ? "text-white/50" : "text-[#5A6E85]"
                         }`}
                       >
                         What’s included
                       </span>
-                      <ul className="space-y-2">
+                      <ul className="space-y-1.5 sm:space-y-2">
                         {pkg.includes.map((item, i) => (
-                          <li key={i} className="flex items-start gap-2 text-xs">
+                          <li key={i} className="flex items-start gap-1.5 sm:gap-2 text-[11px] sm:text-xs">
                             <CheckCircle2
-                              className={`h-3.5 w-3.5 shrink-0 mt-0.5 ${
+                              className={`h-3 w-3 sm:h-3.5 sm:w-3.5 shrink-0 mt-0.5 ${
                                 isScale ? "text-[#60A5FA]" : "text-[#006EF5]"
                               }`}
                             />
@@ -240,12 +240,12 @@ export function PricingPreview() {
 
                   {/* Bottom Action Section */}
                   <div
-                    className={`mt-5 pt-3.5 border-t ${
+                    className={`mt-4 sm:mt-5 pt-2.5 sm:pt-3.5 border-t ${
                       isScale ? "border-white/10" : "border-black/[0.06]"
                     }`}
                   >
                     <p
-                      className={`text-[10px] sm:text-[11px] font-mono leading-tight mb-3 ${
+                      className={`text-[9px] sm:text-[11px] font-mono leading-tight mb-2 sm:mb-3 ${
                         isScale ? "text-white/45" : "text-[#5A6E85]"
                       }`}
                     >
@@ -254,7 +254,7 @@ export function PricingPreview() {
 
                     <Link
                       href="/contact"
-                      className={`w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 ${
+                      className={`w-full inline-flex items-center justify-center gap-1.5 py-2 sm:py-2.5 px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 ${
                         isScale
                           ? "bg-white/10 hover:bg-white text-white hover:text-[#091326] border border-white/20 shadow-sm"
                           : isGrowth

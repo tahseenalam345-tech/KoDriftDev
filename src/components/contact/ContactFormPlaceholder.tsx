@@ -23,10 +23,10 @@ export function ContactFormPlaceholder() {
   };
 
   return (
-    <Card variant="surface" size="lg" className="space-y-6">
+    <Card variant="surface" size="lg" className="space-y-4 sm:space-y-6 p-4 sm:p-8 rounded-2xl sm:rounded-[6px]">
       <div>
-        <h2 className="text-2xl font-bold text-text">Project Enquiry Form</h2>
-        <p className="mt-1 text-sm text-muted">
+        <h2 className="text-xl sm:text-2xl font-bold text-text">Project Enquiry Form</h2>
+        <p className="mt-1 text-xs sm:text-sm text-muted">
           Fill in your details below and we will get back to you with a practical recommendation.
         </p>
       </div>

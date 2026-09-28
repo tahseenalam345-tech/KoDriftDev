@@ -53,7 +53,8 @@ export default function RootLayout({
         style={{ background: "var(--bg-base)", color: "var(--text)" }}
       >
         <AnimationProvider>
-          <ParticleStage />
+          {/* Background particles on other pages commented out - keeping only Hero and Services particles */}
+          {/* <ParticleStage /> */}
           <Header />
           <main className="relative z-10 flex-1 bg-transparent overflow-x-clip w-full max-w-full">{children}</main>
           <div className="relative z-20 overflow-x-clip w-full max-w-full">

@@ -4,13 +4,14 @@ import React, { useState, useEffect } from "react";
 import { ParticleBackground } from "./ParticleBackground";
 
 export function ParticleStage() {
+  // Keeping only Hero page particles and Service page particles.
+  // All other background particles (products, work, photos, etc.) are commented out.
+  return null;
+
+  /*
   const [shouldRender, setShouldRender] = useState(false);
 
   useEffect(() => {
-    // Only render background WebGL 3D particles on desktop (>= 1024px)
-    // when scrolled down to Services / other sections.
-    // On mobile, 3D particles are hidden for clean performance and readability,
-    // while Hero greeting particle typography remains active.
     const checkState = () => {
       const isDesktop = window.innerWidth >= 1024;
       if (isDesktop && window.scrollY > 220) {
@@ -38,6 +39,7 @@ export function ParticleStage() {
       <ParticleBackground />
     </div>
   );
+  */
 }
 
 export { ParticleBackground };

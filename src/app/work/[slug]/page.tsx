@@ -133,32 +133,32 @@ export default async function CaseStudyDetailPage({ params }: ProjectPageProps) 
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
             {/* Main Narrative Column */}
-            <div className="lg:col-span-8 space-y-12">
+            <div className="lg:col-span-8 space-y-6 sm:space-y-12">
               {/* The Problem */}
-              <div className="space-y-4">
+              <div className="space-y-2 sm:space-y-4">
                 <span className="metadata-text text-accent">
                   The problem
                 </span>
                 <h2 className="section-headline">
                   The challenge
                 </h2>
-                <div className="rounded-[6px] bg-surface border border-border p-6 sm:p-8 shadow-2xs">
-                  <p className="text-base text-text leading-relaxed">
+                <div className="rounded-2xl sm:rounded-[6px] bg-surface border border-border p-4 sm:p-8 shadow-2xs">
+                  <p className="text-sm sm:text-base text-text leading-relaxed">
                     {project.challenge}
                   </p>
                 </div>
               </div>
 
               {/* What We Built */}
-              <div className="space-y-4">
+              <div className="space-y-2 sm:space-y-4">
                 <span className="metadata-text text-primary">
                   The solution
                 </span>
                 <h2 className="section-headline">
                   What we built
                 </h2>
-                <div className="rounded-[6px] bg-surface border border-border p-6 sm:p-8 shadow-2xs">
-                  <p className="text-base text-text leading-relaxed">
+                <div className="rounded-2xl sm:rounded-[6px] bg-surface border border-border p-4 sm:p-8 shadow-2xs">
+                  <p className="text-sm sm:text-base text-text leading-relaxed">
                     {project.solution}
                   </p>
                 </div>
@@ -166,18 +166,18 @@ export default async function CaseStudyDetailPage({ params }: ProjectPageProps) 
 
               {/* Key Parts */}
               {project.features && project.features.length > 0 && (
-                <div className="space-y-4">
+                <div className="space-y-2 sm:space-y-4">
                   <span className="metadata-text text-muted">
                     Capabilities
                   </span>
                   <h2 className="section-headline">
                     Key parts
                   </h2>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-text font-body">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-xs sm:text-sm text-text font-body">
                     {project.features.map((feature, idx) => (
                       <li
                         key={idx}
-                        className="flex items-start gap-3 rounded-[6px] border border-border bg-surface p-4 shadow-2xs"
+                        className="flex items-start gap-2.5 sm:gap-3 rounded-xl sm:rounded-[6px] border border-border bg-surface p-3 sm:p-4 shadow-2xs"
                       >
                         <Check className="h-4 w-4 text-accent shrink-0 mt-0.5" />
                         <span className="leading-snug">{feature}</span>
@@ -188,19 +188,19 @@ export default async function CaseStudyDetailPage({ params }: ProjectPageProps) 
               )}
 
               {/* Project Notes & Results */}
-              <div className="space-y-4">
+              <div className="space-y-2 sm:space-y-4">
                 <span className="metadata-text text-muted">
                   Outcomes
                 </span>
                 <h2 className="section-headline">
                   Project notes
                 </h2>
-                <div className="rounded-[6px] border border-border bg-surface p-6 sm:p-8 space-y-4 shadow-2xs">
-                  <ul className="space-y-3.5 text-sm sm:text-base text-text font-body">
+                <div className="rounded-2xl sm:rounded-[6px] border border-border bg-surface p-4 sm:p-8 space-y-3 sm:space-y-4 shadow-2xs">
+                  <ul className="space-y-2 sm:space-y-3.5 text-xs sm:text-base text-text font-body">
                     {project.results.map((result, idx) => (
-                      <li key={idx} className="flex items-start gap-3">
-                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary mt-0.5">
-                          <Check className="h-3.5 w-3.5" />
+                      <li key={idx} className="flex items-start gap-2.5 sm:gap-3">
+                        <span className="flex h-4 w-4 sm:h-5 sm:w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary mt-0.5">
+                          <Check className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                         </span>
                         <span>{result}</span>
                       </li>

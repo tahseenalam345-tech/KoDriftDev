@@ -13,6 +13,8 @@ import {
 import { Container } from "@/components/layout/Container";
 import { services } from "@/content/services";
 
+import { ServiceParticleCanvas } from "@/components/canvas/ServiceParticleCanvas";
+
 export function ServicePreview() {
   const webDev = services.find((s) => s.slug === "web-development")!;
   const softwareDev = services.find((s) => s.slug === "software-development")!;
@@ -20,6 +22,7 @@ export function ServicePreview() {
   const aiPhoto = services.find((s) => s.slug === "ai-product-photography")!;
   const aiAutomation = services.find((s) => s.slug === "ai-automation")!;
 
+  const [activeShape, setActiveShape] = React.useState<string>("code");
   const [activeService, setActiveService] = React.useState<{ name: string; tag: string }>({
     name: "Web Development",
     tag: "</>",
@@ -27,6 +30,7 @@ export function ServicePreview() {
 
   // Emit morph event for 3D particles (with cardId for mobile touch positioning)
   const handleMorph = (shape: string, name: string, tag: string, cardId?: string) => {
+    setActiveShape(shape);
     setActiveService({ name, tag });
     if (typeof window !== "undefined") {
       window.dispatchEvent(
@@ -88,7 +92,7 @@ export function ServicePreview() {
           {/* ── Fixed 3D Particle Showcase Stage (Hidden on Mobile, Visible on Desktop lg:flex) ── */}
           <div
             id="services-particle-anchor"
-            className="hidden lg:flex relative h-[200px] sm:h-[265px] lg:h-[285px] w-full items-center justify-center rounded-2xl sm:rounded-3xl"
+            className="hidden lg:flex relative h-[200px] sm:h-[265px] lg:h-[285px] w-full items-center justify-center rounded-2xl sm:rounded-3xl overflow-hidden"
           >
             {/* Subtle glass pod backdrop */}
             <div
@@ -100,9 +104,14 @@ export function ServicePreview() {
               className="pointer-events-none absolute inset-x-12 top-1/2 -translate-y-1/2 h-28 rounded-full bg-[#006EF5]/12 blur-3xl"
               aria-hidden="true"
             />
+
+            {/* Direct High-Definition 3D Particle Canvas */}
+            <div className="absolute inset-0 z-10">
+              <ServiceParticleCanvas activeShape={activeShape} />
+            </div>
             
             {/* Dynamic hologram badge */}
-            <div className="absolute bottom-2.5 sm:bottom-3 left-1/2 -translate-x-1/2 z-10 pointer-events-none whitespace-nowrap">
+            <div className="absolute bottom-2.5 sm:bottom-3 left-1/2 -translate-x-1/2 z-20 pointer-events-none whitespace-nowrap">
               <span className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-extrabold tracking-wider uppercase bg-white/95 backdrop-blur-xl text-[#006EF5] border border-[rgba(0,110,245,0.24)] shadow-[0_4px_14px_rgba(0,110,245,0.12),inset_0_1px_1px_rgba(255,255,255,1)] transition-all duration-300">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#006EF5] opacity-75" />

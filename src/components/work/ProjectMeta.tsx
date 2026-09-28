@@ -9,12 +9,12 @@ interface ProjectMetaProps {
 
 export function ProjectMeta({ project }: ProjectMetaProps) {
   return (
-    <Card variant="surface" size="md" className="space-y-6">
-      <h3 className="text-base font-bold uppercase tracking-wider text-text pb-2 border-b border-border">
+    <Card variant="surface" size="md" className="space-y-4 sm:space-y-6 p-4 sm:p-6">
+      <h3 className="text-sm sm:text-base font-bold uppercase tracking-wider text-text pb-2 border-b border-border">
         Project Details
       </h3>
 
-      <dl className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 text-sm">
+      <dl className="grid grid-cols-2 lg:grid-cols-1 gap-3 sm:gap-4 text-xs sm:text-sm">
         {project.clientName && (
           <div>
             <dt className="text-xs font-semibold text-muted uppercase">Client</dt>
