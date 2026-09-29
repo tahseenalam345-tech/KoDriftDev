@@ -50,18 +50,18 @@ export function MobileMenu({
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* ── 1. Dimmed Translucent Backdrop ── */}
+          {/* ── 1. Dimmed Translucent Backdrop (No heavy blur for instant 60/120fps opening) ── */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
+            transition={{ duration: 0.16, ease: "linear" }}
             onClick={onClose}
-            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md md:hidden"
+            className="fixed inset-0 z-50 bg-black/65 md:hidden"
             aria-hidden="true"
           />
 
-          {/* ── 2. Frosted Glass Translucent Sidebar Drawer ── */}
+          {/* ── 2. Hardware-Accelerated Fast Drawer (180ms snappy cubic-bezier) ── */}
           <motion.div
             role="dialog"
             aria-modal="true"
@@ -69,30 +69,28 @@ export function MobileMenu({
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 26, stiffness: 280 }}
+            transition={{ duration: 0.19, ease: [0.16, 1, 0.3, 1] }}
             className="fixed top-0 right-0 bottom-0 z-50 flex flex-col w-[82%] max-w-[340px] md:hidden overflow-hidden select-none"
             style={{
-              background: "linear-gradient(180deg, rgba(8, 14, 28, 0.94) 0%, rgba(4, 8, 18, 0.97) 100%)",
-              backdropFilter: "blur(32px)",
-              WebkitBackdropFilter: "blur(32px)",
+              willChange: "transform",
+              transform: "translateZ(0)",
+              background: "rgba(7, 13, 26, 0.98)",
               borderLeft: "1px solid rgba(255, 255, 255, 0.14)",
-              boxShadow: "-16px 0 50px rgba(0, 110, 245, 0.28), -4px 0 20px rgba(0, 0, 0, 0.6)",
+              boxShadow: "-16px 0 50px rgba(0, 0, 0, 0.75), -2px 0 16px rgba(0, 110, 245, 0.22)",
             }}
           >
-            {/* Ambient Radial Glass Glows */}
+            {/* Ambient Radial Glows (Pure gradient alpha stops, no heavy CPU/GPU filter:blur) */}
             <div
-              className="pointer-events-none absolute -top-16 -right-16 w-52 h-52 rounded-full"
+              className="pointer-events-none absolute -top-16 -right-16 w-52 h-52 rounded-full opacity-60"
               style={{
-                background: "radial-gradient(circle, rgba(0, 110, 245, 0.35) 0%, transparent 70%)",
-                filter: "blur(40px)",
+                background: "radial-gradient(circle, rgba(0, 110, 245, 0.35) 0%, rgba(0, 110, 245, 0.1) 40%, transparent 70%)",
               }}
               aria-hidden="true"
             />
             <div
-              className="pointer-events-none absolute bottom-20 -left-20 w-52 h-52 rounded-full"
+              className="pointer-events-none absolute bottom-20 -left-20 w-52 h-52 rounded-full opacity-50"
               style={{
-                background: "radial-gradient(circle, rgba(139, 92, 246, 0.22) 0%, transparent 70%)",
-                filter: "blur(45px)",
+                background: "radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, rgba(139, 92, 246, 0.08) 45%, transparent 70%)",
               }}
               aria-hidden="true"
             />

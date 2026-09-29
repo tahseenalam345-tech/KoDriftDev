@@ -166,7 +166,7 @@ export function Hero() {
                   initial={shouldReduce ? {} : { opacity: 0, x: -28 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-                  className="block select-none ml-2.5 sm:ml-[clamp(1.2rem,3.4vw,3.2rem)]"
+                  className="block select-none ml-[1.15em] sm:ml-[1.35em]"
                 >
                   <span className="headline-shine-word headline-shine-blue headline-word-2">
                     better
@@ -177,7 +177,7 @@ export function Hero() {
                   initial={shouldReduce ? {} : { opacity: 0, x: -40 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.7, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
-                  className="block select-none ml-4 sm:ml-[clamp(2.4rem,6.8vw,6.4rem)]"
+                  className="block select-none ml-[2.3em] sm:ml-[2.7em]"
                 >
                   <span className="headline-shine-word headline-shine-dark headline-word-3">
                     online.

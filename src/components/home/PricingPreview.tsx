@@ -130,49 +130,60 @@ export function PricingPreview() {
             </Link>
           </div>
 
-          {/* ── 3 Responsive Pricing Cards ── */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 items-stretch">
+          {/* ── 3 Responsive Pricing Cards: 2 in row + 1 in next row on Mobile ── */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-5 items-stretch">
             {pricingPackages.map((pkg, idx) => {
               const theme = PLAN_THEMES[idx] || PLAN_THEMES[0];
               const Icon = theme.icon;
               const isGrowth = pkg.name === "Growth";
               const isScale = pkg.name === "Scale";
+              const isFullWidthMobile = idx === 2; // Plan 3: 1 in row (spans 2 columns on mobile)
+
+              // PKR Pricing Values (Strictly PKR, zero dollars)
+              const pkrPrice =
+                pkg.name === "Starter"
+                  ? "Starting PKR 45,000"
+                  : pkg.name === "Growth"
+                  ? "Starting PKR 120,000"
+                  : "Custom Quote in PKR";
 
               return (
                 <div
                   key={pkg.name}
-                  className={`group relative flex flex-col justify-between rounded-[18px] sm:rounded-[26px] p-3.5 sm:p-6 transition-all duration-300 ease-out hover:-translate-y-1.5 ${
+                  className={`group relative flex flex-col justify-between rounded-[16px] sm:rounded-[24px] p-3 sm:p-5 transition-all duration-200 ease-out hover:-translate-y-1 ${
+                    isFullWidthMobile ? "col-span-2 md:col-span-1" : "col-span-1"
+                  } ${
                     isScale
-                      ? "border-[1.5px] border-[#2C81FA]/50 shadow-[0_16px_40px_-10px_rgba(0,110,245,0.30)]"
+                      ? "border-[1.5px] border-[#2C81FA]/50 shadow-[0_12px_32px_-8px_rgba(0,110,245,0.28)]"
                       : isGrowth
-                      ? "border-[1.5px] border-[#006EF5]/50 shadow-[0_16px_40px_-10px_rgba(0,110,245,0.20),inset_0_1px_2px_rgba(255,255,255,1)]"
-                      : "border-[1.5px] border-[rgba(0,110,245,0.18)] shadow-[0_8px_24px_-8px_rgba(0,110,245,0.08),inset_0_1px_2px_rgba(255,255,255,0.9)]"
+                      ? "border-[1.5px] border-[#006EF5]/50 shadow-[0_12px_32px_-8px_rgba(0,110,245,0.18)]"
+                      : "border border-[rgba(0,110,245,0.18)] shadow-[0_4px_16px_-6px_rgba(0,110,245,0.06)]"
                   }`}
                   style={{
                     background: isScale
                       ? "linear-gradient(155deg, #091326 0%, #0F2044 55%, #152E5E 100%)"
                       : isGrowth
                       ? "linear-gradient(150deg, #FFFFFF 0%, #F0F6FF 100%)"
-                      : "linear-gradient(150deg, rgba(255, 255, 255, 0.96) 0%, rgba(242, 248, 255, 0.90) 100%)",
+                      : "linear-gradient(150deg, rgba(255, 255, 255, 0.98) 0%, rgba(242, 248, 255, 0.92) 100%)",
                     backdropFilter: "blur(12px)",
                   }}
                 >
                   <div>
-                    {/* Header Row: Icon, Name & Recommended Badge */}
-                    <div className="flex items-center justify-between mb-2.5 sm:mb-3.5">
-                      <div className="flex items-center gap-2 sm:gap-2.5">
+                    {/* Header Row: Icon, Name & Badge */}
+                    <div className="flex items-center justify-between mb-1.5 sm:mb-2.5">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
                         <div
-                          className={`flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-xl shadow-xs transition-transform duration-300 group-hover:scale-110 ${
+                          className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-lg sm:rounded-xl shadow-xs transition-transform duration-200 group-hover:scale-105 ${
                             isScale
                               ? "bg-white/10 text-[#60A5FA] border border-[#2C81FA]/40"
                               : "bg-white/90 text-[#006EF5] border border-[rgba(0,110,245,0.20)]"
                           }`}
                         >
-                          <Icon className="h-4 w-4 sm:h-5 sm:w-5 stroke-[2.2]" />
+                          <Icon className="h-3.5 w-3.5 sm:h-4.5 sm:w-4.5 stroke-[2.2]" />
                         </div>
                         <div>
                           <h3
-                            className={`font-heading font-extrabold text-lg sm:text-xl tracking-tight leading-none ${
+                            className={`font-heading font-extrabold text-sm sm:text-lg tracking-tight leading-none ${
                               isScale ? "text-white" : "text-[#0B132B]"
                             }`}
                           >
@@ -183,7 +194,7 @@ export function PricingPreview() {
 
                       {/* Pill Badge */}
                       <span
-                        className={`px-2 py-0.5 sm:px-2.5 sm:py-0.5 rounded-full text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider ${
+                        className={`px-1.5 py-0.2 sm:px-2 sm:py-0.5 rounded-full text-[7.5px] sm:text-[9px] font-extrabold uppercase tracking-wider ${
                           isScale
                             ? "bg-[#2C81FA]/20 text-[#60A5FA] border border-[#2C81FA]/40"
                             : isGrowth
@@ -195,9 +206,22 @@ export function PricingPreview() {
                       </span>
                     </div>
 
+                    {/* PKR Price Tag (Prominent & Clear) */}
+                    <div className="my-1.5 sm:my-2">
+                      <span
+                        className={`text-xs sm:text-base font-extrabold font-heading tracking-tight block ${
+                          isScale
+                            ? "text-[#60A5FA]"
+                            : "bg-gradient-to-r from-[#003FC5] to-[#006EF5] bg-clip-text text-transparent"
+                        }`}
+                      >
+                        {pkrPrice}
+                      </span>
+                    </div>
+
                     {/* Description */}
                     <p
-                      className={`text-xs sm:text-[13px] leading-snug sm:leading-relaxed mb-3 sm:mb-4 ${
+                      className={`text-[10px] sm:text-xs leading-snug line-clamp-2 mb-2 sm:mb-3 ${
                         isScale ? "text-white/75" : "text-[#3A4B6E]"
                       }`}
                     >
@@ -206,27 +230,27 @@ export function PricingPreview() {
 
                     {/* Includes Section */}
                     <div
-                      className={`pt-2.5 sm:pt-3.5 border-t ${
+                      className={`pt-1.5 sm:pt-2.5 border-t ${
                         isScale ? "border-white/10" : "border-black/[0.06]"
                       }`}
                     >
                       <span
-                        className={`block text-[9px] sm:text-[10px] font-mono font-extrabold uppercase tracking-wider mb-1.5 sm:mb-2.5 ${
+                        className={`block text-[8px] sm:text-[9px] font-sans font-bold uppercase tracking-wider mb-1 sm:mb-1.5 ${
                           isScale ? "text-white/50" : "text-[#5A6E85]"
                         }`}
                       >
-                        What’s included
+                        Deliverables:
                       </span>
-                      <ul className="space-y-1.5 sm:space-y-2">
-                        {pkg.includes.map((item, i) => (
-                          <li key={i} className="flex items-start gap-1.5 sm:gap-2 text-[11px] sm:text-xs">
+                      <ul className="space-y-1">
+                        {pkg.includes.slice(0, 3).map((item, i) => (
+                          <li key={i} className="flex items-start gap-1 sm:gap-1.5 text-[10px] sm:text-[11px]">
                             <CheckCircle2
-                              className={`h-3 w-3 sm:h-3.5 sm:w-3.5 shrink-0 mt-0.5 ${
+                              className={`h-3 w-3 shrink-0 mt-0.5 ${
                                 isScale ? "text-[#60A5FA]" : "text-[#006EF5]"
                               }`}
                             />
                             <span
-                              className={`leading-snug ${
+                              className={`leading-snug truncate ${
                                 isScale ? "text-white/85" : "text-[#2C3E5A]"
                               }`}
                             >
@@ -240,30 +264,22 @@ export function PricingPreview() {
 
                   {/* Bottom Action Section */}
                   <div
-                    className={`mt-4 sm:mt-5 pt-2.5 sm:pt-3.5 border-t ${
+                    className={`mt-2.5 sm:mt-4 pt-1.5 sm:pt-2.5 border-t ${
                       isScale ? "border-white/10" : "border-black/[0.06]"
                     }`}
                   >
-                    <p
-                      className={`text-[9px] sm:text-[11px] font-mono leading-tight mb-2 sm:mb-3 ${
-                        isScale ? "text-white/45" : "text-[#5A6E85]"
-                      }`}
-                    >
-                      {pkg.note}
-                    </p>
-
                     <Link
                       href="/contact"
-                      className={`w-full inline-flex items-center justify-center gap-1.5 py-2 sm:py-2.5 px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 ${
+                      className={`w-full inline-flex items-center justify-center gap-1 py-1.5 sm:py-2 px-3 rounded-xl text-[11px] sm:text-xs font-bold transition-all duration-200 ${
                         isScale
-                          ? "bg-white/10 hover:bg-white text-white hover:text-[#091326] border border-white/20 shadow-sm"
+                          ? "bg-white/10 hover:bg-white text-white hover:text-[#091326] border border-white/20 shadow-xs"
                           : isGrowth
-                          ? "bg-gradient-to-r from-[#003FC5] to-[#006EF5] hover:from-[#0035A8] hover:to-[#005ACF] text-white shadow-[0_4px_14px_rgba(0,110,245,0.30)] hover:scale-[1.02]"
+                          ? "bg-gradient-to-r from-[#003FC5] to-[#006EF5] hover:from-[#0035A8] hover:to-[#005ACF] text-white shadow-xs"
                           : "bg-white hover:bg-[#F0F6FF] text-[#006EF5] border border-[rgba(0,110,245,0.25)] shadow-xs"
                       }`}
                     >
                       <span>{pkg.ctaLabel}</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
+                      <ArrowRight className="h-3 w-3" />
                     </Link>
                   </div>
                 </div>

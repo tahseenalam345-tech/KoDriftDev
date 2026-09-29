@@ -132,112 +132,54 @@ export function TestimonialPreview() {
             </div>
           </div>
 
-          {/* ── Featured Large 3D Crystal Review Block ── */}
-          <blockquote
-            className="group relative rounded-[18px] sm:rounded-[28px] lg:rounded-[32px] p-3.5 sm:p-8 lg:p-10 border-[1.5px] border-[rgba(245,158,11,0.28)] hover:border-[#F59E0B] backdrop-blur-xl shadow-[0_16px_36px_-10px_rgba(217,119,6,0.12),inset_0_1.5px_2px_rgba(255,255,255,1)] hover:shadow-[0_24px_50px_-10px_rgba(245,158,11,0.22),inset_0_1.5px_2px_rgba(255,255,255,1)] transition-all duration-300 overflow-hidden"
-            style={{
-              background:
-                "linear-gradient(150deg, rgba(255, 255, 255, 0.98) 0%, rgba(254, 250, 242, 0.92) 55%, rgba(253, 246, 233, 0.88) 100%)",
-            }}
-          >
-            {/* Top ambient color reflection */}
-            <div
-              className="pointer-events-none absolute -top-16 -right-16 w-44 h-44 rounded-full bg-[#F59E0B]/12 blur-2xl group-hover:bg-[#F59E0B]/22 transition-all duration-300"
-              aria-hidden="true"
-            />
-
-            {/* Giant decorative watermark quote */}
-            <Quote
-              className="absolute top-4 right-6 sm:top-6 sm:right-10 w-24 h-24 sm:w-32 sm:h-32 text-[#F59E0B]/10 pointer-events-none stroke-1 select-none"
-              aria-hidden="true"
-            />
-
-            <div className="relative z-10 space-y-3 sm:space-y-5">
-              <div className="flex items-center justify-between gap-4 flex-wrap">
-                <GlowingStarRow size="lg" />
-                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-[11px] font-mono font-bold tracking-wider uppercase bg-[#FEF3C7] text-[#92400E] border border-[rgba(245,158,11,0.30)]">
-                  <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#16A34A]" />
-                  Verified Case Study
-                </span>
-              </div>
-
-              <p className="text-sm sm:text-xl lg:text-2xl font-heading font-semibold text-[#0B132B] leading-snug sm:leading-relaxed max-w-4xl tracking-tight">
-                &ldquo;{featured.quote}&rdquo;
-              </p>
-
-              <footer className="pt-3 sm:pt-5 border-t border-[rgba(245,158,11,0.18)] flex items-center justify-between gap-3 sm:gap-4 flex-wrap">
-                <div className="flex items-center gap-2.5 sm:gap-3.5">
-                  <div className="flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#F59E0B] to-[#D97706] text-white font-mono font-extrabold text-xs sm:text-base shadow-[0_4px_14px_rgba(245,158,11,0.35)]">
-                    {getInitials(featured.name)}
-                  </div>
-                  <div>
-                    <cite className="font-heading font-bold not-italic text-xs sm:text-base text-[#0B132B] block">
-                      {featured.name}
-                    </cite>
-                    <p className="text-[11px] sm:text-sm text-[#475569] font-medium">
-                      {featured.role}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="inline-flex items-center gap-1 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-[11px] font-mono text-[#78350F] bg-white/80 border border-[rgba(245,158,11,0.22)] shadow-xs">
-                  <ShieldCheck className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-[#16A34A]" />
-                  <span>{featured.verificationStatus}</span>
-                </div>
-              </footer>
-            </div>
-          </blockquote>
-
-          {/* ── Two Supporting Review Cards (Tilted 3D Crystal Cards) ── */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6" style={{ perspective: "1200px" }}>
-            {supporting.map((item, idx) => (
+          {/* ── Compact 3-Card Review Grid (Low height, minimal mobile scroll) ── */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 sm:gap-4">
+            {testimonials.map((item) => (
               <blockquote
                 key={item.name}
-                className={`group relative flex flex-col justify-between rounded-[18px] sm:rounded-[26px] p-3.5 sm:p-7 border-[1.5px] border-[rgba(245,158,11,0.24)] hover:border-[#F59E0B] backdrop-blur-xl shadow-[0_12px_30px_-10px_rgba(217,119,6,0.10),inset_0_1.5px_2px_rgba(255,255,255,1)] hover:shadow-[0_20px_45px_-10px_rgba(245,158,11,0.20),inset_0_1.5px_2px_rgba(255,255,255,1)] transition-all duration-300 ease-out overflow-hidden hover:rotate-0 hover:-translate-y-1.5 ${
-                  idx === 0 ? "md:-rotate-[0.6deg]" : "md:rotate-[0.6deg]"
-                }`}
+                className="group relative flex flex-col justify-between rounded-[16px] sm:rounded-[22px] p-3 sm:p-4.5 border border-[rgba(245,158,11,0.24)] hover:border-[#F59E0B] backdrop-blur-xl shadow-[0_4px_16px_-6px_rgba(217,119,6,0.10)] hover:shadow-[0_8px_24px_-6px_rgba(245,158,11,0.18)] transition-all duration-200 ease-out overflow-hidden hover:-translate-y-1"
                 style={{
                   background:
-                    "linear-gradient(150deg, rgba(255, 255, 255, 0.96) 0%, rgba(254, 250, 244, 0.90) 100%)",
+                    "linear-gradient(150deg, rgba(255, 255, 255, 0.98) 0%, rgba(254, 250, 244, 0.92) 100%)",
                 }}
               >
                 {/* Subtle top glow */}
                 <div
-                  className="pointer-events-none absolute -top-12 -right-12 w-32 h-32 rounded-full bg-[#F59E0B]/10 blur-xl group-hover:bg-[#F59E0B]/18 transition-all duration-300"
+                  className="pointer-events-none absolute -top-12 -right-12 w-28 h-28 rounded-full bg-[#F59E0B]/10 blur-xl group-hover:bg-[#F59E0B]/18 transition-all duration-300"
                   aria-hidden="true"
                 />
 
-                <div className="relative z-10 space-y-2 sm:space-y-3">
+                <div className="relative z-10 space-y-2">
                   <div className="flex items-center justify-between">
                     <GlowingStarRow size="sm" />
-                    <span className="text-[9px] sm:text-[10px] font-mono font-bold tracking-wider uppercase text-[#92400E] bg-[#FEF3C7] px-2 py-0.5 rounded-full border border-[rgba(245,158,11,0.25)]">
-                      Verified
+                    <span className="text-[8px] sm:text-[9px] font-sans font-bold tracking-wider uppercase text-[#92400E] bg-[#FEF3C7] px-1.5 py-0.2 rounded-full border border-[rgba(245,158,11,0.25)]">
+                      Verified Client
                     </span>
                   </div>
 
-                  <p className="text-[11px] sm:text-sm text-[#1E293B] leading-snug sm:leading-relaxed font-medium">
+                  <p className="text-[11px] sm:text-xs text-[#1E293B] leading-snug line-clamp-3 font-medium">
                     &ldquo;{item.quote}&rdquo;
                   </p>
                 </div>
 
-                <footer className="relative z-10 mt-3 sm:mt-5 pt-2.5 sm:pt-3.5 border-t border-[rgba(245,158,11,0.16)] flex items-center justify-between gap-3">
+                <footer className="relative z-10 mt-2.5 sm:mt-3 pt-2 border-t border-[rgba(245,158,11,0.16)] flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <div className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-gradient-to-br from-[#F59E0B] to-[#D97706] text-white font-mono font-bold text-xs shadow-xs">
+                    <div className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[#F59E0B] to-[#D97706] text-white font-sans font-bold text-[11px] shadow-xs">
                       {getInitials(item.name)}
                     </div>
                     <div>
-                      <cite className="font-heading font-bold not-italic text-xs sm:text-sm text-[#0B132B] block">
+                      <cite className="font-heading font-bold not-italic text-xs text-[#0B132B] block">
                         {item.name}
                       </cite>
-                      <p className="text-[10px] sm:text-[11px] text-[#64748B] font-medium">
+                      <p className="text-[9.5px] sm:text-[10.5px] text-[#64748B] font-medium truncate max-w-[140px]">
                         {item.role}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-1 text-[10px] font-mono text-[#16A34A] font-semibold">
-                    <CheckCircle2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-                    <span>Client</span>
+                  <div className="flex items-center gap-1 text-[9.5px] font-sans text-[#16A34A] font-semibold shrink-0">
+                    <CheckCircle2 className="h-3 w-3" />
+                    <span>Verified</span>
                   </div>
                 </footer>
               </blockquote>

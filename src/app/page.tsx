@@ -11,6 +11,7 @@ import { TestimonialPreview } from "@/components/home/TestimonialPreview";
 import { Container } from "@/components/layout/Container";
 import { siteConfig } from "@/content/site";
 import { MessageCircle } from "lucide-react";
+import ProposalConnectBox from "@/components/contact/ProposalConnectBox";
 
 export default function HomePage() {
   return (
@@ -130,9 +131,9 @@ export default function HomePage() {
         </div>
 
         <Container className="relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left: copy & actions */}
-            <div className="lg:col-span-7 space-y-6">
+            <div className="lg:col-span-7 space-y-4 sm:space-y-6">
               {/* 3D Glassmorphic Badge */}
               <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-white/10 backdrop-blur-xl border border-[rgba(44,129,250,0.35)] shadow-[0_4px_16px_rgba(0,110,245,0.20)]">
                 <span className="relative flex h-2 w-2">
@@ -144,72 +145,49 @@ export default function HomePage() {
                 </span>
               </div>
 
-              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-white">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.1] text-white">
                 Have an idea?{" "}
                 <span className="bg-gradient-to-r from-[#60A5FA] via-[#2C81FA] to-[#006EF5] bg-clip-text text-transparent drop-shadow-[0_2px_18px_rgba(44,129,250,0.35)]">
                   Let&apos;s make it real.
                 </span>
               </h2>
 
-              <p className="text-base sm:text-lg leading-relaxed max-w-[540px] text-white/75 font-medium">
-                Send us a quick message. Tell us what you want to build, improve or automate. We respond within hours with practical suggestions.
+              <p className="text-sm sm:text-base leading-relaxed max-w-[540px] text-white/75 font-medium">
+                Pick your service and PKR budget on the quick proposal card, or reach out directly. We respond within hours with practical suggestions.
               </p>
 
-              <div className="flex items-center gap-3 text-xs sm:text-sm font-mono text-white/50 tracking-wide">
+              <div className="flex items-center gap-2 text-xs font-mono text-white/50 tracking-wide">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#10B981]" />
-                <span>Direct founder communication • Practical delivery • Zero unnecessary layers</span>
+                <span>Direct engineer communication • Practical delivery • Zero fluff</span>
               </div>
 
-              <div className="flex flex-wrap items-center gap-4 pt-3">
+              <div className="flex flex-wrap items-center gap-3 pt-1">
                 <Link
                   href="/contact"
-                  className="group relative inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-sm sm:text-base font-bold text-white overflow-hidden shadow-[0_4px_24px_rgba(0,110,245,0.45),inset_0_1px_1px_rgba(255,255,255,0.4)] transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_32px_rgba(44,129,250,0.6)]"
+                  className="group relative inline-flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3.5 rounded-full text-xs sm:text-sm font-bold text-white overflow-hidden shadow-[0_4px_24px_rgba(0,110,245,0.45)] transition-all duration-200 hover:scale-105"
                   style={{
                     background: "linear-gradient(92deg, #003FC5 0%, #006EF5 55%, #2C81FA 100%)",
                   }}
                 >
-                  <span>Start a project</span>
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1.5" aria-hidden="true" />
+                  <span>Detailed Contact Form</span>
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
                 </Link>
 
                 <a
                   href={siteConfig.whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm sm:text-base font-semibold text-white/90 hover:text-white bg-white/10 hover:bg-white/15 backdrop-blur-xl border border-white/20 hover:border-white/35 shadow-[0_4px_20px_rgba(0,0,0,0.25)] transition-all duration-200"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 rounded-full text-xs sm:text-sm font-semibold text-white/90 hover:text-white bg-white/10 hover:bg-white/15 backdrop-blur-xl border border-white/20 transition-all duration-200"
                 >
-                  <MessageCircle className="h-4 w-4 text-[#25D366] shrink-0" aria-hidden="true" />
-                  <span>WhatsApp us</span>
+                  <MessageCircle className="h-3.5 w-3.5 text-[#25D366] shrink-0" aria-hidden="true" />
+                  <span>Direct WhatsApp</span>
                 </a>
               </div>
             </div>
 
-            {/* Right: KD illuminated 3D monogram watermark */}
-            <div
-              className="hidden lg:flex lg:col-span-5 items-center justify-center select-none"
-              aria-hidden="true"
-            >
-              <div className="relative flex items-center justify-center">
-                <div
-                  className="absolute w-[320px] h-[320px] rounded-full"
-                  style={{
-                    background: "radial-gradient(circle, rgba(0, 110, 245, 0.22) 0%, transparent 70%)",
-                    filter: "blur(60px)",
-                  }}
-                />
-                <span
-                  className="relative font-heading font-extrabold leading-none tracking-tighter"
-                  style={{
-                    fontSize: "clamp(8rem, 16vw, 18rem)",
-                    color: "transparent",
-                    WebkitTextStroke: "1.5px rgba(44, 129, 250, 0.35)",
-                    textShadow: "0 0 40px rgba(0, 110, 245, 0.35)",
-                    lineHeight: "0.85",
-                  }}
-                >
-                  KD
-                </span>
-              </div>
+            {/* Right: Direct Interactive Proposal Connect Box */}
+            <div className="lg:col-span-5 w-full mt-2 lg:mt-0">
+              <ProposalConnectBox />
             </div>
           </div>
         </Container>

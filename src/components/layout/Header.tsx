@@ -204,6 +204,15 @@ export function Header() {
                   </Link>
                 </div>
 
+                {/* Mobile-only "Let's Connect" pill button (Placed right between logo and menu trigger) */}
+                <Link
+                  href="/contact"
+                  className="md:hidden inline-flex items-center justify-center px-3 py-1.5 rounded-full text-[11.5px] font-bold text-white bg-gradient-to-r from-[#003FC5] to-[#006EF5] shadow-[0_2px_10px_rgba(0,110,245,0.35)] active:scale-95 transition-all shrink-0 whitespace-nowrap hover:shadow-[0_4px_14px_rgba(0,110,245,0.5)] border border-white/20"
+                  aria-label="Let's Connect"
+                >
+                  Let&apos;s Connect
+                </Link>
+
                 {/* Mobile menu trigger with custom modern tech icon */}
                 <button
                   type="button"

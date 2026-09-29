@@ -159,52 +159,55 @@ export function ProcessPreview() {
               aria-hidden="true"
             />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 relative z-10">
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-3.5 relative z-10">
               {processSteps.map((step, idx) => {
                 const config = STEP_CONFIGS[idx] || STEP_CONFIGS[0];
                 const Icon = config.icon;
                 const isCore = Boolean(config.isCore);
+                const isMiddleFeatured = idx === 2; // Card 3: 1 in row (full-width on mobile)
 
                 return (
                   <div
                     key={step.title}
-                    className={`group relative flex flex-col justify-between rounded-[16px] sm:rounded-[24px] p-3 sm:p-5 transition-all duration-300 ease-out hover:-translate-y-1.5 ${
+                    className={`group relative flex flex-col justify-between rounded-[16px] sm:rounded-[22px] p-2.5 sm:p-4 transition-all duration-200 ease-out hover:-translate-y-1 ${
+                      isMiddleFeatured ? "col-span-2 lg:col-span-1" : "col-span-1"
+                    } ${
                       isCore
-                        ? "border-[1.5px] border-[#2C81FA]/50 shadow-[0_12px_32px_-8px_rgba(0,110,245,0.32),inset_0_1px_2px_rgba(255,255,255,0.2)]"
-                        : "border-[1.5px] border-[rgba(0,110,245,0.18)] shadow-[0_8px_24px_-8px_rgba(0,110,245,0.08),inset_0_1px_2px_rgba(255,255,255,0.9)]"
+                        ? "border-[1.5px] border-[#2C81FA]/50 shadow-[0_8px_24px_-6px_rgba(0,110,245,0.28)]"
+                        : "border border-[rgba(0,110,245,0.18)] shadow-[0_4px_16px_-6px_rgba(0,110,245,0.06)]"
                     }`}
                     style={{
                       background: isCore
                         ? "linear-gradient(155deg, #091326 0%, #0F2044 55%, #152E5E 100%)"
-                        : "linear-gradient(150deg, rgba(255, 255, 255, 0.96) 0%, rgba(242, 248, 255, 0.90) 100%)",
+                        : "linear-gradient(150deg, rgba(255, 255, 255, 0.98) 0%, rgba(242, 248, 255, 0.92) 100%)",
                       backdropFilter: "blur(12px)",
                     }}
                   >
                     <div>
                       {/* Top Row: Squircle Icon & Step Number */}
-                      <div className="flex items-center justify-between mb-2.5 sm:mb-3.5">
+                      <div className="flex items-center justify-between mb-1.5 sm:mb-2.5">
                         <div
-                          className={`flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-110 ${
+                          className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-lg sm:rounded-xl transition-transform duration-200 group-hover:scale-105 ${
                             isCore
-                              ? "bg-white/10 text-[#60A5FA] border border-[#2C81FA]/40 shadow-[0_2px_12px_rgba(44,129,250,0.25)]"
-                              : "bg-white/90 border border-black/[0.06] shadow-[0_3px_10px_rgba(0,0,0,0.04)]"
+                              ? "bg-white/10 text-[#60A5FA] border border-[#2C81FA]/40"
+                              : "bg-white/90 border border-black/[0.06] shadow-xs"
                           }`}
                           style={{
                             color: isCore ? "#60A5FA" : config.accent,
                           }}
                         >
-                          <Icon className="h-4 w-4 sm:h-5 sm:w-5 stroke-[2.2]" />
+                          <Icon className="h-3.5 w-3.5 sm:h-4.5 sm:w-4.5 stroke-[2.2]" />
                         </div>
 
                         {/* Step Number + Badge */}
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex items-center gap-1 sm:gap-1.5">
                           {isCore && (
-                            <span className="px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full text-[8px] sm:text-[9px] font-mono font-bold tracking-wider uppercase bg-[#2C81FA]/20 text-[#60A5FA] border border-[#2C81FA]/40">
+                            <span className="px-1.5 py-0.2 rounded-full text-[7.5px] sm:text-[8.5px] font-mono font-bold tracking-wider uppercase bg-[#2C81FA]/20 text-[#60A5FA] border border-[#2C81FA]/40">
                               Core
                             </span>
                           )}
                           <span
-                            className={`font-mono text-lg sm:text-2xl font-extrabold tracking-tight ${
+                            className={`font-mono text-base sm:text-xl font-extrabold tracking-tight ${
                               isCore
                                 ? "text-[#60A5FA]"
                                 : "bg-gradient-to-br from-[#003FC5] to-[#006EF5] bg-clip-text text-transparent"
@@ -216,9 +219,9 @@ export function ProcessPreview() {
                       </div>
 
                       {/* Title & Tag */}
-                      <div className="mb-1.5 sm:mb-2">
+                      <div className="mb-1 sm:mb-1.5">
                         <span
-                          className={`inline-block px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider mb-1 sm:mb-1.5 ${
+                          className={`inline-block px-1.5 py-0.2 rounded-full text-[7.5px] sm:text-[8.5px] font-extrabold uppercase tracking-wider mb-0.5 sm:mb-1 ${
                             isCore
                               ? "bg-white/10 text-white/80 border border-white/15"
                               : "bg-[rgba(0,110,245,0.08)] text-[#006EF5] border border-[rgba(0,110,245,0.18)]"
@@ -227,7 +230,7 @@ export function ProcessPreview() {
                           {config.tag}
                         </span>
                         <h3
-                          className={`font-heading font-extrabold text-sm sm:text-lg tracking-tight leading-snug ${
+                          className={`font-heading font-extrabold text-xs sm:text-base tracking-tight leading-snug ${
                             isCore ? "text-white" : "text-[#0B132B]"
                           }`}
                         >
@@ -237,7 +240,7 @@ export function ProcessPreview() {
 
                       {/* Description */}
                       <p
-                        className={`text-[11px] sm:text-xs leading-snug sm:leading-relaxed ${
+                        className={`text-[10px] sm:text-xs leading-snug line-clamp-2 sm:line-clamp-none ${
                           isCore ? "text-white/75" : "text-[#3A4B6E]"
                         }`}
                       >
@@ -247,15 +250,15 @@ export function ProcessPreview() {
 
                     {/* Bottom Deliverable Pill */}
                     <div
-                      className={`mt-2.5 sm:mt-4 pt-2 sm:pt-2.5 border-t text-[10px] sm:text-[11px] font-semibold flex items-center justify-between ${
+                      className={`mt-2 sm:mt-3 pt-1.5 sm:pt-2 border-t text-[9px] sm:text-[10px] font-semibold flex items-center justify-between ${
                         isCore
                           ? "border-white/10 text-white/60"
                           : "border-black/[0.06] text-[#5A6E85]"
                       }`}
                     >
-                      <span>Output:</span>
+                      <span className="text-slate-400">Deliverable:</span>
                       <span
-                        className={`font-medium ${
+                        className={`font-medium truncate max-w-[65%] text-right ${
                           isCore ? "text-[#60A5FA]" : "text-[#006EF5]"
                         }`}
                       >
