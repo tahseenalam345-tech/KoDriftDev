@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ExternalLink, ArrowRight, Sparkles, CheckCircle2 } from "lucide-react";
 import { PlaceholderMedia } from "@/components/ui/PlaceholderMedia";
+import { ProjectPreviewMedia } from "@/components/work/ProjectPreviewMedia";
 import { Project } from "@/types";
 import { cn } from "@/lib/utils";
 
@@ -44,12 +45,13 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
           className="relative block w-full overflow-hidden rounded-[14px] sm:rounded-[20px] aspect-[16/9] sm:aspect-[16/10] bg-[#0A1628] border border-black/[0.08] shadow-xs group/media"
         >
           {hasRealImage ? (
-            <Image
-              src={project.imagePaths[0]}
-              alt={`${project.title} interface preview`}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
+            <ProjectPreviewMedia
+              title={project.title}
+              slug={project.slug}
+              category={project.category}
+              imagePaths={project.imagePaths}
+              themeColor={project.slug === "soundmind-ai" ? "#006EF5" : project.slug === "aether-diary" ? "#8B5CF6" : "#006EF5"}
+              aspectClassName="h-full w-full"
             />
           ) : (
             <PlaceholderMedia
@@ -73,13 +75,13 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
           </span>
 
           {isComingSoon ? (
-            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full text-[8px] sm:text-[9px] font-mono font-bold tracking-wider uppercase bg-amber-500/10 text-amber-700 border border-amber-500/30">
+            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full text-[8px] sm:text-[9px] font-sans font-bold tracking-wider uppercase bg-amber-500/10 text-amber-700 border border-amber-500/30">
               <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
               In Progress
             </span>
           ) : (
             project.featured && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full text-[8px] sm:text-[9px] font-mono font-bold tracking-wider uppercase bg-emerald-500/10 text-emerald-700 border border-emerald-500/30">
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full text-[8px] sm:text-[9px] font-sans font-bold tracking-wider uppercase bg-emerald-500/10 text-emerald-700 border border-emerald-500/30">
                 <CheckCircle2 className="h-2.5 w-2.5 text-emerald-600" />
                 Featured
               </span>
@@ -105,7 +107,7 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
             {project.techStack.split(",").slice(0, 3).map((tech) => (
               <span
                 key={tech.trim()}
-                className="px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-md bg-white/80 border border-black/[0.06] text-[9px] sm:text-[10px] font-mono text-[#475569] shadow-2xs"
+                className="px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-md bg-white/80 border border-black/[0.06] text-[9px] sm:text-[10px] font-sans font-medium text-[#475569] shadow-2xs"
               >
                 {tech.trim()}
               </span>
@@ -129,7 +131,7 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
             href={project.liveUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-mono font-semibold text-[#3A4B6E] hover:text-[#006EF5] bg-white/90 hover:bg-white px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full border border-[rgba(0,110,245,0.20)] shadow-2xs transition-colors"
+            className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-sans font-bold text-[#3A4B6E] hover:text-[#006EF5] bg-white/90 hover:bg-white px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full border border-[rgba(0,110,245,0.20)] shadow-2xs transition-colors"
           >
             <span>Live Site</span>
             <ExternalLink className="h-2.5 w-2.5 sm:h-3 sm:w-3" aria-hidden="true" />

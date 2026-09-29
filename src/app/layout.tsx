@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, DM_Sans, JetBrains_Mono } from "next/font/google";
+import { Manrope, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { AiChatWidget } from "@/components/chat/AiChatWidget";
 import { constructMetadata } from "@/lib/metadata";
 import { AnimationProvider } from "@/context/AnimationContext";
 import { ParticleStage } from "@/components/canvas/ParticleStage";
@@ -18,13 +19,6 @@ const dmSans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-dm-sans",
   weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains-mono",
-  weight: ["500", "600"],
   display: "swap",
 });
 
@@ -46,7 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${manrope.variable} ${dmSans.variable} ${jetbrainsMono.variable} overflow-x-clip w-full max-w-full`}
+      className={`${manrope.variable} ${dmSans.variable} overflow-x-clip w-full max-w-full`}
     >
       <body
         className="min-h-screen flex flex-col antialiased overflow-x-clip w-full max-w-full relative"
@@ -60,6 +54,7 @@ export default function RootLayout({
           <div className="relative z-20 overflow-x-clip w-full max-w-full">
             <Footer />
           </div>
+          <AiChatWidget />
         </AnimationProvider>
       </body>
     </html>

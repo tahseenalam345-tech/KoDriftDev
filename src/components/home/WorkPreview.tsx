@@ -3,8 +3,10 @@
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ExternalLink, ArrowRight, Layers, Monitor, Smartphone, Cpu, Sparkles } from "lucide-react";
+import { ExternalLink, ArrowRight, Layers, Monitor, Smartphone, Cpu, Sparkles, Play } from "lucide-react";
 import { projects } from "@/content/projects";
+import { AppShowcaseCard } from "@/components/work/AppShowcaseCard";
+import { ProjectPreviewMedia } from "@/components/work/ProjectPreviewMedia";
 
 // Filter definitions requested by user: web / app / soft / ai
 type FilterId = "all" | "web" | "apps" | "saas" | "ai";
@@ -52,6 +54,32 @@ const THEME_CONFIGS: Record<string, ProjectThemeConfig> = {
     badgeBg: "rgba(254, 243, 199, 0.95)",
     badgeText: "#92400E",
     tagPills: ["Luxury E-Commerce", "Custom OMS", "Next.js"],
+  },
+  "soundmind-ai": {
+    slug: "soundmind-ai",
+    filterCategories: ["all", "apps", "ai"],
+    hoverKey: "soundmind",
+    themeColor: "#006EF5",
+    themeGradient: "linear-gradient(135deg, rgba(0, 110, 245, 0.12) 0%, rgba(44, 129, 250, 0.04) 50%, rgba(255, 255, 255, 0.9) 100%)",
+    borderColor: "rgba(0, 110, 245, 0.25)",
+    borderHoverColor: "rgba(0, 110, 245, 0.70)",
+    shadowColor: "rgba(0, 110, 245, 0.25)",
+    badgeBg: "rgba(224, 242, 254, 0.95)",
+    badgeText: "#0369A1",
+    tagPills: ["Flutter Mobile", "Live Sandbox", "AI Audio DSP"],
+  },
+  "aether-diary": {
+    slug: "aether-diary",
+    filterCategories: ["all", "apps", "ai"],
+    hoverKey: "aether",
+    themeColor: "#8B5CF6",
+    themeGradient: "linear-gradient(135deg, rgba(139, 92, 246, 0.12) 0%, rgba(168, 85, 247, 0.04) 50%, rgba(255, 255, 255, 0.9) 100%)",
+    borderColor: "rgba(139, 92, 246, 0.25)",
+    borderHoverColor: "rgba(139, 92, 246, 0.70)",
+    shadowColor: "rgba(139, 92, 246, 0.25)",
+    badgeBg: "rgba(243, 232, 255, 0.95)",
+    badgeText: "#6B21A8",
+    tagPills: ["Flutter Mobile", "Live Sandbox", "Voice Journal"],
   },
   "cluck-n-moo-restaurant-platform": {
     slug: "cluck-n-moo-restaurant-platform",
@@ -122,6 +150,7 @@ const THEME_CONFIGS: Record<string, ProjectThemeConfig> = {
 
 export function WorkPreview() {
   const [activeFilter, setActiveFilter] = useState<FilterId>("all");
+  const [selectedMobileApp, setSelectedMobileApp] = useState<"soundmind-ai" | "aether-diary">("soundmind-ai");
 
   // Select key projects with images
   const projectList = useMemo(() => {
@@ -152,6 +181,46 @@ export function WorkPreview() {
       );
     }
   };
+
+  const currentApp =
+    selectedMobileApp === "soundmind-ai"
+      ? {
+          name: "SoundMind AI",
+          slug: "soundmind-ai",
+          url: "/apps/soundmind/index.html",
+          category: "Acoustic Wellness & Sound Therapy",
+          tagline: "AI-driven acoustic relaxation and ambient sound therapy companion built with Flutter and Web Audio DSP pipelines.",
+          accentColor: "#006EF5",
+          videoSrc: "/videos/soundmind.mp4",
+          posterSrc: "/images/projects/soundmind/1.jpeg",
+          screenshots: [
+            "/images/projects/soundmind/1.jpeg",
+            "/images/projects/soundmind/2.jpeg",
+            "/images/projects/soundmind/3.jpeg",
+            "/images/projects/soundmind/4.jpeg",
+            "/images/projects/soundmind/5.jpeg",
+          ],
+          tags: ["Flutter", "Audio DSP", "Smart Audio DSP", "WASM Sandbox", "Riverpod"],
+          caseStudyUrl: "/work/soundmind-ai",
+        }
+      : {
+          name: "Aether Diary",
+          slug: "aether-diary",
+          url: "/apps/aether-diary/index.html",
+          category: "Cognitive Voice Journal & Audio Notes",
+          tagline: "Encrypted cognitive voice diary and intelligent speech reflections built with Flutter and AudioWorklet.",
+          accentColor: "#8B5CF6",
+          videoSrc: "/videos/aether-diary.mp4",
+          posterSrc: "/images/projects/aether-diary/1.jpeg",
+          screenshots: [
+            "/images/projects/aether-diary/1.jpeg",
+            "/images/projects/aether-diary/2.jpeg",
+            "/images/projects/aether-diary/3.jpeg",
+            "/images/projects/aether-diary/4.jpeg",
+          ],
+          tags: ["Flutter", "Voice Journal", "AudioWorklet", "WASM Sandbox", "SQLite"],
+          caseStudyUrl: "/work/aether-diary",
+        };
 
   return (
     <section
@@ -290,6 +359,64 @@ export function WorkPreview() {
             </div>
           </div>
 
+          {/* ── 3D Interactive Device Showcase Spotlight for Flutter Apps ── */}
+          {activeFilter === "apps" && (
+            <div className="my-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4 px-2">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/25 text-[#006EF5] text-xs font-bold uppercase tracking-wider mb-1">
+                    <Smartphone className="w-3.5 h-3.5" />
+                    <span>Interactive Mobile Showcase (3 Modes)</span>
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[#0B132B]">
+                    Mobile Spotlight: {currentApp.name}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-[#475569]">
+                    Switch between zero-lag video reel, high-res screenshot gallery, or the live WASM sandbox.
+                  </p>
+                </div>
+
+                {/* App Switcher Tabs */}
+                <div className="flex items-center p-1 rounded-full bg-slate-900/10 border border-slate-900/15 backdrop-blur-md">
+                  <button
+                    onClick={() => setSelectedMobileApp("soundmind-ai")}
+                    type="button"
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                      selectedMobileApp === "soundmind-ai"
+                        ? "bg-[#006EF5] text-white shadow-md"
+                        : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    SoundMind AI
+                  </button>
+                  <button
+                    onClick={() => setSelectedMobileApp("aether-diary")}
+                    type="button"
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                      selectedMobileApp === "aether-diary"
+                        ? "bg-[#8B5CF6] text-white shadow-md"
+                        : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    Aether Diary
+                  </button>
+                </div>
+              </div>
+
+              <AppShowcaseCard
+                title={currentApp.name}
+                category={currentApp.category}
+                description={currentApp.tagline}
+                tags={currentApp.tags}
+                videoSrc={currentApp.videoSrc}
+                posterSrc={currentApp.posterSrc}
+                screenshots={currentApp.screenshots}
+                liveAppUrl={currentApp.url}
+                caseStudyUrl={currentApp.caseStudyUrl}
+              />
+            </div>
+          )}
+
           {/* ── Compact 2-Column Responsive Grid with Reduced Card Sizes (Both Desktop & Mobile) ── */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-5">
             {filteredProjects.map((project) => {
@@ -305,25 +432,19 @@ export function WorkPreview() {
                     boxShadow: `0 8px 24px -10px ${config.shadowColor}, inset 0 1px 2px rgba(255,255,255,0.9)`,
                   }}
                 >
-                  {/* ── Sleek Compact Screenshot Window (aspect-[16/8.8]) ── */}
-                  <div className="relative aspect-[16/8.8] w-full overflow-hidden bg-white/40 border-b border-black/[0.05]">
-                    <Image
-                      src={project.imagePaths[0]}
-                      alt={project.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03]"
-                    />
-                    {/* Subtle fade overlay */}
-                    <div
-                      className="absolute inset-0 pointer-events-none"
-                      style={{
-                        background: "linear-gradient(to top, rgba(255,255,255,0.6) 0%, transparent 40%)",
-                      }}
+                  {/* ── Sleek Compact Screenshot / Multi-Phone Window ── */}
+                  <div className="relative w-full">
+                    <ProjectPreviewMedia
+                      title={project.title}
+                      slug={project.slug}
+                      category={project.category}
+                      imagePaths={project.imagePaths}
+                      themeColor={config.themeColor}
+                      aspectClassName="aspect-[16/8.8]"
                     />
 
                     {/* Top Floating Tags */}
-                    <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
+                    <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none z-20">
                       <div className="flex flex-wrap gap-1 sm:gap-1.5">
                         {config.tagPills.slice(0, 2).map((tag) => (
                           <span
@@ -392,7 +513,7 @@ export function WorkPreview() {
                     </div>
 
                     {/* ── Bottom Action & Tech Line ── */}
-                    <div className="mt-3 pt-2.5 border-t border-black/[0.06] flex items-center justify-between">
+                    <div className="mt-3 pt-2.5 border-t border-black/[0.06] flex items-center justify-between flex-wrap gap-2">
                       <Link
                         href={`/work/${project.slug}`}
                         className="inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-extrabold transition-all group/link"
@@ -402,17 +523,33 @@ export function WorkPreview() {
                         <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/link:translate-x-1" />
                       </Link>
 
-                      {project.liveUrl && (
-                        <a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-mono font-semibold text-[#5A6E85] hover:text-[#0B132B] transition-colors"
-                        >
-                          <span>Live platform</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
-                      )}
+                      <div className="flex items-center gap-2">
+                        {(project.slug === "soundmind-ai" || project.slug === "aether-diary") && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setActiveFilter("apps");
+                              setSelectedMobileApp(project.slug as "soundmind-ai" | "aether-diary");
+                            }}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-bold bg-blue-500/10 text-blue-700 hover:bg-blue-500/20 border border-blue-500/30 transition-all cursor-pointer"
+                          >
+                            <Play className="w-2.5 h-2.5 fill-current" />
+                            <span>Live 3D Sandbox</span>
+                          </button>
+                        )}
+
+                        {project.liveUrl && (
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-mono font-semibold text-[#5A6E85] hover:text-[#0B132B] transition-colors"
+                          >
+                            <span>Live demo</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

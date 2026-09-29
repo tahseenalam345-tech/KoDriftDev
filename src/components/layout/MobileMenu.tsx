@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, MessageCircle, Mail, ArrowRight } from "lucide-react";
+import { X, MessageCircle, Mail, ArrowRight, ChevronRight, Sparkles } from "lucide-react";
 import { siteConfig } from "@/content/site";
 
 interface NavItem {
@@ -50,18 +50,18 @@ export function MobileMenu({
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* ── 1. Dimmed Backdrop covering the left side (click to close) ── */}
+          {/* ── 1. Dimmed Translucent Backdrop ── */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
             onClick={onClose}
-            className="fixed inset-0 z-50 bg-black/45 backdrop-blur-xs md:hidden"
+            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md md:hidden"
             aria-hidden="true"
           />
 
-          {/* ── 2. Side Drawer sliding in from right covering ~75-80% of screen ── */}
+          {/* ── 2. Frosted Glass Translucent Sidebar Drawer ── */}
           <motion.div
             role="dialog"
             aria-modal="true"
@@ -69,66 +69,76 @@ export function MobileMenu({
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 28, stiffness: 300 }}
-            className="fixed top-0 right-0 bottom-0 z-50 flex flex-col w-[78%] max-w-[320px] md:hidden shadow-[-16px_0_45px_rgba(0,18,60,0.18)]"
+            transition={{ type: "spring", damping: 26, stiffness: 280 }}
+            className="fixed top-0 right-0 bottom-0 z-50 flex flex-col w-[82%] max-w-[340px] md:hidden overflow-hidden select-none"
             style={{
-              background: "rgba(246, 248, 252, 0.96)",
-              backdropFilter: "blur(24px)",
-              WebkitBackdropFilter: "blur(24px)",
-              borderLeft: "1px solid rgba(255, 255, 255, 0.85)",
+              background: "linear-gradient(180deg, rgba(8, 14, 28, 0.94) 0%, rgba(4, 8, 18, 0.97) 100%)",
+              backdropFilter: "blur(32px)",
+              WebkitBackdropFilter: "blur(32px)",
+              borderLeft: "1px solid rgba(255, 255, 255, 0.14)",
+              boxShadow: "-16px 0 50px rgba(0, 110, 245, 0.28), -4px 0 20px rgba(0, 0, 0, 0.6)",
             }}
           >
-            {/* Top Bar with Brand + Close Cross Button */}
+            {/* Ambient Radial Glass Glows */}
             <div
-              className="relative z-10 flex h-[62px] items-center justify-between px-4 sm:px-5 shrink-0"
-              style={{ borderBottom: "1px solid var(--line)" }}
-            >
+              className="pointer-events-none absolute -top-16 -right-16 w-52 h-52 rounded-full"
+              style={{
+                background: "radial-gradient(circle, rgba(0, 110, 245, 0.35) 0%, transparent 70%)",
+                filter: "blur(40px)",
+              }}
+              aria-hidden="true"
+            />
+            <div
+              className="pointer-events-none absolute bottom-20 -left-20 w-52 h-52 rounded-full"
+              style={{
+                background: "radial-gradient(circle, rgba(139, 92, 246, 0.22) 0%, transparent 70%)",
+                filter: "blur(45px)",
+              }}
+              aria-hidden="true"
+            />
+
+            {/* Top Bar with Brand + Close Button */}
+            <div className="relative z-10 flex h-[68px] items-center justify-between px-5 shrink-0 border-b border-white/10">
               <Link
                 href="/"
                 onClick={onClose}
-                className="flex items-center gap-2 font-heading font-bold text-base tracking-tight"
-                style={{ color: "var(--ink)" }}
+                className="flex items-center gap-2.5 font-heading font-extrabold text-base tracking-tight text-white group"
               >
                 <div
-                  className="relative flex h-[28px] w-[28px] items-center justify-center rounded-lg overflow-hidden shrink-0 shadow-sm"
+                  className="relative flex h-[32px] w-[32px] items-center justify-center rounded-xl overflow-hidden shrink-0 border border-white/20 shadow-md group-hover:scale-105 transition-transform"
                   style={{
                     background: "#04070A",
-                    border: "1px solid rgba(255,255,255,0.16)",
+                    boxShadow: "0 2px 10px rgba(0, 110, 245, 0.3)",
                   }}
                 >
                   <Image
                     src="/images/logo/logo.png"
                     alt="KoDriftDev Logo"
-                    width={28}
-                    height={28}
+                    width={32}
+                    height={32}
                     className="object-cover w-full h-full"
                   />
                 </div>
                 <span>
-                  KoDrift<span style={{ color: "var(--brand-blue)" }}>Dev</span>
+                  KoDrift<span className="text-[#006EF5]">Dev</span>
                 </span>
               </Link>
 
-              {/* Close (Cross) button */}
+              {/* Close Button */}
               <button
                 type="button"
                 onClick={onClose}
                 aria-label="Close navigation menu"
-                className="flex h-9 w-9 items-center justify-center rounded-full border transition-all cursor-pointer hover:bg-black/5 active:scale-95"
-                style={{
-                  background: "#FFFFFF",
-                  border: "1px solid rgba(16,40,39,0.14)",
-                  boxShadow: "0 2px 6px rgba(16,40,39,0.06)",
-                  color: "var(--ink)",
-                }}
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white transition-all cursor-pointer hover:rotate-90 active:scale-90"
               >
-                <X className="h-4.5 w-4.5" aria-hidden="true" />
+                <X className="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
 
-            {/* Nav list */}
-            <div className="relative z-10 flex flex-col flex-1 overflow-y-auto p-4 sm:p-5 gap-5">
-              <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
+            {/* Scrollable Navigation Body */}
+            <div className="relative z-10 flex flex-col flex-1 overflow-y-auto px-4 py-5 gap-5">
+              {/* Nav links with sleek modern glass effects */}
+              <nav className="flex flex-col gap-1.5" aria-label="Mobile navigation">
                 {navItems.map((item) => {
                   const isActive =
                     currentPath === item.href ||
@@ -139,73 +149,70 @@ export function MobileMenu({
                       key={item.href}
                       href={item.href}
                       onClick={onClose}
-                      className="flex items-center justify-between rounded-xl px-3.5 py-2.5 text-[15px] font-semibold transition-all duration-[150ms]"
-                      style={
+                      className={`group relative flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold transition-all duration-200 ${
                         isActive
-                          ? {
-                              background: "rgba(0, 110, 245, 0.10)",
-                              border: "1px solid rgba(0, 110, 245, 0.22)",
-                              color: "var(--brand-blue)",
-                              fontWeight: 700,
-                            }
-                          : {
-                              background: "transparent",
-                              border: "1px solid transparent",
-                              color: "var(--ink)",
-                            }
-                      }
+                          ? "bg-gradient-to-r from-blue-500/20 via-blue-500/10 to-transparent border border-blue-500/40 text-white shadow-[0_4px_20px_rgba(0,110,245,0.2)] font-bold"
+                          : "text-slate-300 hover:text-white hover:bg-white/[0.08] hover:border-white/15 border border-transparent"
+                      }`}
                     >
-                      <span>{item.label}</span>
-                      {isActive && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--brand-blue)]" />
-                      )}
+                      <div className="flex items-center gap-3">
+                        {isActive ? (
+                          <span className="w-1.5 h-4.5 rounded-full bg-gradient-to-b from-[#006EF5] to-[#2C81FA] shadow-[0_0_8px_#006EF5]" />
+                        ) : (
+                          <span className="w-1.5 h-1.5 rounded-full bg-slate-500/60 group-hover:bg-blue-400 group-hover:scale-125 transition-all" />
+                        )}
+                        <span className="tracking-tight text-[15px]">{item.label}</span>
+                      </div>
+
+                      <ChevronRight
+                        className={`h-4 w-4 transition-transform duration-200 ${
+                          isActive
+                            ? "text-[#2C81FA] translate-x-0.5"
+                            : "text-slate-500 group-hover:text-slate-300 group-hover:translate-x-1"
+                        }`}
+                      />
                     </Link>
                   );
                 })}
               </nav>
 
-              {/* Bottom Actions & Contacts */}
-              <div
-                className="mt-auto pt-4 space-y-3 shrink-0"
-                style={{ borderTop: "1px solid var(--line)" }}
-              >
+              {/* ── Prominent Shifted CTA: Start a Project (Inside Sidebar) ── */}
+              <div className="pt-2">
+                <Link
+                  href={primaryCta.href}
+                  onClick={onClose}
+                  className="group relative w-full justify-center text-sm py-3.5 px-5 font-bold flex items-center gap-2.5 rounded-2xl text-white bg-gradient-to-r from-[#003FC5] via-[#006EF5] to-[#2C81FA] shadow-[0_8px_25px_rgba(0,110,245,0.45)] hover:shadow-[0_12px_32px_rgba(0,110,245,0.65)] hover:scale-[1.02] active:scale-95 transition-all overflow-hidden"
+                >
+                  <Sparkles className="h-4 w-4 text-blue-200 animate-pulse" />
+                  <span>{primaryCta.label}</span>
+                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  <span className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </Link>
+              </div>
+
+              {/* Bottom Direct Contacts */}
+              <div className="mt-auto pt-4 space-y-2.5 shrink-0 border-t border-white/10">
+                <p className="text-[11px] font-sans font-bold tracking-wider uppercase text-slate-400 px-1">
+                  Direct Inquiries
+                </p>
                 <div className="space-y-2">
                   <a
                     href={siteConfig.whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium transition-colors hover:bg-black/5"
-                    style={{
-                      background: "rgba(255,255,255,0.7)",
-                      border: "1px solid rgba(16,40,39,0.08)",
-                      color: "var(--ink)",
-                    }}
+                    className="flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-200 hover:text-white bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 transition-all hover:scale-[1.01]"
                   >
-                    <MessageCircle className="h-3.5 w-3.5 shrink-0 text-[#25D366]" aria-hidden="true" />
+                    <MessageCircle className="h-4 w-4 shrink-0 text-[#25D366]" aria-hidden="true" />
                     <span className="truncate">WhatsApp: {siteConfig.phoneDisplay}</span>
                   </a>
                   <a
                     href={`mailto:${siteConfig.email}`}
-                    className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium transition-colors hover:bg-black/5"
-                    style={{
-                      background: "rgba(255,255,255,0.7)",
-                      border: "1px solid rgba(16,40,39,0.08)",
-                      color: "var(--ink)",
-                    }}
+                    className="flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-200 hover:text-white bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 transition-all hover:scale-[1.01]"
                   >
-                    <Mail className="h-3.5 w-3.5 shrink-0 text-[#006EF5]" aria-hidden="true" />
+                    <Mail className="h-4 w-4 shrink-0 text-[#2C81FA]" aria-hidden="true" />
                     <span className="truncate">{siteConfig.email}</span>
                   </a>
                 </div>
-
-                <Link
-                  href={primaryCta.href}
-                  onClick={onClose}
-                  className="btn-pill-dark lighter-button default w-full justify-center text-xs py-2.5 px-4 font-bold flex items-center gap-2"
-                >
-                  <span>{primaryCta.label}</span>
-                  <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-                </Link>
               </div>
             </div>
           </motion.div>
@@ -214,3 +221,5 @@ export function MobileMenu({
     </AnimatePresence>
   );
 }
+
+export default MobileMenu;

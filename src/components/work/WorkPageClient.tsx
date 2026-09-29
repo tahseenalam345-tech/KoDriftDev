@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { ProjectCard } from "@/components/work/ProjectCard";
+import { ProjectPreviewMedia } from "@/components/work/ProjectPreviewMedia";
 import { Project } from "@/types";
 import { siteConfig } from "@/content/site";
 
@@ -184,7 +185,7 @@ export function WorkPageClient({ projects }: { projects: Project[] }) {
                 Deep-dive into platforms built with operational visibility and high conversion.
               </p>
             </div>
-            <span className="hidden sm:inline-block px-3 py-1 rounded-full text-xs font-mono font-bold bg-[rgba(0,110,245,0.08)] text-[#006EF5] border border-[rgba(0,110,245,0.20)]">
+            <span className="hidden sm:inline-block px-3 py-1 rounded-full text-xs font-sans font-bold bg-[rgba(0,110,245,0.08)] text-[#006EF5] border border-[rgba(0,110,245,0.20)]">
               {featuredProjects.length} Flagship Systems
             </span>
           </div>
@@ -217,13 +218,13 @@ export function WorkPageClient({ projects }: { projects: Project[] }) {
                         className="relative block w-full aspect-[16/9] sm:aspect-[16/10] rounded-[14px] sm:rounded-[26px] overflow-hidden bg-[#0A1628] border border-black/[0.08] shadow-md group/image"
                       >
                         {hasRealImage ? (
-                          <Image
-                            src={project.imagePaths[0]}
-                            alt={`${project.title} interface preview`}
-                            fill
-                            priority={idx === 0}
-                            sizes="(max-width: 1024px) 100vw, 60vw"
-                            className="object-cover object-top transition-transform duration-700 ease-out group-hover/image:scale-105"
+                          <ProjectPreviewMedia
+                            title={project.title}
+                            slug={project.slug}
+                            category={project.category}
+                            imagePaths={project.imagePaths}
+                            themeColor={project.slug === "soundmind-ai" ? "#006EF5" : project.slug === "aether-diary" ? "#8B5CF6" : "#006EF5"}
+                            aspectClassName="h-full w-full"
                           />
                         ) : (
                           <div className="flex h-full w-full items-center justify-center text-white/50 font-mono text-sm">
@@ -242,7 +243,7 @@ export function WorkPageClient({ projects }: { projects: Project[] }) {
                           <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider bg-[rgba(0,110,245,0.08)] text-[#006EF5] border border-[rgba(0,110,245,0.22)]">
                             {project.category}
                           </span>
-                          <span className="text-[11px] sm:text-xs font-mono text-[#64748B]">
+                          <span className="text-[11px] sm:text-xs font-sans font-semibold text-[#64748B]">
                             {project.year} • {project.clientName}
                           </span>
                         </div>
@@ -276,7 +277,7 @@ export function WorkPageClient({ projects }: { projects: Project[] }) {
                           {project.techStack.split(",").slice(0, 4).map((tech) => (
                             <span
                               key={tech.trim()}
-                              className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg bg-white/90 border border-[rgba(0,110,245,0.18)] text-[10px] sm:text-[11px] font-mono font-medium text-[#1E293B] shadow-2xs"
+                              className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg bg-white/90 border border-[rgba(0,110,245,0.18)] text-[10px] sm:text-[11px] font-sans font-medium text-[#1E293B] shadow-2xs"
                             >
                               {tech.trim()}
                             </span>
@@ -342,7 +343,7 @@ export function WorkPageClient({ projects }: { projects: Project[] }) {
         <section className="relative z-10">
           <Container className="space-y-4 sm:space-y-8">
             <div className="border-b border-[rgba(0,110,245,0.16)] pb-3 sm:pb-4">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-wider bg-amber-500/10 text-amber-700 border border-amber-500/30 mb-1.5 sm:mb-2">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-[11px] font-sans font-bold uppercase tracking-wider bg-amber-500/10 text-amber-700 border border-amber-500/30 mb-1.5 sm:mb-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
                 Active Development
               </div>

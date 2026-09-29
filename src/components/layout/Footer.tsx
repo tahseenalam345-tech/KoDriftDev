@@ -140,7 +140,7 @@ export function Footer() {
             </Link>
 
             {/* Live Availability Status Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] backdrop-blur-md border border-white/10 w-fit text-[11px] font-mono text-white/80">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] backdrop-blur-md border border-white/10 w-fit text-[11px] font-sans font-bold text-white/80">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10B981]" />
@@ -160,7 +160,7 @@ export function Footer() {
 
           {/* ── COL 3: Quick Navigation (Span 2) ── */}
           <div className="lg:col-span-2 flex flex-col gap-3.5">
-            <h3 className="flex items-center gap-1.5 text-xs font-mono font-bold text-white uppercase tracking-wider">
+            <h3 className="flex items-center gap-1.5 text-xs font-sans font-extrabold text-white uppercase tracking-wider">
               <span className="h-1.5 w-1.5 rounded-full bg-[#006EF5]" />
               Navigation
             </h3>
@@ -180,7 +180,7 @@ export function Footer() {
 
           {/* ── COL 4: Core Services (Span 3) ── */}
           <div className="lg:col-span-3 flex flex-col gap-3.5">
-            <h3 className="flex items-center gap-1.5 text-xs font-mono font-bold text-white uppercase tracking-wider">
+            <h3 className="flex items-center gap-1.5 text-xs font-sans font-extrabold text-white uppercase tracking-wider">
               <span className="h-1.5 w-1.5 rounded-full bg-[#2C81FA]" />
               Services
             </h3>
@@ -209,7 +209,7 @@ export function Footer() {
 
           {/* ── COL 5: Direct Connect & Social Media (Span 3) ── */}
           <div className="lg:col-span-3 flex flex-col gap-3.5">
-            <h3 className="flex items-center gap-1.5 text-xs font-mono font-bold text-white uppercase tracking-wider">
+            <h3 className="flex items-center gap-1.5 text-xs font-sans font-extrabold text-white uppercase tracking-wider">
               <span className="h-1.5 w-1.5 rounded-full bg-[#60A5FA]" />
               Connect
             </h3>
@@ -240,7 +240,7 @@ export function Footer() {
 
             {/* Social Glass Squircle Buttons */}
             <div className="pt-2">
-              <span className="text-[11px] font-mono text-[#64748B] block mb-2 uppercase tracking-wider">
+              <span className="text-[11px] font-sans font-bold text-[#64748B] block mb-2 uppercase tracking-wider">
                 Follow Us
               </span>
               <div className="flex flex-wrap gap-2">

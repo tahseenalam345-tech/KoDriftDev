@@ -4,17 +4,16 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu } from "lucide-react";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Work", href: "/work" },
   { label: "Services", href: "/services" },
-  { label: "About", href: "/about" },
-  { label: "Pricing", href: "/pricing" },
+  { label: "Work", href: "/work" },
   { label: "Process", href: "/process" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "About", href: "/about" },
 ];
 
 export function Header() {
@@ -192,31 +191,39 @@ export function Header() {
                 })}
               </nav>
 
-              {/* ── Right: Rounded pill CTA & Mobile Sidebar Trigger pushed right ── */}
+              {/* ── Right: Rounded pill CTA (desktop) & Mobile Sidebar Trigger pushed right ── */}
               <div className="flex items-center justify-end gap-2 sm:gap-3 ml-auto shrink-0">
-                <Link
-                  href="/contact"
-                  className="btn-pill-dark lighter-button default inline-flex items-center text-xs sm:text-sm py-2 px-3.5 sm:py-2.5 sm:px-5 shrink-0"
-                  aria-label="Start a Project"
-                >
-                  Start a Project
-                </Link>
+                {/* Desktop-only CTA Button: strictly hidden on mobile devices */}
+                <div className="hidden md:flex items-center shrink-0">
+                  <Link
+                    href="/contact"
+                    className="btn-pill-dark lighter-button default inline-flex items-center text-xs sm:text-sm py-2 px-3.5 sm:py-2.5 sm:px-5 shrink-0"
+                    aria-label="Start a Project"
+                  >
+                    Start a Project
+                  </Link>
+                </div>
 
-                {/* Mobile menu trigger */}
+                {/* Mobile menu trigger with custom modern tech icon */}
                 <button
                   type="button"
                   onClick={() => setMobileMenuOpen(true)}
                   aria-label="Open navigation menu"
-                  className="md:hidden inline-flex items-center justify-center w-9 h-9 rounded-full cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 transition-all hover:bg-black/5"
+                  className="md:hidden group relative inline-flex items-center justify-center w-10 h-10 rounded-full cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 transition-all duration-200 hover:scale-105 active:scale-95"
                   style={{
                     background: "#FFFFFF",
-                    border: "1px solid rgba(16,40,39,0.12)",
-                    boxShadow: "0 2px 8px rgba(16,40,39,0.06)",
+                    border: "1px solid rgba(0, 110, 245, 0.22)",
+                    boxShadow: "0 2px 10px rgba(0, 110, 245, 0.12)",
                     color: "var(--ink)",
                     "--tw-ring-color": "var(--brand-blue)",
                   } as React.CSSProperties}
                 >
-                  <Menu className="h-[18px] w-[18px]" aria-hidden="true" />
+                  {/* Custom Staggered Modern Menu Icon */}
+                  <div className="flex flex-col items-end justify-center gap-1 w-[18px] h-[16px]">
+                    <span className="w-full h-[2px] rounded-full bg-[#0B132B] transition-all duration-200 group-hover:w-[13px]" />
+                    <span className="w-[13px] h-[2px] rounded-full bg-[#006EF5] transition-all duration-200 group-hover:w-full" />
+                    <span className="w-[16px] h-[2px] rounded-full bg-[#0B132B] transition-all duration-200 group-hover:w-[10px]" />
+                  </div>
                 </button>
               </div>
             </div>
