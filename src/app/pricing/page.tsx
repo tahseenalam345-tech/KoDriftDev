@@ -273,6 +273,23 @@ export default function PricingPage() {
                       </span>
                     </div>
 
+                    {/* PKR Price Benchmark */}
+                    <div className="pt-1">
+                      <span
+                        className={`text-base sm:text-xl font-extrabold font-heading tracking-tight ${
+                          isScale
+                            ? "text-[#60A5FA]"
+                            : "bg-gradient-to-r from-[#003FC5] to-[#006EF5] bg-clip-text text-transparent"
+                        }`}
+                      >
+                        {pkg.name === "Starter"
+                          ? "Starting PKR 15,000"
+                          : pkg.name === "Growth"
+                          ? "Starting PKR 45,000"
+                          : "From PKR 90,000 / Custom"}
+                      </span>
+                    </div>
+
                     {/* Description */}
                     <p
                       className={`text-xs sm:text-[14px] leading-relaxed font-medium ${

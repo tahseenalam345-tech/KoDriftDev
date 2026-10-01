@@ -13,14 +13,15 @@ const SERVICES = [
 ];
 
 const BUDGET_RANGES = [
-  "PKR 45K - 90K",
-  "PKR 90K - 200K",
-  "PKR 200K+",
+  "PKR 15K - 30K",
+  "PKR 30K - 55K",
+  "PKR 55K - 90K",
+  "PKR 90K+",
 ];
 
 export default function ProposalConnectBox() {
   const [selectedService, setSelectedService] = useState<string>("Web Development");
-  const [selectedBudget, setSelectedBudget] = useState<string>("PKR 90K - 200K");
+  const [selectedBudget, setSelectedBudget] = useState<string>("PKR 30K - 55K");
   const [clientName, setClientName] = useState<string>("");
   const [clientPhone, setClientPhone] = useState<string>("");
   const [projectNote, setProjectNote] = useState<string>("");
@@ -116,7 +117,7 @@ export default function ProposalConnectBox() {
             <label className="text-[11px] font-sans font-bold text-white/80 block mb-1.5 uppercase tracking-wider">
               2. Target Budget Range (PKR)
             </label>
-            <div className="grid grid-cols-3 gap-1.5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
               {BUDGET_RANGES.map((b) => {
                 const isSelected = selectedBudget === b;
                 return (

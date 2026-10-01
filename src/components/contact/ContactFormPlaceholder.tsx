@@ -13,15 +13,15 @@ const PROJECT_CATEGORIES = [
 ];
 
 const BUDGET_TIERS = [
-  "Starter (< $1,500)",
-  "Growth ($1,500 – $4,000)",
-  "Scale ($4,000 – $10,000+)",
-  "Flexible / To Be Quoted",
+  "PKR 15,000 – 30,000",
+  "PKR 30,000 – 55,000",
+  "PKR 55,000 – 90,000",
+  "PKR 90,000+ / Custom",
 ];
 
 export function ContactFormPlaceholder() {
   const [selectedCategory, setSelectedCategory] = useState<string>("Web Platform / Store");
-  const [selectedBudget, setSelectedBudget] = useState<string>("Growth ($1,500 – $4,000)");
+  const [selectedBudget, setSelectedBudget] = useState<string>("PKR 30,000 – 55,000");
   const [fullName, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");

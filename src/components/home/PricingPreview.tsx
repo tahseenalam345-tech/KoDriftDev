@@ -139,13 +139,13 @@ export function PricingPreview() {
               const isScale = pkg.name === "Scale";
               const isFullWidthMobile = idx === 2; // Plan 3: 1 in row (spans 2 columns on mobile)
 
-              // PKR Pricing Values (Strictly PKR, zero dollars)
+              // PKR Pricing Values as requested (Starting 15k, Growth 45k)
               const pkrPrice =
                 pkg.name === "Starter"
-                  ? "Starting PKR 45,000"
+                  ? "Starting PKR 15,000"
                   : pkg.name === "Growth"
-                  ? "Starting PKR 120,000"
-                  : "Custom Quote in PKR";
+                  ? "Starting PKR 45,000"
+                  : "From PKR 90,000 / Custom";
 
               return (
                 <div
@@ -169,32 +169,21 @@ export function PricingPreview() {
                   }}
                 >
                   <div>
-                    {/* Header Row: Icon, Name & Badge */}
-                    <div className="flex items-center justify-between mb-1.5 sm:mb-2.5">
-                      <div className="flex items-center gap-1.5 sm:gap-2">
-                        <div
-                          className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-lg sm:rounded-xl shadow-xs transition-transform duration-200 group-hover:scale-105 ${
-                            isScale
-                              ? "bg-white/10 text-[#60A5FA] border border-[#2C81FA]/40"
-                              : "bg-white/90 text-[#006EF5] border border-[rgba(0,110,245,0.20)]"
-                          }`}
-                        >
-                          <Icon className="h-3.5 w-3.5 sm:h-4.5 sm:w-4.5 stroke-[2.2]" />
-                        </div>
-                        <div>
-                          <h3
-                            className={`font-heading font-extrabold text-sm sm:text-lg tracking-tight leading-none ${
-                              isScale ? "text-white" : "text-[#0B132B]"
-                            }`}
-                          >
-                            {pkg.name}
-                          </h3>
-                        </div>
+                    {/* Top Row: Icon + Badge (Dedicated row to eliminate any text overlap) */}
+                    <div className="flex items-center justify-between gap-1.5 mb-2">
+                      <div
+                        className={`flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg sm:rounded-xl shadow-xs transition-transform duration-200 group-hover:scale-105 shrink-0 ${
+                          isScale
+                            ? "bg-white/10 text-[#60A5FA] border border-[#2C81FA]/40"
+                            : "bg-white/90 text-[#006EF5] border border-[rgba(0,110,245,0.20)]"
+                        }`}
+                      >
+                        <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 stroke-[2.2]" />
                       </div>
 
                       {/* Pill Badge */}
                       <span
-                        className={`px-1.5 py-0.2 sm:px-2 sm:py-0.5 rounded-full text-[7.5px] sm:text-[9px] font-extrabold uppercase tracking-wider ${
+                        className={`px-2 py-0.5 rounded-full text-[8px] sm:text-[9.5px] font-extrabold uppercase tracking-wider shrink-0 whitespace-nowrap ${
                           isScale
                             ? "bg-[#2C81FA]/20 text-[#60A5FA] border border-[#2C81FA]/40"
                             : isGrowth
@@ -206,8 +195,17 @@ export function PricingPreview() {
                       </span>
                     </div>
 
+                    {/* Plan Name */}
+                    <h3
+                      className={`font-heading font-extrabold text-sm sm:text-lg tracking-tight leading-snug mb-1 ${
+                        isScale ? "text-white" : "text-[#0B132B]"
+                      }`}
+                    >
+                      {pkg.name}
+                    </h3>
+
                     {/* PKR Price Tag (Prominent & Clear) */}
-                    <div className="my-1.5 sm:my-2">
+                    <div className="mb-2">
                       <span
                         className={`text-xs sm:text-base font-extrabold font-heading tracking-tight block ${
                           isScale
@@ -219,18 +217,18 @@ export function PricingPreview() {
                       </span>
                     </div>
 
-                    {/* Description */}
+                    {/* Full Description (No line-clamp truncation so entire text is visible) */}
                     <p
-                      className={`text-[10px] sm:text-xs leading-snug line-clamp-2 mb-2 sm:mb-3 ${
-                        isScale ? "text-white/75" : "text-[#3A4B6E]"
+                      className={`text-[10.5px] sm:text-xs leading-snug mb-2.5 sm:mb-3 ${
+                        isScale ? "text-white/80" : "text-[#3A4B6E]"
                       }`}
                     >
                       {pkg.description}
                     </p>
 
-                    {/* Includes Section */}
+                    {/* Includes Section (Full text, no truncation with '...') */}
                     <div
-                      className={`pt-1.5 sm:pt-2.5 border-t ${
+                      className={`pt-2 border-t ${
                         isScale ? "border-white/10" : "border-black/[0.06]"
                       }`}
                     >
@@ -241,7 +239,7 @@ export function PricingPreview() {
                       >
                         Deliverables:
                       </span>
-                      <ul className="space-y-1">
+                      <ul className="space-y-1.5">
                         {pkg.includes.slice(0, 3).map((item, i) => (
                           <li key={i} className="flex items-start gap-1 sm:gap-1.5 text-[10px] sm:text-[11px]">
                             <CheckCircle2
@@ -250,7 +248,7 @@ export function PricingPreview() {
                               }`}
                             />
                             <span
-                              className={`leading-snug truncate ${
+                              className={`leading-snug ${
                                 isScale ? "text-white/85" : "text-[#2C3E5A]"
                               }`}
                             >
